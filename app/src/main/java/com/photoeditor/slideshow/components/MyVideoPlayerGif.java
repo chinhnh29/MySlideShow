@@ -1,5 +1,6 @@
 package com.photoeditor.slideshow.components;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.jaygoo.widget.OnRangeChangedListener;
 import com.jaygoo.widget.RangeSeekBar;
 import com.jaygoo.widget.SeekBar;
+import com.photoeditor.slideshow.ProgressLoadingDialogUtil;
 import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.common.ExtentionsKt;
 import com.photoeditor.slideshow.enumm.VIDEO_RATIO;
@@ -81,6 +83,7 @@ public final class MyVideoPlayerGif {
     /* access modifiers changed from: private */
     public VideoPlayInterface videoPlayInterface;
     private final View videoView;
+    private Context context;
 
     //    @Metadata(mo49139bv = {1, 0, 3}, mo49142k = 3, mo49143mv = {1, 4, 0})
     public static final /* synthetic */ class WhenMappings {
@@ -116,6 +119,7 @@ public final class MyVideoPlayerGif {
         this.mImgControl = mImgControl;
         this.img_play = img_play;
         this.mTvTimeControl = mTvTimeControl;
+        this.context =context;
         this.mTvDuration = mTvDuration;
 //        this.mainFragment = mainFragment2;
 //        this.drafVideoModel = drafVideoModel2;
@@ -362,7 +366,6 @@ public final class MyVideoPlayerGif {
     }
 
     public final void setTimeAudio(int i, int i2) {
-        Log.d("TestTIme", i + "  " + i2);
         this.startTime = i;
         this.endTime = i2;
         checkTrimAndLoop();
@@ -461,8 +464,6 @@ public final class MyVideoPlayerGif {
     }
 
     private Runnable runnablePreview(Handler handler) {
-        Log.e("ChinhNH", "mCurrentFrame: " + mCurrentFrame);
-        Log.e("ChinhNH", "mTotalFrames: " + mTotalFrames);
         return new Runnable() {
             @Override
             public void run() {
@@ -606,10 +607,7 @@ public final class MyVideoPlayerGif {
 
     public final void restartEnd() {
         stopPreview();
-//        MainFragment mainFragment2 = this.mainFragment;
-//        if (mainFragment2 != null) {
-//            mainFragment2.showProgressDialog();
-//        }
+//        ProgressLoadingDialogUtil.showProgressDialog(context);
         PhotorThread.getInstance().runBackground(new PhotorThread.IBackground() {
             @Override
             public void doingBackground() {
@@ -623,20 +621,19 @@ public final class MyVideoPlayerGif {
 
             @Override
             public void onCompleted() {
-//                MainFragment access$getMainFragment$p = this.this$0.mainFragment;
-//                if (access$getMainFragment$p != null) {
-//                    access$getMainFragment$p.dismissProgressDialog();
-//                }
+//                ProgressLoadingDialogUtil.hideProgressDialog();
                 startPreview();
             }
         });
     }
 
+
+
     public final void stopPreview() {
         this.mCurrentFrame = 0;
         TextView textView = this.mTvTimeControl;
         VideoMaker videoMaker = this.mVideoMaker;
-//        textView.setText(videoMaker != null ? ConvertDurationUtils.convertDurationText(videoMaker.getTotalFrames() / 30) : null);
+        textView.setText(ConvertDurationUtils.convertDurationText(videoMaker.getTotalFrames() / 30));
         try {
             MediaPlayer mediaPlayer = this.mAudioPreview;
             if (mediaPlayer != null) {
@@ -675,58 +672,31 @@ public final class MyVideoPlayerGif {
     /* JADX WARNING: Removed duplicated region for block: B:41:? A[RETURN, SYNTHETIC] */
     /* Code decompiled incorrectly, please refer to instructions dump. */
     public final void startPreview() {
-//        String str;
-//        ImageView imageView = this.mImgControl;
-//        if (imageView != null) {
-//            Extentions.gone(imageView);
-//        }
-//        Properties.setImageResource(this.img_play, R.drawable.ic_pause_new);
-//        MediaPlayer mediaPlayer = this.mAudioPreview;
-//        if (mediaPlayer != null) {
-//            mediaPlayer.reset();
-//        }
-//        try {
-        checkTrimAndLoop();
-        this.mIsImagePreviewing = true;
-        this.mIsPreviewStopping = false;
-        this.mCurrentFrame = 0;
-        mTotalFrames = mVideoMaker != null ? mVideoMaker.getTotalFrames() : null;
-        Log.e("ChinhNH", "startPreview: " + mTotalFrames);
-        playSlideShow();
-//            if (this.mAudioPreview == null) {
-//                this.mAudioPreview = new MediaPlayer();
-//            }
-//            MediaPlayer mediaPlayer2 = this.mAudioPreview;
-//            if (mediaPlayer2 == null && (str = this.mCurrentSongPath) != null) {
-//                if (mediaPlayer2 != null) {
-//                    mediaPlayer2.setDataSource(str);
-//                }
-//                MediaPlayer mediaPlayer3 = this.mAudioPreview;
-//                if (mediaPlayer3 != null) {
-//                    mediaPlayer3.prepare();
-//                }
-//                MediaPlayer mediaPlayer4 = this.mAudioPreview;
-//                if (mediaPlayer4 != null) {
-//                    mediaPlayer4.setLooping(true);
-//                }
-//                MediaPlayer mediaPlayer5 = this.mAudioPreview;
-//                if (mediaPlayer5 != null) {
-//                    mediaPlayer5.seekTo(this.startTime * 1000);
-//                }
-//                MediaPlayer mediaPlayer6 = this.mAudioPreview;
-//                if (mediaPlayer6 != null) {
-//                    float f = this.mVolume;
-//                    mediaPlayer6.setVolume(f, f);
-//                }
-//                MediaPlayer mediaPlayer7 = this.mAudioPreview;
-//                if (mediaPlayer7 != null) {
-//                    mediaPlayer7.start();
-//                }
-
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
+        mImgControl.setVisibility(View.GONE);
+        img_play.setImageResource(R.drawable.ic_pause_new);
+        if (mAudioPreview != null) mAudioPreview.release();
+        try {
+            checkTrimAndLoop();
+            this.mIsImagePreviewing = true;
+            this.mIsPreviewStopping = false;
+            this.mCurrentFrame = 0;
+            mTotalFrames = mVideoMaker.getTotalFrames();
+            playSlideShow();
+            if (mCurrentSongPath != null) {
+                if (this.mAudioPreview == null) {
+                    this.mAudioPreview = new MediaPlayer();
+                }
+                mAudioPreview.setDataSource(mCurrentSongPath);
+                mAudioPreview.prepare();
+                mAudioPreview.setLooping(true);
+                mAudioPreview.seekTo(this.startTime * 1000);
+                float f = this.mVolume;
+                mAudioPreview.setVolume(f, f);
+                mAudioPreview.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private final void checkTrimAndLoop() {
