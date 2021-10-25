@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="list_effect">
+        <item>img_random</item>
+        <item>img_none</item>
+        <item>img_zoom_i</item>
+        <item>img_zoom_o</item>
+        <item>img_wipe_l</item>
+        <item>img_wipe_r</item>
+        <item>img_wipe_u</item>
+        <item>img_wipe_d</item>
+    </string-array>
+</resources>

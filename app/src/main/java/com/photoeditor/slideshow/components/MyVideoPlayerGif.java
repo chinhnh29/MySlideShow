@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 //import com.google.firebase.messaging.ServiceStarter;
 //import com.jaygoo.widget.RangeSeekBar;
+import com.jaygoo.widget.OnRangeChangedListener;
+import com.jaygoo.widget.RangeSeekBar;
+import com.jaygoo.widget.SeekBar;
 import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.common.ExtentionsKt;
 import com.photoeditor.slideshow.enumm.VIDEO_RATIO;
 //import com.photoeditor.slideshow.fragment.main.MainFragment;
 //import com.photoeditor.slideshow.imagetovideo.ConvertDurationUtils;
+import com.photoeditor.slideshow.imagetovideo.ConvertDurationUtils;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 import com.photoeditor.slideshow.interfaces.VideoPlayInterface;
@@ -61,7 +65,7 @@ public final class MyVideoPlayerGif {
     public boolean mIsImagePreviewing;
     private boolean mIsPreviewStopping;
     /* access modifiers changed from: private */
-//    public final RangeSeekBar mSeekBar;
+    public final RangeSeekBar mSeekBar;
     private int mTotalFrames;
     private TextView mTvDuration;
     /* access modifiers changed from: private */
@@ -104,25 +108,15 @@ public final class MyVideoPlayerGif {
     }
 
     public MyVideoPlayerGif(Context context, View view, VideoMaker videoMaker, ArrayList<String> listImage,
-                            CustomPreviewView customPreviewView/*, RangeSeekBar rangeSeekBar, ImageView imageView,
-                            ImageView imageView2, TextView textView, TextView textView2, VideoPlayInterface videoPlayInterface2,
+                            CustomPreviewView customPreviewView, RangeSeekBar rangeSeekBar, ImageView mImgControl,
+                            ImageView img_play, TextView mTvTimeControl, TextView mTvDuration/*, VideoPlayInterface videoPlayInterface2,
                             MainFragment mainFragment2, DrafVideoModel drafVideoModel2*/) {
-//        Intrinsics.checkNotNullParameter(context, "context");
-//        Intrinsics.checkNotNullParameter(view, "videoView");
-//        Intrinsics.checkNotNullParameter(arrayList, "listImage");
-//        Intrinsics.checkNotNullParameter(customPreviewView, "previewView");
-//        Intrinsics.checkNotNullParameter(rangeSeekBar, "mSeekBar");
-//        Intrinsics.checkNotNullParameter(imageView, "mImgControl");
-//        Intrinsics.checkNotNullParameter(imageView2, "img_play");
-//        Intrinsics.checkNotNullParameter(textView, "mTvTimeControl");
-//        Intrinsics.checkNotNullParameter(textView2, "mTvDuration");
-//        Intrinsics.checkNotNullParameter(videoPlayInterface2, "videoPlayInterface");
         this.videoView = view;
-//        this.mSeekBar = rangeSeekBar;
-//        this.mImgControl = imageView;
-//        this.img_play = imageView2;
-//        this.mTvTimeControl = textView;
-//        this.mTvDuration = textView2;
+        this.mSeekBar = rangeSeekBar;
+        this.mImgControl = mImgControl;
+        this.img_play = img_play;
+        this.mTvTimeControl = mTvTimeControl;
+        this.mTvDuration = mTvDuration;
 //        this.mainFragment = mainFragment2;
 //        this.drafVideoModel = drafVideoModel2;
         this.isPlay = true;
@@ -135,7 +129,7 @@ public final class MyVideoPlayerGif {
         this.mVideoMaker = videoMaker;
         mVideoMaker.setContext(context);
         initVideo();
-//        initEvent();
+        initEvent();
     }
 
     /* JADX INFO: this call moved to the top of the method (can break code semantics) */
@@ -320,7 +314,7 @@ public final class MyVideoPlayerGif {
         this.mTotalFrames = mVideoMaker.getTotalFrames();
         this.mImagePreview = new Handler();
         this.transitionPreview = new Handler();
-//        this.mTvDuration.setText(ConvertDurationUtils.convertDurationText(this.mTotalFrames / 30));
+        this.mTvDuration.setText(ConvertDurationUtils.convertDurationText(this.mTotalFrames / 30));
     }
 
     public final int getTotalTime() {
@@ -332,7 +326,39 @@ public final class MyVideoPlayerGif {
     }
 
     private final void initEvent() {
-//        this.mSeekBar.setOnRangeChangedListener(new MyVideoPlayerGif$initEvent$1(this));
+        mSeekBar.setOnRangeChangedListener(new OnRangeChangedListener() {
+            @Override
+            public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+                SeekBar leftSeekBar = view.getLeftSeekBar();
+                setMCurrentFrame(Math.round((leftSeekBar.getProgress() * ((float) getMTotalFrames())) / ((float) 100)));
+                mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
+                mCustomPreviewView.previewAtFrame(getMCurrentFrame());
+                if (mAudioPreview != null) {
+                    mAudioPreview.pause();
+                    if (mAudioPreview.getCurrentPosition() >= getEndTime() * 1000) {
+                        mAudioPreview.seekTo(getStartTime() * 1000);
+                    } else if (mIsImagePreviewing) {
+                        if (mAudioPreview.isPlaying()) {
+                            mAudioPreview.seekTo((int) (((((((float) getMCurrentFrame()) * 1.0f) /
+                                    ((float) 30)) * ((float) 1000)) % ((float) ((getEndTime() - getStartTime()) * 1000))) +
+                                    ((float) (getStartTime() * 1000))));
+                        }
+                    }
+                    mAudioPreview.seekTo((int) (((((((float) getMCurrentFrame()) * 1.0f) / ((float) 30)) * ((float) 1000)) % ((float) ((getEndTime() - getStartTime()) * 1000))) + ((float) (getStartTime() * 1000))));
+                }
+                resumePreview();
+            }
+        });
     }
 
     public final void setTimeAudio(int i, int i2) {
@@ -435,6 +461,8 @@ public final class MyVideoPlayerGif {
     }
 
     private Runnable runnablePreview(Handler handler) {
+        Log.e("ChinhNH", "mCurrentFrame: " + mCurrentFrame);
+        Log.e("ChinhNH", "mTotalFrames: " + mTotalFrames);
         return new Runnable() {
             @Override
             public void run() {
@@ -448,12 +476,10 @@ public final class MyVideoPlayerGif {
 //                if (access$getVideoPlayInterface$p != null) {
 //                    access$getVideoPlayInterface$p.currentVideoPercent(mCurrentFrame);
 //                }
-//                if (mSeekBar.isShown()) {
-//                    mSeekBar.setProgress(mCurrentFrame * ((float) 100));
-//                }
-//                if (mTvTimeControl.isShown()) {
-//                    mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
-//                }
+
+
+                mSeekBar.setProgress(mCurrentFrame * ((float) 100) / mTotalFrames);
+                mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
 
                 mCustomPreviewView.previewAtFrame(getMCurrentFrame());
                 setBeforeFrame(getMCurrentFrame());
@@ -620,7 +646,7 @@ public final class MyVideoPlayerGif {
 
         }
         if (mImagePreview != null) {
-            mImagePreview.removeCallbacksAndMessages( null);
+            mImagePreview.removeCallbacksAndMessages(null);
         }
         this.mIsImagePreviewing = false;
         this.mIsPreviewStopping = true;
@@ -665,7 +691,7 @@ public final class MyVideoPlayerGif {
         this.mIsPreviewStopping = false;
         this.mCurrentFrame = 0;
         mTotalFrames = mVideoMaker != null ? mVideoMaker.getTotalFrames() : null;
-        Log.e("ChinhNH", "startPreview: " );
+        Log.e("ChinhNH", "startPreview: " + mTotalFrames);
         playSlideShow();
 //            if (this.mAudioPreview == null) {
 //                this.mAudioPreview = new MediaPlayer();
@@ -818,7 +844,7 @@ public final class MyVideoPlayerGif {
         }
     }
 
-    private final void resize(ViewGroup.LayoutParams layoutParams, float f, int i, int i2) {
+    private void resize(ViewGroup.LayoutParams layoutParams, float f, int i, int i2) {
         layoutParams.width = i;
         layoutParams.height = (int) (((float) i) / f);
         if (layoutParams.height > i2) {

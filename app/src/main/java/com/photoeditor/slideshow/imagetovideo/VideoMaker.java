@@ -237,7 +237,7 @@ public class VideoMaker {
 
     public void addImagesGif(ArrayList<String> listImage) {
         this.isGif = true;
-        this.DURATION_IMAGE = 30;
+        this.DURATION_IMAGE = 3;
         float second = 3;
         this.listTransitionModel.clear();
         this.listImageModel.clear();
@@ -918,7 +918,7 @@ public class VideoMaker {
             GifImage next = it.next();
             int frameToMilisecond = TimeUtils.frameToMilisecond((int) getStartFrame(next.getPosition()));
             if (frameToMilisecond > 0) {
-                next.setStart(Integer.valueOf(frameToMilisecond - (next.getDuration().intValue() / 2)));
+                next.setStart(frameToMilisecond - (next.getDuration() / 2));
             }
         }
     }

@@ -3,6 +3,7 @@ package com.photoeditor.slideshow;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -11,25 +12,46 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.jaygoo.widget.RangeSeekBar;
 import com.orhanobut.hawk.Hawk;
 import com.photoeditor.slideshow.components.MyVideoPlayerGif;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import com.jaygoo.widget.RangeSeekBar;
 
-public class EditActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class EditActivity extends AppCompatActivity implements TransitionListener{
     private VideoMaker videoMaker;
     private MyVideoPlayerGif myVideoPlayerGif;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ImageView imgImage;
 
+
+    @BindView(R.id.sb_range_1)
+    RangeSeekBar rangeSeekBar;
+    @BindView(R.id.list_effect)
+    RecyclerView rvListEffect;
+    @BindView(R.id.mImgControl)
+    ImageView imageView;
+    @BindView(R.id.img_play)
+    ImageView imgPlay;
+    @BindView(R.id.mTvTimeControl)
+    TextView mTvTimeControl;
+    @BindView(R.id.mTvDuration)
+    TextView mTvDuration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
+        ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -54,23 +76,31 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+    private void createListEffect() {
+        List<String> listEffect = Arrays.asList(getResources().getStringArray(R.array.list_effect));
+        TransitionAdapter transitionAdapter = new TransitionAdapter(this, listEffect, this, 0);
+        rvListEffect.setAdapter(transitionAdapter);
+    }
+
     private void initVideo() {
         ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
         videoMaker = VideoMaker.getInstance();
         CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewViewGif);
-//        RangeSeekBar rangeSeekBar = (RangeSeekBar) _$_findCachedViewById(R.id.sb_range_1);
-//        ImageView imageView = (ImageView) findViewById(R.id.mImgControl);
-//        ImageView imageView2 = (ImageView) findViewById(R.id.img_play);
-//        TextView textView = (TextView) findViewById(R.id.mTvTimeControl);
+
 //        TextView textView2 = (TextView) findViewById(R.id.mTvDuration);
         myVideoPlayerGif = new MyVideoPlayerGif(
-                this, constraintLayout, videoMaker, arrayList, customPreviewView /*, rangeSeekBar, imageView,
-                imageView2, textView, textView2, this, (MainFragment) null, (DrafVideoModel) null,
+                this, constraintLayout, videoMaker, arrayList, customPreviewView , rangeSeekBar, imageView,
+                imgPlay, mTvTimeControl, mTvDuration/*, this, (MainFragment) null, (DrafVideoModel) null,
                 4096, (DefaultConstructorMarker) null)*/);
 //        if (mVideoMaker4 != null) {
 //            float totalDuration = mVideoMaker4.getTotalDuration();
 //            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
 //        }
         myVideoPlayerGif.playSlideShow();
+    }
+
+    @Override
+    public void onEffectSelected(int position) {
+
     }
 }
