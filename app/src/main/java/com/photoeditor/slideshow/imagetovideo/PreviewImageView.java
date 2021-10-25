@@ -3,6 +3,7 @@ package com.photoeditor.slideshow.imagetovideo;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,16 +23,16 @@ public class PreviewImageView extends View {
         this.mVideoMaker = videoMaker;
     }
 
-    /* access modifiers changed from: protected */
-    public void onDraw(Canvas canvas2) {
-        mVideoMaker.previewImage(canvas2, this.currentFrame);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        mVideoMaker.previewImage(canvas, this.currentFrame);
         checkLock.set(false);
     }
 
-    public void previewAtFrame(int i) {
+    public void previewAtFrame(int currentFrame) {
         if (!this.checkLock.get()) {
             this.checkLock.set(true);
-            this.currentFrame = i;
+            this.currentFrame = currentFrame;
             postInvalidate();
         }
     }

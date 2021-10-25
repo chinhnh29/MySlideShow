@@ -220,32 +220,32 @@ public class VideoMaker {
     }
 
     public void addImages2(ArrayList<String> arrayList) {
-        float f = (float) this.DURATION_IMAGE;
-        this.listTransitionModel.clear();
-        this.listImageModel.clear();
-        this.mEffectList.clear();
-        this.mBufferImage.clear();
-        for (int i = 0; i < arrayList.size(); i++) {
-            ImageModel imageModel = new ImageModel();
-            imageModel.setUrl(arrayList.get(i));
-            imageModel.setSecond(f);
-            this.listImageModel.add(imageModel);
-            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
-            this.listTransitionModel.add(new GifTransition(Transition.NONE));
-        }
+//        float f = (float) this.DURATION_IMAGE;
+//        this.listTransitionModel.clear();
+//        this.listImageModel.clear();
+//        this.mEffectList.clear();
+//        this.mBufferImage.clear();
+//        for (int i = 0; i < arrayList.size(); i++) {
+//            ImageModel imageModel = new ImageModel();
+//            imageModel.setUrl(arrayList.get(i));
+//            imageModel.setSecond(f);
+//            this.listImageModel.add(imageModel);
+//            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
+//            this.listTransitionModel.add(new GifTransition(Transition.NONE));
+//        }
     }
 
-    public void addImagesGif(ArrayList<String> arrayList) {
+    public void addImagesGif(ArrayList<String> listImage) {
         this.isGif = true;
         this.DURATION_IMAGE = 30;
-        float f = (float) 30;
+        float f = 30;
         this.listTransitionModel.clear();
         this.listImageModel.clear();
         this.mEffectList.clear();
         this.mBufferImage.clear();
-        for (int i = 0; i < arrayList.size(); i++) {
+        for (int i = 0; i < listImage.size(); i++) {
             ImageModel imageModel = new ImageModel();
-            imageModel.setUrl(arrayList.get(i));
+            imageModel.setUrl(listImage.get(i));
             imageModel.setSecond(f);
             this.listImageModel.add(imageModel);
             this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
@@ -582,10 +582,10 @@ public class VideoMaker {
 //    }
 
     /* access modifiers changed from: package-private */
-    public void previewImage(Canvas canvas, int i) {
-        drawImages(canvas, i, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-        drawTransitionJson(canvas, i, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-        drawThemeNew(canvas, i, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+    public void previewImage(Canvas canvas, int currentFrame) {
+        drawImages(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+        drawTransitionJson(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+        drawThemeNew(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
     }
 
     /* access modifiers changed from: package-private */
@@ -760,28 +760,27 @@ public class VideoMaker {
 //        setProcessing(false);
     }
 
-    private void drawImages(Canvas canvas, int i, int i2, int i3) {
+    private void drawImages(Canvas canvas, int currentFrame, int i2, int i3) {
         int i4;
-        int i5 = i;
         int i6 = 0;
         while (i6 < this.listImageModel.size()) {
-            if (checkImageToDraw(i6, i5)) {
+            if (checkImageToDraw(i6, currentFrame)) {
                 updateImageCache(i6, i2, i3);
                 if (this.mBufferImage.size() >= 3) {
-                    for (int i7 = 0; i7 <= i6 - 3; i7++) {
-                        Bitmap bitmap = this.mBufferImage.get(i7);
+                    for (int i = 0; i <= i6 - 3; i++) {
+                        Bitmap bitmap = this.mBufferImage.get(i);
                         if (bitmap != null) {
                             bitmap.recycle();
                         }
-                        this.mBufferImage.remove(i7);
+                        this.mBufferImage.remove(i);
                     }
                 }
                 Bitmap bitmap2 = this.mBufferImage.get(i6);
                 if (bitmap2 != null) {
                     Matrix matrix = new Matrix();
                     Matrix matrix2 = matrix;
-                    this.mEffectUtils.effect(this.mEffectList.get(i6), matrix, bitmap2, i6, i, i2, i3);
-                    if (TimeUtils.checkEndTime2(i5, this.listImageModel.get(i6).getSecond(), getStartFrame(i6))) {
+                    this.mEffectUtils.effect(this.mEffectList.get(i6), matrix, bitmap2, i6, currentFrame, i2, i3);
+                    if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(i6).getSecond(), getStartFrame(i6))) {
                         this.mLastMatrix = matrix2;
                     }
                     if (i6 > 0) {
@@ -790,12 +789,12 @@ public class VideoMaker {
                     if (this.bmIdNew < this.listTransitionModel.size()) {
                         if (!this.isGif) {
                             int i8 = 255;
-                            if (i5 <= 30) {
-                                i8 = ((i5 * 200) / 30) + 55;
+                            if (currentFrame <= 30) {
+                                i8 = ((currentFrame * 200) / 30) + 55;
                             } else {
                                 int i9 = this.totalFrame;
-                                if (i5 > i9 - 30) {
-                                    i8 = 255 - ((((i5 - i9) + 30) * 200) / 30);
+                                if (currentFrame > i9 - 30) {
+                                    i8 = 255 - ((((currentFrame - i9) + 30) * 200) / 30);
                                 }
                             }
                             this.mPaintImage.setAlpha(i8);
@@ -810,7 +809,7 @@ public class VideoMaker {
                             TransitionUtils transitionUtils = this.mTransitionUtils;
                             Transition type = gifTransition.getType();
                             i4 = i6;
-                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap2, this.mPaintImage, i6, i, i2, i3, false, 0);
+                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap2, this.mPaintImage, i6, currentFrame, i2, i3, false, 0);
                         }
                         i6 = i4 + 1;
                     } else {
@@ -823,9 +822,9 @@ public class VideoMaker {
         }
     }
 
-    private boolean checkImageToDraw(int i, int i2) {
+    private boolean checkImageToDraw(int i, int currentFrame) {
         int[] startAndStopFrameOfImage2 = TimeUtils.getStartAndStopFrameOfImage2(this.listImageModel.get(i).getSecond(), getStartFrame(i));
-        if (i2 < startAndStopFrameOfImage2[0] || i2 > startAndStopFrameOfImage2[1]) {
+        if (currentFrame < startAndStopFrameOfImage2[0] || currentFrame > startAndStopFrameOfImage2[1]) {
             return false;
         }
         return true;
@@ -855,9 +854,9 @@ public class VideoMaker {
     }
 
     public void setDuration(float f, boolean z, boolean z2) {
-        for (ImageModel second : this.listImageModel) {
-            second.setSecond(f);
-        }
+//        for (ImageModel second : this.listImageModel) {
+//            second.setSecond(f);
+//        }
     }
 
     public void setParamsTrimAudio(int i, int i2) {
@@ -922,11 +921,11 @@ public class VideoMaker {
     }
 
     public void updateTimeAllImage(int i) {
-        for (ImageModel second : this.listImageModel) {
-            second.setSecond((float) i);
-        }
-        this.DURATION_IMAGE = i;
-        updateTimeVideo();
+//        for (ImageModel second : this.listImageModel) {
+//            second.setSecond((float) i);
+//        }
+//        this.DURATION_IMAGE = i;
+//        updateTimeVideo();
     }
 
     public void updateTimeOneImage(int i, int i2) {
@@ -956,13 +955,13 @@ public class VideoMaker {
 //    }
 
     public void applyTransitionDraw(GifTransition gifTransition, ArrayList<List<Bitmap>> arrayList) {
-        deleteOldTran();
-        this.mTransitionUtils.setListBitmap(arrayList.get(0));
-        this.listTransitionModel.clear();
-        this.listGifImage.clear();
-        for (ImageModel next : this.listImageModel) {
-            this.listTransitionModel.add(gifTransition);
-        }
+//        deleteOldTran();
+//        this.mTransitionUtils.setListBitmap(arrayList.get(0));
+//        this.listTransitionModel.clear();
+//        this.listGifImage.clear();
+//        for (ImageModel next : this.listImageModel) {
+//            this.listTransitionModel.add(gifTransition);
+//        }
     }
 
     public void applyTransitionRandomDraw(GifTransition gifTransition, ArrayList<TransitionDrawModel> arrayList) {

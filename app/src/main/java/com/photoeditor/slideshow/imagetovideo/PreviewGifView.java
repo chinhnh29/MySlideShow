@@ -3,6 +3,7 @@ package com.photoeditor.slideshow.imagetovideo;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.TextureView;
 
 import com.photoeditor.slideshow.java.util.ThreadPool;
@@ -23,8 +24,8 @@ public class PreviewGifView extends TextureView {
         this.mVideoMaker = videoMaker;
     }
 
-    public void previewAtFrame(int i) {
-        this.currentFrame = i;
+    public void previewAtFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
         if (!this.checkLock.get()) {
             ThreadPool.globleExecutor().submit(new Runnable() {
                 public final void run() {

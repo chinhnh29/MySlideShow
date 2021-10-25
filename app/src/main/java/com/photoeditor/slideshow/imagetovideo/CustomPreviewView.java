@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.util.concurrent.ScheduledFuture;
@@ -56,8 +57,8 @@ public class CustomPreviewView extends FrameLayout {
     public void setVideoMaker(VideoMaker videoMaker) {
         this.preViewImage = new PreviewImageView(getContext());
         this.previewGifView = new PreviewGifView(getContext());
-        LayoutParams layoutParams = new LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-        new LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         addView(this.preViewImage, layoutParams);
         this.mVideoMaker = videoMaker;
         this.preViewImage.setVideoMaker(videoMaker);
@@ -73,11 +74,10 @@ public class CustomPreviewView extends FrameLayout {
         VideoMaker.HEIGHT_PREVIEW = getMeasuredHeight();
     }
 
-    public void previewAtFrame(int i) {
-        Log.e("ChinhNH", "previewAtFrame: " + i);
-        this.currentFrame = i;
-        preViewImage.previewAtFrame(i);
-        previewGifView.previewAtFrame(i);
+    public void previewAtFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
+        preViewImage.previewAtFrame(currentFrame);
+        previewGifView.previewAtFrame(currentFrame);
     }
 
     public boolean onTouchEvent(MotionEvent motionEvent) {

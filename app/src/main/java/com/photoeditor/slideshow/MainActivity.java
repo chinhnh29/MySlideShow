@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
                     1);
         } else {
             Hawk.init(this).build();
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200909_165621.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200901_161012.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
+            arrayList.add("/storage/emulated/0/DCIM/Camera/20200909_165621.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_145557.jpg");
+            arrayList.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_153006.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_101738.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
             initVideo();
 
             imgImage = findViewById(R.id.img_image);
@@ -76,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
 //            float totalDuration = mVideoMaker4.getTotalDuration();
 //            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
 //        }
-        if (myVideoPlayerGif != null) {
-            myVideoPlayerGif.playSlideShow();
-        }
+        myVideoPlayerGif.playSlideShow();
+        Log.e("ChinhNH", "initVideo: Main");
     }
 }

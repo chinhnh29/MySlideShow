@@ -110,65 +110,65 @@ class EffectUtils {
     }
 
     private void translate(Matrix matrix, Bitmap bitmap, int i, int i2, Effect effect, int i3, int i4) {
-        int i5;
-        int i6;
-        int i7;
-        int i8;
-        int i9;
-        int i10;
-        int i11;
-        int i12;
-        int i13 = 0;
-        if (!this.isEffectPreviewTran) {
-            int startFrame = (int) getStartFrame(i);
-            i6 = (int) (((float) startFrame) + ((this.mVideoMaker.getListImageModel().get(i).getSecond() + VideoMaker.DURATION_TRANSITION) * 30.0f));
-            i5 = startFrame;
-        } else if (this.posTransition == i) {
-            i5 = 0;
-            i6 = 105;
-        } else {
-            i5 = 60;
-            i6 = 120;
-        }
-        int i15 = i2 - i5;
-        int i16 = i6 - i5;
-        matrix.postScale(1.2f, 1.2f);
-        int width = (int) (((float) bitmap.getWidth()) * 1.2f);
-        int height = (int) (((float) bitmap.getHeight()) * 1.2f);
-//        int i17 = effect.ordinal()];
-        if (effect.ordinal() == 1) {
-            i11 = (i4 - height) / 2;
-            i10 = (int) (((float) i11) + (((float) i4) * 0.1f));
-            i12 = (i3 - width) / 2;
-        } else if (effect.ordinal() != 2) {
-            if (effect.ordinal() == 3) {
-                i13 = (i3 - width) / 2;
-                i8 = (int) (((float) i13) + (((float) i3) * 0.1f));
-                i9 = (i4 - height) / 2;
-            } else if (effect.ordinal() != 4) {
-                i9 = 0;
-                i8 = 0;
-                i7 = 0;
-                float f = (float) i16;
-                matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f));
-            } else {
-                i13 = (i3 - width) / 2;
-                i8 = (int) (((float) i13) - (((float) i3) * 0.1f));
-                i9 = (i4 - height) / 2;
-            }
-            i7 = i9;
-            float f2 = (float) i16;
-            matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f2), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f2));
-        } else {
-            i11 = (i4 - height) / 2;
-            i10 = (int) (((float) i11) - (((float) i4) * 0.1f));
-            i12 = (i3 - width) / 2;
-        }
-        i7 = i10;
-        i9 = i11;
-        i13 = i8;
-        float f22 = (float) i16;
-        matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f22), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f22));
+//        int i5;
+//        int i6;
+//        int i7;
+//        int i8;
+//        int i9;
+//        int i10;
+//        int i11;
+//        int i12;
+//        int i13 = 0;
+//        if (!this.isEffectPreviewTran) {
+//            int startFrame = (int) getStartFrame(i);
+//            i6 = (int) (((float) startFrame) + ((this.mVideoMaker.getListImageModel().get(i).getSecond() + VideoMaker.DURATION_TRANSITION) * 30.0f));
+//            i5 = startFrame;
+//        } else if (this.posTransition == i) {
+//            i5 = 0;
+//            i6 = 105;
+//        } else {
+//            i5 = 60;
+//            i6 = 120;
+//        }
+//        int i15 = i2 - i5;
+//        int i16 = i6 - i5;
+//        matrix.postScale(1.2f, 1.2f);
+//        int width = (int) (((float) bitmap.getWidth()) * 1.2f);
+//        int height = (int) (((float) bitmap.getHeight()) * 1.2f);
+////        int i17 = effect.ordinal()];
+//        if (effect.ordinal() == 1) {
+//            i11 = (i4 - height) / 2;
+//            i10 = (int) (((float) i11) + (((float) i4) * 0.1f));
+//            i12 = (i3 - width) / 2;
+//        } else if (effect.ordinal() != 2) {
+//            if (effect.ordinal() == 3) {
+//                i13 = (i3 - width) / 2;
+//                i8 = (int) (((float) i13) + (((float) i3) * 0.1f));
+//                i9 = (i4 - height) / 2;
+//            } else if (effect.ordinal() != 4) {
+//                i9 = 0;
+//                i8 = 0;
+//                i7 = 0;
+//                float f = (float) i16;
+//                matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f));
+//            } else {
+//                i13 = (i3 - width) / 2;
+//                i8 = (int) (((float) i13) - (((float) i3) * 0.1f));
+//                i9 = (i4 - height) / 2;
+//            }
+//            i7 = i9;
+//            float f2 = (float) i16;
+//            matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f2), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f2));
+//        } else {
+//            i11 = (i4 - height) / 2;
+//            i10 = (int) (((float) i11) - (((float) i4) * 0.1f));
+//            i12 = (i3 - width) / 2;
+//        }
+//        i7 = i10;
+//        i9 = i11;
+//        i13 = i8;
+//        float f22 = (float) i16;
+//        matrix.postTranslate(((float) i13) + ((((float) ((i8 - i13) * i15)) * 1.0f) / f22), ((float) i9) + ((((float) ((i7 - i9) * i15)) * 1.0f) / f22));
     }
 
     private float getStartFrame(int i) {

@@ -103,7 +103,7 @@ public final class MyVideoPlayerGif {
     public final void changeTimeAllVideo(int i, int i2) {
     }
 
-    public MyVideoPlayerGif(Context context, View view, VideoMaker videoMaker, ArrayList<String> arrayList,
+    public MyVideoPlayerGif(Context context, View view, VideoMaker videoMaker, ArrayList<String> listImage,
                             CustomPreviewView customPreviewView/*, RangeSeekBar rangeSeekBar, ImageView imageView,
                             ImageView imageView2, TextView textView, TextView textView2, VideoPlayInterface videoPlayInterface2,
                             MainFragment mainFragment2, DrafVideoModel drafVideoModel2*/) {
@@ -128,17 +128,12 @@ public final class MyVideoPlayerGif {
         this.isPlay = true;
 //        this.mAudioDuration = ServiceStarter.ERROR_UNKNOWN;
         this.totalFramesTran = 120;
-        this.listImage = new ArrayList<>();
         this.mVolume = 1.0f;
-        this.listImage = arrayList;
+        this.listImage = listImage;
 //        this.videoPlayInterface = videoPlayInterface2;
         this.mCustomPreviewView = customPreviewView;
         this.mVideoMaker = videoMaker;
-        VideoMaker instance = VideoMaker.getInstance();
-        this.mVideoMaker = instance;
-        if (instance != null) {
-            instance.setContext(context);
-        }
+        mVideoMaker.setContext(context);
         initVideo();
 //        initEvent();
     }
@@ -321,13 +316,8 @@ public final class MyVideoPlayerGif {
     }
 
     private final void initView() {
-        CustomPreviewView customPreviewView = this.mCustomPreviewView;
-        if (customPreviewView != null) {
-            customPreviewView.setVideoMaker(this.mVideoMaker);
-        }
-        VideoMaker videoMaker = this.mVideoMaker;
-//        Intrinsics.checkNotNull(videoMaker);
-        this.mTotalFrames = videoMaker.getTotalFrames();
+        mCustomPreviewView.setVideoMaker(this.mVideoMaker);
+        this.mTotalFrames = mVideoMaker.getTotalFrames();
         this.mImagePreview = new Handler();
         this.transitionPreview = new Handler();
 //        this.mTvDuration.setText(ConvertDurationUtils.convertDurationText(this.mTotalFrames / 30));
@@ -338,11 +328,7 @@ public final class MyVideoPlayerGif {
     }
 
     public final void updateTimeVideo() {
-        VideoMaker videoMaker = this.mVideoMaker;
-        if (videoMaker != null) {
-//            Intrinsics.checkNotNull(videoMaker);
-            this.mTotalFrames = videoMaker.getTotalFrames();
-        }
+        this.mTotalFrames = mVideoMaker.getTotalFrames();
     }
 
     private final void initEvent() {
@@ -434,12 +420,8 @@ public final class MyVideoPlayerGif {
 
     public final void playSlideShow() {
         if (mImagePreview != null) {
-            mImagePreview.removeCallbacksAndMessages((Object) null);
-        }
-        Handler handler2 = this.mImagePreview;
-        if (handler2 != null) {
-//            Intrinsics.checkNotNull(handler2);
-            handler2.post(runnablePreview(handler2));
+            mImagePreview.removeCallbacksAndMessages(null);
+            mImagePreview.post(runnablePreview(mImagePreview));
         }
     }
 
@@ -452,7 +434,7 @@ public final class MyVideoPlayerGif {
         this.mCurrentSongPath = null;
     }
 
-    private final Runnable runnablePreview(Handler handler) {
+    private Runnable runnablePreview(Handler handler) {
         return new Runnable() {
             @Override
             public void run() {
@@ -473,12 +455,9 @@ public final class MyVideoPlayerGif {
 //                if (mTvTimeControl.isShown()) {
 //                    mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
 //                }
-                CustomPreviewView mCustomPreviewView = getMCustomPreviewView();
-                if (mCustomPreviewView != null) {
-                    mCustomPreviewView.previewAtFrame(getMCurrentFrame());
-                }
+
+                mCustomPreviewView.previewAtFrame(getMCurrentFrame());
                 setBeforeFrame(getMCurrentFrame());
-                Log.e("ChinhNH", "run: " + getMCurrentFrame());
                 setMCurrentFrame(getMCurrentFrame() + 1);
             }
         };
@@ -639,10 +618,10 @@ public final class MyVideoPlayerGif {
                 mediaPlayer.stop();
             }
         } catch (IllegalStateException unused) {
+
         }
-        Handler handler = this.mImagePreview;
-        if (handler != null) {
-            handler.removeCallbacksAndMessages((Object) null);
+        if (mImagePreview != null) {
+            mImagePreview.removeCallbacksAndMessages( null);
         }
         this.mIsImagePreviewing = false;
         this.mIsPreviewStopping = true;
@@ -682,12 +661,13 @@ public final class MyVideoPlayerGif {
 //            mediaPlayer.reset();
 //        }
 //        try {
-            checkTrimAndLoop();
-            this.mIsImagePreviewing = true;
-            this.mIsPreviewStopping = false;
-            this.mCurrentFrame = 0;
-            mTotalFrames = mVideoMaker != null ? mVideoMaker.getTotalFrames() : null;
-            playSlideShow();
+        checkTrimAndLoop();
+        this.mIsImagePreviewing = true;
+        this.mIsPreviewStopping = false;
+        this.mCurrentFrame = 0;
+        mTotalFrames = mVideoMaker != null ? mVideoMaker.getTotalFrames() : null;
+        Log.e("ChinhNH", "startPreview: " );
+        playSlideShow();
 //            if (this.mAudioPreview == null) {
 //                this.mAudioPreview = new MediaPlayer();
 //            }
