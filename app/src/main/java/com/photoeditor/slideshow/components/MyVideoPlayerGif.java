@@ -440,7 +440,6 @@ public final class MyVideoPlayerGif {
             public void run() {
                 if (getMCurrentFrame() >= getMTotalFrames() || !mIsImagePreviewing) {
                     restartEnd();
-                    Log.e("ChinhNH", "run: " + "restartEnd");
                 } else {
                     handler.postDelayed(this, 33);
                 }

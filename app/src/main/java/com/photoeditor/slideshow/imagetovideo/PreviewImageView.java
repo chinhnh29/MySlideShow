@@ -19,7 +19,7 @@ public class PreviewImageView extends View {
     }
 
     public void setVideoMaker(VideoMaker videoMaker) {
-        setLayerType(LAYER_TYPE_HARDWARE, (Paint) null);
+        setLayerType(LAYER_TYPE_HARDWARE, null);
         this.mVideoMaker = videoMaker;
     }
 

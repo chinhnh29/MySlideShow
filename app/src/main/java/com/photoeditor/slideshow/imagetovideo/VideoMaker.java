@@ -238,17 +238,19 @@ public class VideoMaker {
     public void addImagesGif(ArrayList<String> listImage) {
         this.isGif = true;
         this.DURATION_IMAGE = 30;
-        float f = 30;
+        float second = 3;
         this.listTransitionModel.clear();
         this.listImageModel.clear();
         this.mEffectList.clear();
         this.mBufferImage.clear();
-        for (int i = 0; i < listImage.size(); i++) {
+        int size = listImage.size();
+        for (int i = 0; i < size; i++) {
             ImageModel imageModel = new ImageModel();
             imageModel.setUrl(listImage.get(i));
-            imageModel.setSecond(f);
+            imageModel.setSecond(second);
             this.listImageModel.add(imageModel);
-            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
+            this.mEffectList.add(Effect.values()[5]); //zoom
+//            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
             this.listTransitionModel.add(new GifTransition(Transition.NONE));
         }
     }
@@ -725,7 +727,8 @@ public class VideoMaker {
                 Iterator<TransitionJsonModel> it = this.listTransitionJson.iterator();
                 while (it.hasNext()) {
                     TransitionJsonModel next = it.next();
-                    if (next.getComposition() != null && next.getStartFrame() >= 0 && next.getEndFrame() >= 0 && i >= next.getStartFrame() && i <= next.getEndFrame() && (startFrame = i - next.getStartFrame()) >= 0) {
+                    if (next.getComposition() != null && next.getStartFrame() >= 0 && next.getEndFrame() >= 0 &&
+                            i >= next.getStartFrame() && i <= next.getEndFrame() && (startFrame = i - next.getStartFrame()) >= 0) {
                         this.lottieTransition.setComposition(next.getComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieTransition.getDrawable();
                         lottieDrawable.setProgress(((float) startFrame) / lottieDrawable.getMaxFrame());

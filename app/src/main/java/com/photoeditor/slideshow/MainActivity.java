@@ -77,6 +77,5 @@ public class MainActivity extends AppCompatActivity {
 //            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
 //        }
         myVideoPlayerGif.playSlideShow();
-        Log.e("ChinhNH", "initVideo: Main");
     }
 }
