@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MySlideShow">
-        <activity android:name="com.photoeditor.slideshow.MainActivity">
+        <activity android:name="com.photoeditor.slideshow.EditActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

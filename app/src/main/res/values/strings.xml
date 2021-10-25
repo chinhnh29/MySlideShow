@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MySlideShow</string>
+    <string name="edit_video">Edit video</string>
+    <string name="effect">Transition</string>
+    <string name="music_title">Music</string>
+    <string name="duration">Duration</string>
+    <string name="frame">Frame</string>
+    <string name="photo">Photo</string>
 </resources>

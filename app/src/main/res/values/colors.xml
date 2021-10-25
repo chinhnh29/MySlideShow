@@ -10,4 +10,6 @@
 
     <color name="trans">#00ffffff</color>
     <color name="background_color">#333333</color>
+    <color name="txt_mnu_edit">#ADB5BD</color>
+    <color name="background2">#F5F5F5</color>
 </resources>

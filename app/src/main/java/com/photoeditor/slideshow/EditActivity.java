@@ -6,15 +6,11 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.orhanobut.hawk.Hawk;
 import com.photoeditor.slideshow.components.MyVideoPlayerGif;
@@ -22,9 +18,8 @@ import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity {
     private VideoMaker videoMaker;
     private MyVideoPlayerGif myVideoPlayerGif;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -33,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_edit);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
+            ActivityCompat.requestPermissions(EditActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         } else {

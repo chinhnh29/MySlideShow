@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_speed"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@color/white"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:id="@+id/layout_speed"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingTop="3dp"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:id="@+id/rl_layout_choose_music"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ButtonStyle">
+
+            <ImageView
+                android:id="@+id/img_music"
+                android:layout_width="@dimen/size_item_mnu_edit"
+                android:layout_height="@dimen/size_item_mnu_edit"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_music"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txt_music"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/mgr_top_item_mnu_edit"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/music_title"
+                android:textColor="@color/txt_mnu_edit"
+                android:textSize="@dimen/sz_txt_mnu_edit" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_choose_effect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ButtonStyle">
+
+            <ImageView
+                android:id="@+id/img_effect"
+                android:layout_width="@dimen/size_item_mnu_edit"
+                android:layout_height="@dimen/size_item_mnu_edit"
+                android:layout_gravity="center_horizontal"
+                android:padding="3dp"
+                app:srcCompat="@drawable/ic_effect"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txt_effect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/mgr_top_item_mnu_edit"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/effect"
+                android:textColor="@color/txt_mnu_edit"
+                android:textSize="@dimen/sz_txt_mnu_edit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_choose_speed"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ButtonStyle">
+
+            <ImageView
+                android:id="@+id/img_speed"
+                android:layout_width="@dimen/size_item_mnu_edit"
+                android:layout_height="@dimen/size_item_mnu_edit"
+                android:layout_gravity="center_horizontal"
+                android:padding="3dp"
+                app:srcCompat="@drawable/ic_speed"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txt_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/mgr_top_item_mnu_edit"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/duration"
+                android:textColor="@color/txt_mnu_edit"
+                android:textSize="@dimen/sz_txt_mnu_edit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_frame"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ButtonStyle">
+
+            <ImageView
+                android:id="@+id/img_frame"
+                android:layout_width="@dimen/size_item_mnu_edit"
+                android:layout_height="@dimen/size_item_mnu_edit"
+                android:layout_gravity="center_horizontal"
+                android:padding="3dp"
+                app:srcCompat="@drawable/ic_frame"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txt_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/mgr_top_item_mnu_edit"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/frame"
+                android:textColor="@color/txt_mnu_edit"
+                android:textSize="@dimen/sz_txt_mnu_edit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rl_photo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="ButtonStyle">
+
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="@dimen/size_item_mnu_edit"
+                android:layout_height="@dimen/size_item_mnu_edit"
+                android:layout_gravity="center_horizontal"
+                android:padding="3dp"
+                app:srcCompat="@drawable/ic_photo"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/txt_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/mgr_top_item_mnu_edit"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/photo"
+                android:textColor="@color/txt_mnu_edit"
+                android:textSize="@dimen/sz_txt_mnu_edit" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

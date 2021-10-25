@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_item_mnu_edit">22dp</dimen>
+    <dimen name="mgr_top_item_mnu_edit">3dp</dimen>
+    <dimen name="sz_txt_mnu_edit">12dp</dimen>
+</resources>

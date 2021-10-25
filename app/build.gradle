@@ -47,5 +47,5 @@ dependencies {
     implementation 'com.zxy.android:tiny:1.1.0'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '1.3.2'
 
-
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 }
