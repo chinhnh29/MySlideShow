@@ -19,7 +19,6 @@ import com.photoeditor.slideshow.ProgressLoadingDialogUtil;
 import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.common.ExtentionsKt;
 import com.photoeditor.slideshow.enumm.VIDEO_RATIO;
-//import com.photoeditor.slideshow.fragment.main.MainFragment;
 //import com.photoeditor.slideshow.imagetovideo.ConvertDurationUtils;
 import com.photoeditor.slideshow.imagetovideo.ConvertDurationUtils;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
@@ -74,8 +73,6 @@ public final class MyVideoPlayerGif {
     public TextView mTvTimeControl;
     private VideoMaker mVideoMaker;
     private float mVolume;
-    /* access modifiers changed from: private */
-//    public final MainFragment mainFragment;
     private GifTheme oldThemeModel;
     private int startTime;
     private int totalFramesTran;
@@ -112,8 +109,9 @@ public final class MyVideoPlayerGif {
 
     public MyVideoPlayerGif(Context context, View view, VideoMaker videoMaker, ArrayList<String> listImage,
                             CustomPreviewView customPreviewView, RangeSeekBar rangeSeekBar, ImageView mImgControl,
-                            ImageView img_play, TextView mTvTimeControl, TextView mTvDuration/*, VideoPlayInterface videoPlayInterface2,
-                            MainFragment mainFragment2, DrafVideoModel drafVideoModel2*/) {
+                            ImageView img_play, TextView mTvTimeControl, TextView mTvDuration,
+                            VideoPlayInterface videoPlayInterface/*,
+                             DrafVideoModel drafVideoModel2*/) {
         this.videoView = view;
         this.mSeekBar = rangeSeekBar;
         this.mImgControl = mImgControl;
@@ -121,17 +119,16 @@ public final class MyVideoPlayerGif {
         this.mTvTimeControl = mTvTimeControl;
         this.context =context;
         this.mTvDuration = mTvDuration;
-//        this.mainFragment = mainFragment2;
 //        this.drafVideoModel = drafVideoModel2;
         this.isPlay = true;
 //        this.mAudioDuration = ServiceStarter.ERROR_UNKNOWN;
         this.totalFramesTran = 120;
         this.mVolume = 1.0f;
         this.listImage = listImage;
-//        this.videoPlayInterface = videoPlayInterface2;
+        this.videoPlayInterface = videoPlayInterface;
         this.mCustomPreviewView = customPreviewView;
         this.mVideoMaker = videoMaker;
-        mVideoMaker.setContext(context);
+        this.mVideoMaker.setContext(context);
         initVideo();
         initEvent();
     }
@@ -141,12 +138,12 @@ public final class MyVideoPlayerGif {
 //                                            ArrayList arrayList, CustomPreviewView customPreviewView,
 //            /*RangeSeekBar rangeSeekBar,*/ ImageView imageView,
 //                                            ImageView imageView2, TextView textView, TextView textView2,
-//                                            VideoPlayInterface videoPlayInterface2,/* MainFragment mainFragment2,
+//                                            VideoPlayInterface videoPlayInterface2,/*
 //                                            DrafVideoModel drafVideoModel2, */int i /*,
 //            DefaultConstructorMarker defaultConstructorMarker*/) {
 //        this(context/*, view*/, videoMaker, arrayList, customPreviewView,
 //                /* rangeSeekBar, */imageView, imageView2, textView, textView2, videoPlayInterface2/*,
-//                mainFragment2,  (i & 4096) != 0 ? null : drafVideoModel2*/);
+//                  (i & 4096) != 0 ? null : drafVideoModel2*/);
 //    }
 
     public final boolean isPlay() {
@@ -472,12 +469,8 @@ public final class MyVideoPlayerGif {
                 } else {
                     handler.postDelayed(this, 33);
                 }
-//                float mCurrentFrame = ((float) getMCurrentFrame()) / ((float) getMTotalFrames());
-//                VideoPlayInterface access$getVideoPlayInterface$p = videoPlayInterface;
-//                if (access$getVideoPlayInterface$p != null) {
-//                    access$getVideoPlayInterface$p.currentVideoPercent(mCurrentFrame);
-//                }
-
+                float percent = ((float) getMCurrentFrame()) / ((float) getMTotalFrames());
+                videoPlayInterface.currentVideoPercent(percent);
 
                 mSeekBar.setProgress(mCurrentFrame * ((float) 100) / mTotalFrames);
                 mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));

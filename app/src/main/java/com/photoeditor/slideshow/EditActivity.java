@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.jaygoo.widget.RangeSeekBar;
+import com.photoeditor.slideshow.interfaces.VideoPlayInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditActivity extends AppCompatActivity implements TransitionListener{
+public class EditActivity extends AppCompatActivity implements TransitionListener, VideoPlayInterface {
     private VideoMaker videoMaker;
     private MyVideoPlayerGif myVideoPlayerGif;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -86,11 +87,9 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
         videoMaker = VideoMaker.getInstance();
         CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewViewGif);
-
-//        TextView textView2 = (TextView) findViewById(R.id.mTvDuration);
         myVideoPlayerGif = new MyVideoPlayerGif(
                 this, constraintLayout, videoMaker, arrayList, customPreviewView , rangeSeekBar, imageView,
-                imgPlay, mTvTimeControl, mTvDuration/*, this, (MainFragment) null, (DrafVideoModel) null,
+                imgPlay, mTvTimeControl, mTvDuration, this/*, (MainFragment) null, (DrafVideoModel) null,
                 4096, (DefaultConstructorMarker) null)*/);
 //        if (mVideoMaker4 != null) {
 //            float totalDuration = mVideoMaker4.getTotalDuration();
@@ -101,6 +100,11 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 
     @Override
     public void onEffectSelected(int position) {
+
+    }
+
+    @Override
+    public void currentVideoPercent(float f) {
 
     }
 }

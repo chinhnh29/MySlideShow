@@ -123,7 +123,7 @@ public class VideoMaker {
     public boolean mIsPremium = false;
     public boolean mIsUnlockMate = false;
     private Matrix mLastMatrix = new Matrix();
-//    private MakeVideoUtils mMakeVideoUtils;
+    private MakeVideoUtils mMakeVideoUtils;
     private Movie mMovie;
     private Paint mPaintImage = new Paint(2);
     private int mStartTimeAudio;
@@ -197,13 +197,13 @@ public class VideoMaker {
 
     public void setContext(Context context2) {
         this.context = context2;
-//        this.mMakeVideoUtils = new MakeVideoUtils(context2, this.inputAudio, this.listener);
+        this.mMakeVideoUtils = new MakeVideoUtils(context2, this.inputAudio, this.listener);
     }
 
     public void setContext(Activity activity2, Context context2, LottieAnimationView lottieAnimationView2) {
         this.context = context2;
         this.activity = activity2;
-//        this.mMakeVideoUtils = new MakeVideoUtils(context2, this.inputAudio, this.listener);
+        this.mMakeVideoUtils = new MakeVideoUtils(context2, this.inputAudio, this.listener);
         this.lottieAnimationView = new LottieAnimationView(activity2);
     }
 
@@ -747,20 +747,17 @@ public class VideoMaker {
     }
 
     public void editAudio(boolean z, boolean z2) {
-//        this.mMakeVideoUtils.setInputAudio(this.inputAudio);
-//        this.mMakeVideoUtils.editAudio(z, z2);
+        this.mMakeVideoUtils.setInputAudio(this.inputAudio);
+        this.mMakeVideoUtils.editAudio(z, z2);
     }
 
     public void makeVideo(Handler handler, boolean z, boolean z2, boolean z3, boolean z4) {
-//        this.mMakeVideoUtils.makeVideo(handler, z, z2, z3, z4);
+        this.mMakeVideoUtils.makeVideo(handler, z, z2, z3, z4);
     }
 
     public void stopMakerVideo() {
-//        MakeVideoUtils makeVideoUtils = this.mMakeVideoUtils;
-//        if (makeVideoUtils != null) {
-//            makeVideoUtils.stopVideoProcess();
-//        }
-//        setProcessing(false);
+        mMakeVideoUtils.stopVideoProcess();
+        setProcessing(false);
     }
 
     private void drawImages(Canvas canvas, int currentFrame, int i2, int i3) {
@@ -874,12 +871,12 @@ public class VideoMaker {
         }
         return new int[]{this.mStartTimeAudio, i};
     }
-//
-//    public void release() {
-//        clearBuffer(true, true, true);
-//        instance = null;
-//        this.mMakeVideoUtils = null;
-//    }
+
+    public void release() {
+        clearBuffer(true, true, true);
+        instance = null;
+        this.mMakeVideoUtils = null;
+    }
 
     public void changeVideoRatio(VIDEO_RATIO video_ratio) {
         this.currentVideoRatio = video_ratio;
