@@ -16,6 +16,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Xfermode;
+import android.util.Log;
+
 import com.airbnb.lottie.LottieDrawable;
 import java.util.List;
 import java.util.Random;
@@ -55,13 +57,13 @@ class TransitionUtils extends TransitionUtilsEx {
 
     /* access modifiers changed from: package-private */
     public void transition(Transition transition, Canvas canvas, Matrix matrix, Matrix matrix2, Bitmap bitmap, Paint paint2, int i, int i2, int i3, int i4, boolean z, int i5) {
-        Canvas canvas2 = canvas;
         Matrix matrix3 = matrix2;
         Bitmap bitmap2 = bitmap;
         Paint paint3 = paint2;
         this.isPreviewTransition = z;
         this.positionTran = i5;
-        switch (2) {
+        Log.e("ChinhNH", "transition: " + transition.ordinal());
+        switch (transition.ordinal()) {
             case 1:
                 setNone(canvas, matrix3, bitmap2, paint3);
                 break;
@@ -139,8 +141,6 @@ class TransitionUtils extends TransitionUtilsEx {
     }
 
     private void transitionDraw(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        Canvas canvas2 = canvas;
-        Paint paint3 = paint2;
         int i5 = i;
         canvas.save();
         if (!checkStartTime(i5, i2)) {
@@ -1004,9 +1004,6 @@ class TransitionUtils extends TransitionUtilsEx {
 
 
     private void fadeTransition(Canvas canvas, Matrix matrix, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        Paint paint3 = paint2;
-        int i5 = i;
-        int i6 = i2;
         if (checkStartTime(i, i2)) {
             fadeIn(getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i))[0], VideoMaker.DURATION_TRANSITION, i2, i3, i4, paint2);
         } else if (checkEndTime(i, i2)) {
@@ -1014,9 +1011,6 @@ class TransitionUtils extends TransitionUtilsEx {
         } else {
             paint2.setAlpha(255);
         }
-        Canvas canvas2 = canvas;
-        Matrix matrix2 = matrix;
-        Bitmap bitmap2 = bitmap;
         canvas.drawBitmap(bitmap, matrix, paint2);
     }
 

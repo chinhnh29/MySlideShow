@@ -71,18 +71,18 @@ class EffectUtils {
 //    }
 
     /* access modifiers changed from: package-private */
-    public void effect(Effect effect, Matrix matrix, Bitmap bitmap, int i, int i2, int i3, int i4) {
+    public void effect(Effect effect, Matrix matrix, Bitmap bitmap, int indexImage, int currentFrame, int width, int height) {
         this.isEffectPreviewTran = false;
         switch (effect.ordinal()) {
             case 1:
             case 2:
             case 3:
             case 4:
-                translate(matrix, bitmap, i, i2, effect, i3, i4);
+                translate(matrix, bitmap, indexImage, currentFrame, effect, width, height);
                 return;
             case 5:
             case 6:
-                zoom(matrix, bitmap, i, i2, effect, i3, i4);
+                zoom(matrix, bitmap, indexImage, currentFrame, effect, width, height);
                 return;
             default:
                 return;

@@ -75,10 +75,9 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
             Hawk.init(this).build();
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200901_161012.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200909_165621.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_145557.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_153006.jpg");
+            arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
             arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_101738.jpg");
             initVideo();
 

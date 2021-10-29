@@ -30,9 +30,9 @@ public class TimeUtils {
         return new int[]{i2, (int) (((float) i2) + ((f + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
-    public static int[] getStartAndStopFrameOfImage2(float secondImage, float startFrameImage) {
-        int startFrame = (int) startFrameImage;
-        return new int[]{startFrame, (int) (((float) startFrame) + ((secondImage + VideoMaker.DURATION_TRANSITION) * 30.0f))};
+    public static int[] getStartAndStopFrameOfImage2(float secondImage, float start) {
+        int startFrameImage = (int) start;
+        return new int[]{startFrameImage, (int) (((float) startFrameImage) + ((secondImage + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
     static boolean checkStartTime2(int i, float f, float f2) {
@@ -62,9 +62,9 @@ public class TimeUtils {
         return true;
     }
 
-    static boolean checkEndTime2(int i, float f, float f2) {
-        int[] startAndStopFrameOfImage2 = getStartAndStopFrameOfImage2(f, f2);
-        if (((float) i) < ((float) startAndStopFrameOfImage2[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f) || i > startAndStopFrameOfImage2[1]) {
+    static boolean checkEndTime2(int currentFrame, float secondImage, float startFrameImage) {
+        int[] startAndStopFrameOfImage2 = getStartAndStopFrameOfImage2(secondImage, startFrameImage);
+        if (((float) currentFrame) < ((float) startAndStopFrameOfImage2[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f) || currentFrame > startAndStopFrameOfImage2[1]) {
             return false;
         }
         return true;

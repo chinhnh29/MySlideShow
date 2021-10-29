@@ -64,7 +64,7 @@ import jp.wasabeef.blurry.internal.BlurFactor;
 
 
 public class VideoMaker {
-    public static float DURATION_TRANSITION = 1.5f;
+    public static float DURATION_TRANSITION = 0.7f;
     public static final int FPS = 30;
     public static int HEIGHT_PREVIEW = 0;
     private static final String TAG = "dsk";
@@ -232,7 +232,7 @@ public class VideoMaker {
             this.listImageModel.add(imageModel);
             this.mEffectList.add(Effect.values()[5]);
             this.listTransitionModel.add(
-                    new GifTransition(Transition.NONE)
+                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true,  null, Transition.SLIDE_RIGHT)
             );
         }
     }
@@ -721,6 +721,8 @@ public class VideoMaker {
         while (index < this.listImageModel.size()) {
             if (checkImageToDraw(index, currentFrame)) {
                 updateImageCache(index, widthPreview, heightPreview);
+
+                //xóa bớt bitmap trong danh sách đi để đỡ tốn bộ nhớ
                 if (this.mBufferImage.size() >= 3) {
                     for (int i = 0; i <= index - 3; i++) {
                         Bitmap bitmap = this.mBufferImage.get(i);
@@ -730,11 +732,11 @@ public class VideoMaker {
                         this.mBufferImage.remove(i);
                     }
                 }
-                Bitmap bitmap2 = this.mBufferImage.get(index);
-                if (bitmap2 != null) {
+                Bitmap bitmap = this.mBufferImage.get(index);
+                if (bitmap != null) {
                     Matrix matrix = new Matrix();
                     Matrix matrix2 = matrix;
-                    this.mEffectUtils.effect(this.mEffectList.get(index), matrix, bitmap2, index, currentFrame, widthPreview, heightPreview);
+                    this.mEffectUtils.effect(this.mEffectList.get(index), matrix, bitmap, index, currentFrame, widthPreview, heightPreview);
                     if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(index).getSecond(), getStartFrame(index))) {
                         this.mLastMatrix = matrix2;
                     }
@@ -747,15 +749,14 @@ public class VideoMaker {
                             if (currentFrame <= 30) {
                                 i8 = ((currentFrame * 200) / 30) + 55;
                             } else {
-                                int i9 = this.totalFrame;
-                                if (currentFrame > i9 - 30) {
-                                    i8 = 255 - ((((currentFrame - i9) + 30) * 200) / 30);
+                                if (currentFrame > this.totalFrame - 30) {
+                                    i8 = 255 - ((((currentFrame - this.totalFrame) + 30) * 200) / 30);
                                 }
                             }
                             this.mPaintImage.setAlpha(i8);
                         }
                         if (this.listTransitionModel.get(this.bmIdNew) == null || this.listTransitionModel.get(this.bmIdNew).getType() == null) {
-                            i4 = index;
+//                            i4 = index;
                         } else {
                             GifTransition gifTransition = this.listTransitionModel.get(this.bmIdNew);
                             if (!this.hashMapBitmapDraw.isEmpty()) {
@@ -763,10 +764,9 @@ public class VideoMaker {
                             }
                             TransitionUtils transitionUtils = this.mTransitionUtils;
                             Transition type = gifTransition.getType();
-                            i4 = index;
-                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap2, this.mPaintImage, index, currentFrame, widthPreview, heightPreview, false, 0);
+//                            i4 = index;
+                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap, this.mPaintImage, index, currentFrame, widthPreview, heightPreview, false, 0);
                         }
-                        index = i4 + 1;
                     } else {
                         return;
                     }
