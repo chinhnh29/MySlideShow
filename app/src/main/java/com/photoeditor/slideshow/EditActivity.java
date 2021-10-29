@@ -3,35 +3,46 @@ package com.photoeditor.slideshow;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaygoo.widget.RangeSeekBar;
 import com.orhanobut.hawk.Hawk;
+import com.photoeditor.slideshow.components.MyTranController;
+import com.photoeditor.slideshow.components.MyVideoPlayer;
 import com.photoeditor.slideshow.components.MyVideoPlayerGif;
+import com.photoeditor.slideshow.customView.TabTranIndicator;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
+import com.photoeditor.slideshow.imagetovideo.Transition;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.jaygoo.widget.RangeSeekBar;
+
 import com.photoeditor.slideshow.interfaces.VideoPlayInterface;
+import com.photoeditor.slideshow.models.GifTransition;
+//import com.photoeditor.slideshow.models.GifTransitionViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EditActivity extends AppCompatActivity implements TransitionListener, VideoPlayInterface {
     private VideoMaker videoMaker;
-    private MyVideoPlayerGif myVideoPlayerGif;
+    private MyVideoPlayer myVideoPlayer;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ImageView imgImage;
 
@@ -48,6 +59,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     TextView mTvTimeControl;
     @BindView(R.id.mTvDuration)
     TextView mTvDuration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,19 +95,80 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         rvListEffect.setAdapter(transitionAdapter);
     }
 
+
+    private MyTranController myTranController;
+//    public GifTransitionViewModel transitionViewModel;
+
     private void initVideo() {
-        ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
+//        ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
+//        videoMaker = VideoMaker.getInstance();
+//        CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewViewGif);
+//        myVideoPlayerGif = new MyVideoPlayerGif(
+//                this, constraintLayout, videoMaker, arrayList, customPreviewView , rangeSeekBar, imageView,
+//                imgPlay, mTvTimeControl, mTvDuration, this/*, (MainFragment) null, (DrafVideoModel) null,
+//                4096, (DefaultConstructorMarker) null)*/);
+////        if (mVideoMaker4 != null) {
+////            float totalDuration = mVideoMaker4.getTotalDuration();
+////            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
+////        }
+//        myVideoPlayerGif.playSlideShow();
+
+        CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewView);
         videoMaker = VideoMaker.getInstance();
-        CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewViewGif);
-        myVideoPlayerGif = new MyVideoPlayerGif(
-                this, constraintLayout, videoMaker, arrayList, customPreviewView , rangeSeekBar, imageView,
-                imgPlay, mTvTimeControl, mTvDuration, this/*, (MainFragment) null, (DrafVideoModel) null,
-                4096, (DefaultConstructorMarker) null)*/);
+        myVideoPlayer = new MyVideoPlayer(
+                this, videoMaker, arrayList, customPreviewView, rangeSeekBar, imageView,
+                imgPlay, mTvTimeControl, mTvDuration, this);
 //        if (mVideoMaker4 != null) {
 //            float totalDuration = mVideoMaker4.getTotalDuration();
 //            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
 //        }
-        myVideoPlayerGif.playSlideShow();
+//        MyVideoPlayerGif myVideoPlayer = getMyVideoPlayer();
+//        if (myVideoPlayer != null) {
+        myVideoPlayer.playSlideShow();
+//        }
+
+//        ViewModel viewModel2 = new ViewModelProvider(this).get(GifTransitionViewModel.class);
+//        transitionViewModel = ((GifTransitionViewModel) viewModel2);
+        GifTransition transition = new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true,  null, Transition.SLIDE_LEFT);
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_tran);
+//        TabTranIndicator tabTranIndicator = (TabTranIndicator) findViewById(R.id.tab_layout_tran);
+        myTranController = (new MyTranController(transition, this,
+                this, null, null, videoMaker, this));
+
+
+
+//        MyTranController myTranController = getMyTranController();
+//        if (myTranController != null) {
+//            myTranController.setUnlockMate(isUnlockMate());
+//            myTranController.setPremium(this.isPremium);
+//            myTranController.setEditStickerListener(this);
+//        }
+//
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_tran);
+//        TabTranIndicator tabTranIndicator = (TabTranIndicator) _$_findCachedViewById(R.id.tab_layout_tran);
+//        VideoMaker mVideoMaker = getMVideoMaker();
+//        RelativeLayout relativeLayout = (RelativeLayout) _$_findCachedViewById(R.id.view_empty_transition);
+//        setMyTranController(new MyTranController(dialogViewModel, transition, transitionViewModel, viewLifecycleOwner,
+//                context, recyclerView, tabTranIndicator, mVideoMaker, relativeLayout, getActivity()));
+//        MyTranController myTranController = getMyTranController();
+//        if (myTranController != null) {
+//            myTranController.setUnlockMate(isUnlockMate());
+//            myTranController.setPremium(this.isPremium);
+//            myTranController.setEditStickerListener(this);
+//        }
+    }
+
+    private final void doneTransitionNew() {
+//        MyTranController myTranController = getMyTranController();
+//        if (myTranController != null) {
+//            myTranController.doneTranNew();
+//        }
+//        setCurrentViewShow(VIEW_SHOW.VIEW_MAIN);
+//        View _$_findCachedViewById = _$_findCachedViewById(R.id.layout_transition_new);
+//        if (_$_findCachedViewById != null) {
+//            ExtentionsKt.gone(_$_findCachedViewById);
+//        }
+//        animationShowFromBottom(_$_findCachedViewById(R.id.recycle_main_edit));
     }
 
     @Override

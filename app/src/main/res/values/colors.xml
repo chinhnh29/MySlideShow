@@ -12,4 +12,5 @@
     <color name="background_color">#333333</color>
     <color name="txt_mnu_edit">#ADB5BD</color>
     <color name="background2">#F5F5F5</color>
+    <color name="grey_1">#979797</color>
 </resources>

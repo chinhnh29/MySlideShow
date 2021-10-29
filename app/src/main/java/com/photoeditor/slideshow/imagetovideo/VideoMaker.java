@@ -39,6 +39,7 @@ import com.photoeditor.slideshow.models.MyGif;
 import com.photoeditor.slideshow.models.ThemeLottieModel;
 //import com.photoeditor.slideshow.models.ThemeModel;
 //import com.photoeditor.slideshow.models.TransitionDrawableModel;
+import com.photoeditor.slideshow.models.TransitionDrawableModel;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.zxy.tiny.Tiny;
@@ -72,7 +73,7 @@ public class VideoMaker {
     public static float VOLUME = 1.0f;
     public static int WIDTH_PREVIEW;
     private static VideoMaker instance;
-    public int DURATION_IMAGE = 3;
+    public int DURATION_IMAGE = 2;
     private Activity activity;
     private float arX = 1.0f;
     private float arY = 1.0f;
@@ -170,7 +171,6 @@ public class VideoMaker {
 
     private VideoMaker() {
         int intValue = (Hawk.get(AppConst.KEY_QUALITY, 1080));
-        Log.e("ChinhNH", "KEY_QUALITY: " + intValue);
         VIDEO_WIDTH = intValue;
         VIDEO_HEIGHT = intValue;
         BlurFactor blurFactor = new BlurFactor();
@@ -220,19 +220,21 @@ public class VideoMaker {
     }
 
     public void addImages2(ArrayList<String> arrayList) {
-//        float f = (float) this.DURATION_IMAGE;
-//        this.listTransitionModel.clear();
-//        this.listImageModel.clear();
-//        this.mEffectList.clear();
-//        this.mBufferImage.clear();
-//        for (int i = 0; i < arrayList.size(); i++) {
-//            ImageModel imageModel = new ImageModel();
-//            imageModel.setUrl(arrayList.get(i));
-//            imageModel.setSecond(f);
-//            this.listImageModel.add(imageModel);
-//            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
-//            this.listTransitionModel.add(new GifTransition(Transition.NONE));
-//        }
+        float duration = (float) this.DURATION_IMAGE;
+        this.listTransitionModel.clear();
+        this.listImageModel.clear();
+        this.mEffectList.clear();
+        this.mBufferImage.clear();
+        for (int i = 0; i < arrayList.size(); i++) {
+            ImageModel imageModel = new ImageModel();
+            imageModel.setUrl(arrayList.get(i));
+            imageModel.setSecond(duration);
+            this.listImageModel.add(imageModel);
+            this.mEffectList.add(Effect.values()[5]);
+            this.listTransitionModel.add(
+                    new GifTransition(Transition.NONE)
+            );
+        }
     }
 
     public void addImagesGif(ArrayList<String> listImage) {
@@ -251,7 +253,9 @@ public class VideoMaker {
             this.listImageModel.add(imageModel);
             this.mEffectList.add(Effect.values()[5]); //zoom
 //            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
-            this.listTransitionModel.add(new GifTransition(Transition.NONE));
+            this.listTransitionModel.add(
+                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true,  null, Transition.SLIDE_RIGHT)
+            );
         }
     }
 
@@ -311,21 +315,21 @@ public class VideoMaker {
         return this.listTransitionModel;
     }
 
-    private Bitmap getImage(int i, int i2, int i3) {
-        if (i >= this.listImageModel.size()) {
+    private Bitmap getImage(int index, int widthPreview, int heightPreview) {
+        if (index >= this.listImageModel.size()) {
             return null;
         }
-        BitmapResult compressSync = Tiny.getInstance().source(this.listImageModel.get(i).getUrl()).asBitmap().withOptions(this.options).compressSync();
+        BitmapResult compressSync = Tiny.getInstance().source(this.listImageModel.get(index).getUrl()).asBitmap().withOptions(this.options).compressSync();
         if (compressSync.success) {
-            return scalePreserveRatio(compressSync.bitmap, i2, i3);
+            return scalePreserveRatio(compressSync.bitmap, widthPreview, heightPreview);
         }
-        Bitmap decodeScaledBitmapFromSdCard = decodeScaledBitmapFromSdCard(this.listImageModel.get(i).getUrl(), WIDTH_PREVIEW, HEIGHT_PREVIEW);
+        Bitmap decodeScaledBitmapFromSdCard = decodeScaledBitmapFromSdCard(this.listImageModel.get(index).getUrl(), WIDTH_PREVIEW, HEIGHT_PREVIEW);
         if (decodeScaledBitmapFromSdCard == null) {
             decodeScaledBitmapFromSdCard = Bitmap.createBitmap(WIDTH_PREVIEW, HEIGHT_PREVIEW, Bitmap.Config.ARGB_8888);
             new Canvas(decodeScaledBitmapFromSdCard).drawColor(-1);
         }
-        this.listImageModel.get(i).setOriginBitmap(decodeScaledBitmapFromSdCard);
-        return scalePreserveRatio(decodeScaledBitmapFromSdCard, i2, i3);
+        this.listImageModel.get(index).setOriginBitmap(decodeScaledBitmapFromSdCard);
+        return scalePreserveRatio(decodeScaledBitmapFromSdCard, widthPreview, heightPreview);
     }
 
     private Bitmap scalePreserveRatio(Bitmap bitmap, int i, int i2) {
@@ -384,84 +388,35 @@ public class VideoMaker {
     }
 
     /* renamed from: com.photoeditor.slideshow.imagetovideo.VideoMaker$1 */
-//    static /* synthetic */ class C26701 {
-//        static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
-//        static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition;
-//
-//        /* JADX WARNING: Can't wrap try/catch for region: R(21:0|(2:1|2)|3|(2:5|6)|7|(2:9|10)|11|13|14|15|16|17|19|20|21|22|23|24|25|26|28) */
-//        /* JADX WARNING: Can't wrap try/catch for region: R(23:0|1|2|3|(2:5|6)|7|9|10|11|13|14|15|16|17|19|20|21|22|23|24|25|26|28) */
-//        /* JADX WARNING: Can't wrap try/catch for region: R(24:0|1|2|3|5|6|7|9|10|11|13|14|15|16|17|19|20|21|22|23|24|25|26|28) */
-//        /* JADX WARNING: Code restructure failed: missing block: B:29:?, code lost:
-//            return;
-//         */
-//        /* JADX WARNING: Failed to process nested try/catch */
-//        /* JADX WARNING: Missing exception handler attribute for start block: B:15:0x0033 */
-//        /* JADX WARNING: Missing exception handler attribute for start block: B:21:0x004f */
-//        /* JADX WARNING: Missing exception handler attribute for start block: B:23:0x0059 */
-//        /* JADX WARNING: Missing exception handler attribute for start block: B:25:0x0063 */
-////        static {
-////            /*
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO[] r0 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.values()
-////                int r0 = r0.length
-////                int[] r0 = new int[r0]
-////                $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO = r0
-////                r1 = 1
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO r2 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.CHIN_MUOI_SAU     // Catch:{ NoSuchFieldError -> 0x0012 }
-////                int r2 = r2.ordinal()     // Catch:{ NoSuchFieldError -> 0x0012 }
-////                r0[r2] = r1     // Catch:{ NoSuchFieldError -> 0x0012 }
-////            L_0x0012:
-////                r0 = 2
-////                int[] r2 = $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO     // Catch:{ NoSuchFieldError -> 0x001d }
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO r3 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.MUOI_SAU_CHIN     // Catch:{ NoSuchFieldError -> 0x001d }
-////                int r3 = r3.ordinal()     // Catch:{ NoSuchFieldError -> 0x001d }
-////                r2[r3] = r0     // Catch:{ NoSuchFieldError -> 0x001d }
-////            L_0x001d:
-////                r2 = 3
-////                int[] r3 = $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO     // Catch:{ NoSuchFieldError -> 0x0028 }
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO r4 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.BON_BA     // Catch:{ NoSuchFieldError -> 0x0028 }
-////                int r4 = r4.ordinal()     // Catch:{ NoSuchFieldError -> 0x0028 }
-////                r3[r4] = r2     // Catch:{ NoSuchFieldError -> 0x0028 }
-////            L_0x0028:
-////                r3 = 4
-////                int[] r4 = $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO     // Catch:{ NoSuchFieldError -> 0x0033 }
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO r5 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.BA_BON     // Catch:{ NoSuchFieldError -> 0x0033 }
-////                int r5 = r5.ordinal()     // Catch:{ NoSuchFieldError -> 0x0033 }
-////                r4[r5] = r3     // Catch:{ NoSuchFieldError -> 0x0033 }
-////            L_0x0033:
-////                int[] r4 = $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO     // Catch:{ NoSuchFieldError -> 0x003e }
-////                com.photoeditor.slideshow.enumm.VIDEO_RATIO r5 = com.photoeditor.slideshow.enumm.VIDEO_RATIO.MOT_MOT     // Catch:{ NoSuchFieldError -> 0x003e }
-////                int r5 = r5.ordinal()     // Catch:{ NoSuchFieldError -> 0x003e }
-////                r6 = 5
-////                r4[r5] = r6     // Catch:{ NoSuchFieldError -> 0x003e }
-////            L_0x003e:
-////                com.photoeditor.slideshow.imagetovideo.Transition[] r4 = com.photoeditor.slideshow.imagetovideo.Transition.values()
-////                int r4 = r4.length
-////                int[] r4 = new int[r4]
-////                $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition = r4
-////                com.photoeditor.slideshow.imagetovideo.Transition r5 = com.photoeditor.slideshow.imagetovideo.Transition.RANDOM_CLASSIC     // Catch:{ NoSuchFieldError -> 0x004f }
-////                int r5 = r5.ordinal()     // Catch:{ NoSuchFieldError -> 0x004f }
-////                r4[r5] = r1     // Catch:{ NoSuchFieldError -> 0x004f }
-////            L_0x004f:
-////                int[] r1 = $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition     // Catch:{ NoSuchFieldError -> 0x0059 }
-////                com.photoeditor.slideshow.imagetovideo.Transition r4 = com.photoeditor.slideshow.imagetovideo.Transition.RANDOM_MATE     // Catch:{ NoSuchFieldError -> 0x0059 }
-////                int r4 = r4.ordinal()     // Catch:{ NoSuchFieldError -> 0x0059 }
-////                r1[r4] = r0     // Catch:{ NoSuchFieldError -> 0x0059 }
-////            L_0x0059:
-////                int[] r0 = $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition     // Catch:{ NoSuchFieldError -> 0x0063 }
-////                com.photoeditor.slideshow.imagetovideo.Transition r1 = com.photoeditor.slideshow.imagetovideo.Transition.RANDOM_DRAW     // Catch:{ NoSuchFieldError -> 0x0063 }
-////                int r1 = r1.ordinal()     // Catch:{ NoSuchFieldError -> 0x0063 }
-////                r0[r1] = r2     // Catch:{ NoSuchFieldError -> 0x0063 }
-////            L_0x0063:
-////                int[] r0 = $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition     // Catch:{ NoSuchFieldError -> 0x006d }
-////                com.photoeditor.slideshow.imagetovideo.Transition r1 = com.photoeditor.slideshow.imagetovideo.Transition.IMAGE     // Catch:{ NoSuchFieldError -> 0x006d }
-////                int r1 = r1.ordinal()     // Catch:{ NoSuchFieldError -> 0x006d }
-////                r0[r1] = r3     // Catch:{ NoSuchFieldError -> 0x006d }
-////            L_0x006d:
-////                return
-////            */
-////            throw new UnsupportedOperationException("Method not decompiled: com.photoeditor.slideshow.imagetovideo.VideoMaker.C26701.<clinit>():void");
-////        }
-//    }
+    static /* synthetic */ class C26701 {
+         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
+        static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition;
+
+        static {
+            int[] iArr = new int[VIDEO_RATIO.values().length];
+            $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO = iArr;
+            try {
+                iArr[VIDEO_RATIO.CHIN_MUOI_SAU.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO[VIDEO_RATIO.MUOI_SAU_CHIN.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO[VIDEO_RATIO.BON_BA.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO[VIDEO_RATIO.BA_BON.ordinal()] = 4;
+            $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO[VIDEO_RATIO.MOT_MOT.ordinal()] = 5;
+            int[] iArr2 = new int[Transition.values().length];
+            $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition = iArr2;
+            iArr2[Transition.RANDOM_CLASSIC.ordinal()] = 1;
+            $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[Transition.RANDOM_MATE.ordinal()] = 2;
+            $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[Transition.RANDOM_DRAW.ordinal()] = 3;
+            $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[Transition.IMAGE.ordinal()] = 4;
+        }
+    }
 
     private float getTileFromData(VIDEO_RATIO video_ratio) {
         int i = video_ratio.ordinal();
@@ -538,15 +493,15 @@ public class VideoMaker {
         return this.mBufferImage.get(i - 1);
     }
 
-    private void updateImageCache(int i, int i2, int i3) {
-        if (this.mBufferImage.get(i) == null) {
-            this.mBufferImage.put(i, getImage(i, i2, i3));
-            int i4 = i + 1;
+    private void updateImageCache(int index, int widthPreview, int heightPreview) {
+        if (this.mBufferImage.get(index) == null) {
+            this.mBufferImage.put(index, getImage(index, widthPreview, heightPreview));
+            int i4 = index + 1;
             if (i4 < this.listImageModel.size()) {
                 new Thread(() -> {
-                    if (mBufferImage.get(i) == null) {
+                    if (mBufferImage.get(index) == null) {
                         try {
-                            mBufferImage.put(i, getImage(i, i2, i3));
+                            mBufferImage.put(index, getImage(index, widthPreview, heightPreview));
                         } catch (ArrayIndexOutOfBoundsException e) {
                             e.printStackTrace();
                         }
@@ -760,14 +715,14 @@ public class VideoMaker {
         setProcessing(false);
     }
 
-    private void drawImages(Canvas canvas, int currentFrame, int i2, int i3) {
+    private void drawImages(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
         int i4;
-        int i6 = 0;
-        while (i6 < this.listImageModel.size()) {
-            if (checkImageToDraw(i6, currentFrame)) {
-                updateImageCache(i6, i2, i3);
+        int index = 0;
+        while (index < this.listImageModel.size()) {
+            if (checkImageToDraw(index, currentFrame)) {
+                updateImageCache(index, widthPreview, heightPreview);
                 if (this.mBufferImage.size() >= 3) {
-                    for (int i = 0; i <= i6 - 3; i++) {
+                    for (int i = 0; i <= index - 3; i++) {
                         Bitmap bitmap = this.mBufferImage.get(i);
                         if (bitmap != null) {
                             bitmap.recycle();
@@ -775,16 +730,16 @@ public class VideoMaker {
                         this.mBufferImage.remove(i);
                     }
                 }
-                Bitmap bitmap2 = this.mBufferImage.get(i6);
+                Bitmap bitmap2 = this.mBufferImage.get(index);
                 if (bitmap2 != null) {
                     Matrix matrix = new Matrix();
                     Matrix matrix2 = matrix;
-                    this.mEffectUtils.effect(this.mEffectList.get(i6), matrix, bitmap2, i6, currentFrame, i2, i3);
-                    if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(i6).getSecond(), getStartFrame(i6))) {
+                    this.mEffectUtils.effect(this.mEffectList.get(index), matrix, bitmap2, index, currentFrame, widthPreview, heightPreview);
+                    if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(index).getSecond(), getStartFrame(index))) {
                         this.mLastMatrix = matrix2;
                     }
-                    if (i6 > 0) {
-                        this.bmIdNew = i6 - 1;
+                    if (index > 0) {
+                        this.bmIdNew = index - 1;
                     }
                     if (this.bmIdNew < this.listTransitionModel.size()) {
                         if (!this.isGif) {
@@ -800,7 +755,7 @@ public class VideoMaker {
                             this.mPaintImage.setAlpha(i8);
                         }
                         if (this.listTransitionModel.get(this.bmIdNew) == null || this.listTransitionModel.get(this.bmIdNew).getType() == null) {
-                            i4 = i6;
+                            i4 = index;
                         } else {
                             GifTransition gifTransition = this.listTransitionModel.get(this.bmIdNew);
                             if (!this.hashMapBitmapDraw.isEmpty()) {
@@ -808,34 +763,34 @@ public class VideoMaker {
                             }
                             TransitionUtils transitionUtils = this.mTransitionUtils;
                             Transition type = gifTransition.getType();
-                            i4 = i6;
-                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap2, this.mPaintImage, i6, currentFrame, i2, i3, false, 0);
+                            i4 = index;
+                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap2, this.mPaintImage, index, currentFrame, widthPreview, heightPreview, false, 0);
                         }
-                        i6 = i4 + 1;
+                        index = i4 + 1;
                     } else {
                         return;
                     }
                 }
             }
-            i4 = i6;
-            i6 = i4 + 1;
+            i4 = index;
+            index = i4 + 1;
         }
     }
 
-    private boolean checkImageToDraw(int i, int currentFrame) {
-        int[] startAndStopFrameOfImage2 = TimeUtils.getStartAndStopFrameOfImage2(this.listImageModel.get(i).getSecond(), getStartFrame(i));
+    private boolean checkImageToDraw(int indexImage, int currentFrame) {
+        int[] startAndStopFrameOfImage2 = TimeUtils.getStartAndStopFrameOfImage2(this.listImageModel.get(indexImage).getSecond(), getStartFrame(indexImage));
         if (currentFrame < startAndStopFrameOfImage2[0] || currentFrame > startAndStopFrameOfImage2[1]) {
             return false;
         }
         return true;
     }
 
-    private float getStartFrame(int i) {
+    private float getStartFrame(int indexImage) {
         float f = 0.0f;
-        if (i <= 0) {
+        if (indexImage <= 0) {
             return 0.0f;
         }
-        for (int i2 = 0; i2 < i; i2++) {
+        for (int i2 = 0; i2 < indexImage; i2++) {
             if (i2 < this.listImageModel.size()) {
                 f += this.listImageModel.get(i2).getSecond();
             }
@@ -980,14 +935,14 @@ public class VideoMaker {
     }
 
     private void deleteOldTran() {
-//        this.listGifImage.clear();
-//        this.listTransitionJson.clear();
-//        this.hashMapBitmapDraw.clear();
-//        this.listTransitionModel.clear();
+        this.listGifImage.clear();
+        this.listTransitionJson.clear();
+        this.hashMapBitmapDraw.clear();
+        this.listTransitionModel.clear();
 //        this.transitionDrawableModel = null;
-//        if (this.mTransitionUtils.getListBitmap() != null) {
-//            this.mTransitionUtils.getListBitmap().clear();
-//        }
+        if (this.mTransitionUtils.getListBitmap() != null) {
+            this.mTransitionUtils.getListBitmap().clear();
+        }
     }
 
     public void applyRandomJsonTransition(GifTransition gifTransition, ArrayList<TransitionJsonModel> arrayList) {
@@ -1024,18 +979,56 @@ public class VideoMaker {
     }
 
     public void applyTransitionNew(GifTransition gifTransition) {
-//        deleteOldTran();
-//        this.hashMapMovie.remove(this.oldTransitionPath);
-//        this.currentTransition = gifTransition;
+        deleteOldTran();
+        this.hashMapMovie.remove(this.oldTransitionPath);
+        this.currentTransition = gifTransition;
 //        new Thread(new Runnable(gifTransition) {
-//            public final /* synthetic */ GifTransition f$1;
-//
-//            {
-//                this.f$1 = r2;
-//            }
 //
 //            public final void run() {
 //                com.photoeditor.slideshow.imagetovideo.VideoMaker.this.lambda$applyTransitionNew$3$VideoMaker(this.f$1);
+//                int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[gifTransition.getType().ordinal()];
+//                if (i == 1) {
+//                    this.listTransitionModel.clear();
+//                    for (ImageModel next : this.listImageModel) {
+//                        this.listTransitionModel.add(getRandomClassicTran());
+//                    }
+//                } else if (i == 2) {
+//                    this.listTransitionModel.clear();
+//                    for (ImageModel next2 : this.listImageModel) {
+//                        this.listTransitionModel.add(getRandomMateTran());
+//                    }
+//                } else if (i != 4) {
+//                    this.listTransitionModel.clear();
+//                    this.listGifImage.clear();
+//                    for (ImageModel next3 : this.listImageModel) {
+//                        this.listTransitionModel.add(gifTransition);
+//                    }
+//                } else {
+//                    this.listTransitionModel.clear();
+//                    for (ImageModel next4 : this.listImageModel) {
+//                        this.listTransitionModel.add(gifTransition);
+//                    }
+//                    this.listGifImage.clear();
+//                    this.transitionDrawableModel = new TransitionDrawableModel();
+//                    this.lottieDrawableTransition = new LottieDrawable();
+//                    try {
+//                        File file = new File(gifTransition.getPath());
+//                        LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
+//                                file.getAbsolutePath()).addListener(new LottieListener() {
+//                            public final void onResult(Object obj) {
+//                                com.photoeditor.slideshow.imagetovideo.VideoMaker.this.lambda$null$2$VideoMaker((LottieComposition) obj);
+//                            }
+//                        });
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    for (int i2 = 0; i2 < this.listImageModel.size(); i2++) {
+//                        int startFrame = (int) getStartFrame(i2);
+//                        if (startFrame > 0) {
+//                            this.transitionDrawableModel.addFrameTransition(startFrame);
+//                        }
+//                    }
+//                }
 //            }
 //        }).start();
     }

@@ -9,6 +9,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -42,12 +43,10 @@ class TransitionUtils extends TransitionUtilsEx {
 
     TransitionUtils(VideoMaker videoMaker) {
         this.mVideoMaker = videoMaker;
-        Paint paint2 = new Paint();
-        this.mTransparentPaint = paint2;
-        paint2.setColor(0);
-        this.mTransparentPaint.setStrokeWidth(20.0f);
-        this.mTransparentPaint.setStyle(Paint.Style.FILL);
-        this.mTransparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
+        paint.setColor(0);
+        this.paint.setStrokeWidth(20.0f);
+        this.paint.setStyle(Paint.Style.FILL);
+        this.paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
     }
 
     public void setLottieDrawable(LottieDrawable lottieDrawable2) {
@@ -62,7 +61,7 @@ class TransitionUtils extends TransitionUtilsEx {
         Paint paint3 = paint2;
         this.isPreviewTransition = z;
         this.positionTran = i5;
-        switch (transition.ordinal()) {
+        switch (2) {
             case 1:
                 setNone(canvas, matrix3, bitmap2, paint3);
                 break;
@@ -185,7 +184,7 @@ class TransitionUtils extends TransitionUtilsEx {
                     if (i11 >= this.listBitmap.size()) {
                         i11 = this.listBitmap.size() - 1;
                     }
-                    int saveLayer = canvas.saveLayer((RectF) null, (Paint) null, 31);
+                    int saveLayer = canvas.saveLayer((RectF) null, (Paint) null, Canvas.ALL_SAVE_FLAG);
                     this.paint.setColor(-1);
                     Bitmap bitmap2 = this.listBitmap.get(i11);
                     if (bitmap2 != null && bitmap2.getWidth() > 0 && bitmap2.getHeight() > 0) {
@@ -804,376 +803,205 @@ class TransitionUtils extends TransitionUtilsEx {
         return new int[]{i, (int) (((float) i) + ((f + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
-    /* JADX WARNING: Removed duplicated region for block: B:22:0x010d  */
-    /* JADX WARNING: Removed duplicated region for block: B:25:0x0111  */
-    /* JADX WARNING: Removed duplicated region for block: B:27:0x0114  */
-    /* JADX WARNING: Removed duplicated region for block: B:29:0x0117  */
-    /* JADX WARNING: Removed duplicated region for block: B:35:0x0161  */
-    /* JADX WARNING: Removed duplicated region for block: B:36:0x0163  */
-    /* JADX WARNING: Removed duplicated region for block: B:43:0x0171 A[LOOP:0: B:42:0x016f->B:43:0x0171, LOOP_END] */
-    /* JADX WARNING: Removed duplicated region for block: B:46:0x0190  */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void clock(Canvas r19, Matrix r20, Bitmap r21, int r22, int r23, int r24, int r25) {
-        /*
-            r18 = this;
-            r0 = r18
-            r1 = r21
-            r2 = r22
-            r3 = r24
-            r4 = r25
-            com.photoeditor.slideshow.imagetovideo.VideoMaker r5 = r0.mVideoMaker
-            java.util.List r5 = r5.getListImageModel()
-            java.lang.Object r5 = r5.get(r2)
-            com.photoeditor.slideshow.models.ImageModel r5 = (com.photoeditor.slideshow.models.ImageModel) r5
-            float r5 = r5.getSecond()
-            float r2 = r0.getStartFrame(r2)
-            int r2 = (int) r2
-            int[] r2 = r0.getStartAndStopFrameOfImageNew(r5, r2)
-            boolean r5 = r0.isPreviewTransition
-            r6 = 1106247680(0x41f00000, float:30.0)
-            r7 = 1
-            if (r5 == 0) goto L_0x0035
-            r2 = 60
-            r5 = 1073741824(0x40000000, float:2.0)
-            float r8 = com.photoeditor.slideshow.imagetovideo.VideoMaker.DURATION_TRANSITION
-            float r8 = r8 + r5
-            float r8 = r8 * r6
-            int r5 = (int) r8
-            goto L_0x0045
-        L_0x0035:
-            r5 = r2[r7]
-            float r5 = (float) r5
-            float r8 = com.photoeditor.slideshow.imagetovideo.VideoMaker.DURATION_TRANSITION
-            float r8 = r8 * r6
-            float r5 = r5 - r8
-            int r5 = (int) r5
-            r2 = r2[r7]
-            r17 = r5
-            r5 = r2
-            r2 = r17
-        L_0x0045:
-            int r8 = r23 - r2
-            if (r8 < 0) goto L_0x01a1
-            float r9 = (float) r8
-            float r10 = com.photoeditor.slideshow.imagetovideo.VideoMaker.DURATION_TRANSITION
-            float r10 = r10 * r6
-            int r6 = (r9 > r10 ? 1 : (r9 == r10 ? 0 : -1))
-            if (r6 <= 0) goto L_0x0054
-            goto L_0x01a1
-        L_0x0054:
-            int r5 = r5 - r2
-            java.lang.StringBuilder r2 = new java.lang.StringBuilder
-            r2.<init>()
-            r2.append(r8)
-            java.lang.String r6 = " - "
-            r2.append(r6)
-            r2.append(r5)
-            java.lang.String r2 = r2.toString()
-            java.lang.String r6 = "dsk9"
-            com.photoeditor.slideshow.java.C2671Lo.m320d(r6, r2)
-            r19.concat(r20)
-            int r8 = r8 * 359
-            int r8 = r8 / r5
-            r2 = 90
-            r5 = 4607182418800017408(0x3ff0000000000000, double:1.0)
-            r9 = 4611686018427387904(0x4000000000000000, double:2.0)
-            if (r8 > r2) goto L_0x00a1
-            int r2 = r3 / 2
-            double r11 = (double) r2
-            double r13 = (double) r8
-            double r15 = java.lang.Math.toRadians(r13)
-            double r15 = java.lang.Math.tan(r15)
-            double r5 = r5 / r15
-            double r7 = (double) r3
-            double r5 = r5 * r7
-            double r5 = r5 / r9
-            double r11 = r11 + r5
-            int r2 = (int) r11
-            int r5 = r4 / 2
-            double r5 = (double) r5
-            double r7 = java.lang.Math.toRadians(r13)
-            double r7 = java.lang.Math.tan(r7)
-        L_0x009a:
-            double r11 = (double) r4
-            double r7 = r7 * r11
-            double r7 = r7 / r9
-            double r5 = r5 - r7
-        L_0x009f:
-            int r5 = (int) r5
-            goto L_0x010b
-        L_0x00a1:
-            r2 = 180(0xb4, float:2.52E-43)
-            if (r8 > r2) goto L_0x00c9
-            int r2 = r3 / 2
-            double r11 = (double) r2
-            double r7 = (double) r8
-            double r13 = java.lang.Math.toRadians(r7)
-            double r13 = java.lang.Math.tan(r13)
-            double r5 = r5 / r13
-            double r13 = (double) r3
-            double r5 = r5 * r13
-            double r5 = r5 / r9
-            double r11 = r11 + r5
-            int r2 = (int) r11
-            int r5 = r4 / 2
-            double r5 = (double) r5
-            double r7 = java.lang.Math.toRadians(r7)
-            double r7 = java.lang.Math.tan(r7)
-        L_0x00c3:
-            double r11 = (double) r4
-            double r7 = r7 * r11
-            double r7 = r7 / r9
-            double r5 = r5 + r7
-            goto L_0x009f
-        L_0x00c9:
-            r2 = 270(0x10e, float:3.78E-43)
-            if (r8 > r2) goto L_0x00ec
-            int r2 = r3 / 2
-            double r11 = (double) r2
-            double r7 = (double) r8
-            double r13 = java.lang.Math.toRadians(r7)
-            double r13 = java.lang.Math.tan(r13)
-            double r5 = r5 / r13
-            double r13 = (double) r3
-            double r5 = r5 * r13
-            double r5 = r5 / r9
-            double r11 = r11 - r5
-            int r2 = (int) r11
-            int r5 = r4 / 2
-            double r5 = (double) r5
-            double r7 = java.lang.Math.toRadians(r7)
-            double r7 = java.lang.Math.tan(r7)
-            goto L_0x00c3
-        L_0x00ec:
-            int r2 = r3 / 2
-            double r11 = (double) r2
-            double r7 = (double) r8
-            double r13 = java.lang.Math.toRadians(r7)
-            double r13 = java.lang.Math.tan(r13)
-            double r5 = r5 / r13
-            double r13 = (double) r3
-            double r5 = r5 * r13
-            double r5 = r5 / r9
-            double r11 = r11 - r5
-            int r2 = (int) r11
-            int r5 = r4 / 2
-            double r5 = (double) r5
-            double r7 = java.lang.Math.toRadians(r7)
-            double r7 = java.lang.Math.tan(r7)
-            goto L_0x009a
-        L_0x010b:
-            if (r2 <= r3) goto L_0x010e
-            r2 = r3
-        L_0x010e:
-            r6 = 0
-            if (r2 >= 0) goto L_0x0112
-            r2 = 0
-        L_0x0112:
-            if (r5 <= r4) goto L_0x0115
-            r5 = r4
-        L_0x0115:
-            if (r5 >= 0) goto L_0x0118
-            r5 = 0
-        L_0x0118:
-            r7 = 5
-            android.graphics.Point[] r7 = new android.graphics.Point[r7]
-            android.graphics.Point r8 = new android.graphics.Point
-            r8.<init>(r3, r6)
-            r7[r6] = r8
-            android.graphics.Point r8 = new android.graphics.Point
-            r8.<init>(r6, r6)
-            r9 = 1
-            r7[r9] = r8
-            android.graphics.Point r8 = new android.graphics.Point
-            r8.<init>(r6, r4)
-            r10 = 2
-            r7[r10] = r8
-            android.graphics.Point r8 = new android.graphics.Point
-            r8.<init>(r3, r4)
-            r11 = 3
-            r7[r11] = r8
-            android.graphics.Point r8 = new android.graphics.Point
-            int r12 = r4 / 2
-            r8.<init>(r3, r12)
-            r13 = 4
-            r7[r13] = r8
-            android.graphics.Path r8 = new android.graphics.Path
-            r8.<init>()
-            float r14 = (float) r3
-            float r15 = (float) r12
-            r8.moveTo(r14, r15)
-            int r6 = r3 / 2
-            float r6 = (float) r6
-            r8.lineTo(r6, r15)
-            float r6 = (float) r2
-            float r9 = (float) r5
-            r8.lineTo(r6, r9)
-            if (r2 != r3) goto L_0x015f
-            if (r5 > r12) goto L_0x015f
-        L_0x015d:
-            r11 = 0
-            goto L_0x016f
-        L_0x015f:
-            if (r5 != 0) goto L_0x0163
-            r11 = 1
-            goto L_0x016f
-        L_0x0163:
-            if (r2 != 0) goto L_0x0167
-            r11 = 2
-            goto L_0x016f
-        L_0x0167:
-            if (r5 != r4) goto L_0x016a
-            goto L_0x016f
-        L_0x016a:
-            if (r2 != r3) goto L_0x015d
-            if (r5 <= r12) goto L_0x015d
-            r11 = 4
-        L_0x016f:
-            if (r11 >= r13) goto L_0x0181
-            r2 = r7[r11]
-            int r2 = r2.x
-            float r2 = (float) r2
-            r3 = r7[r11]
-            int r3 = r3.y
-            float r3 = (float) r3
-            r8.lineTo(r2, r3)
-            int r11 = r11 + 1
-            goto L_0x016f
-        L_0x0181:
-            r8.lineTo(r14, r15)
-            android.graphics.Paint r2 = new android.graphics.Paint
-            r2.<init>(r10)
-            android.graphics.Paint$Style r3 = android.graphics.Paint.Style.FILL
-            r2.setStyle(r3)
-            if (r1 == 0) goto L_0x019c
-            android.graphics.BitmapShader r3 = new android.graphics.BitmapShader
-            android.graphics.Shader$TileMode r4 = android.graphics.Shader.TileMode.CLAMP
-            android.graphics.Shader$TileMode r5 = android.graphics.Shader.TileMode.CLAMP
-            r3.<init>(r1, r4, r5)
-            r2.setShader(r3)
-        L_0x019c:
-            r1 = r19
-            r1.drawPath(r8, r2)
-        L_0x01a1:
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.photoeditor.slideshow.imagetovideo.TransitionUtils.clock(android.graphics.Canvas, android.graphics.Matrix, android.graphics.Bitmap, int, int, int, int):void");
+    private void clock(Canvas canvas, Matrix matrix, Bitmap bitmap, int i, int i2, int i3, int i4) {
+        int i5;
+        int i6;
+        int tan;
+        double d = 0;
+        double tan2 = 0;
+        double d2 = 0;
+        double tan3 = 0;
+        double d3;
+        int i7;
+        int i8;
+        int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i));
+        if (this.isPreviewTransition) {
+            i6 = 60;
+            i5 = (int) ((VideoMaker.DURATION_TRANSITION + 2.0f) * 30.0f);
+        } else {
+            int i9 = (int) (((float) startAndStopFrameOfImageNew[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f));
+            i5 = startAndStopFrameOfImageNew[1];
+            i6 = i9;
+        }
+        int i10 = i2 - i6;
+        if (i10 >= 0 && ((float) i10) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
+            int i11 = i5 - i6;
+            canvas.concat(matrix);
+            int i12 = (i10 * 359) / i11;
+            if (i12 <= 90) {
+                double d4 = (double) i12;
+                tan = (int) (((double) (i3 / 2)) + (((1.0d / Math.tan(Math.toRadians(d4))) * ((double) i3)) / 2.0d));
+                d = (double) (i4 / 2);
+                tan2 = Math.tan(Math.toRadians(d4));
+            } else {
+                if (i12 <= 180) {
+                    double d5 = (double) i12;
+                    tan = (int) (((double) (i3 / 2)) + (((1.0d / Math.tan(Math.toRadians(d5))) * ((double) i3)) / 2.0d));
+                    d2 = (double) (i4 / 2);
+                    tan3 = Math.tan(Math.toRadians(d5));
+                } else if (i12 <= 270) {
+                    double d6 = (double) i12;
+                    tan = (int) (((double) (i3 / 2)) - (((1.0d / Math.tan(Math.toRadians(d6))) * ((double) i3)) / 2.0d));
+                    d2 = (double) (i4 / 2);
+                    tan3 = Math.tan(Math.toRadians(d6));
+                } else {
+                    double d7 = (double) i12;
+                    tan = (int) (((double) (i3 / 2)) - (((1.0d / Math.tan(Math.toRadians(d7))) * ((double) i3)) / 2.0d));
+                    d = (double) (i4 / 2);
+                    tan2 = Math.tan(Math.toRadians(d7));
+                }
+                d3 = d2 + ((tan3 * ((double) i4)) / 2.0d);
+                i7 = (int) d3;
+                if (tan > i3) {
+                    tan = i3;
+                }
+                if (tan < 0) {
+                    tan = 0;
+                }
+                if (i7 > i4) {
+                    i7 = i4;
+                }
+                if (i7 < 0) {
+                    i7 = 0;
+                }
+                i8 = 3;
+                int i13 = i4 / 2;
+                Point[] pointArr = {new Point(i3, 0), new Point(0, 0), new Point(0, i4), new Point(i3, i4), new Point(i3, i13)};
+                Path path = new Path();
+                float f = (float) i3;
+                float f2 = (float) i13;
+                path.moveTo(f, f2);
+                path.lineTo((float) (i3 / 2), f2);
+                path.lineTo((float) tan, (float) i7);
+                if (tan != i3 || i7 > i13) {
+                    if (i7 != 0) {
+                        i8 = 1;
+                    } else if (tan == 0) {
+                        i8 = 2;
+                    } else if (i7 != i4) {
+                        if (tan == i3 && i7 > i13) {
+                            i8 = 4;
+                        }
+                    }
+                    while (i8 < 4) {
+                        path.lineTo((float) pointArr[i8].x, (float) pointArr[i8].y);
+                        i8++;
+                    }
+                    path.lineTo(f, f2);
+                    Paint paint2 = new Paint(2);
+                    paint2.setStyle(Paint.Style.FILL);
+                    if (bitmap != null) {
+                        paint2.setShader(new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+                    }
+                    canvas.drawPath(path, paint2);
+                }
+                i8 = 0;
+                while (i8 < 4) {
+                }
+                path.lineTo(f, f2);
+                Paint paint22 = new Paint(2);
+                paint22.setStyle(Paint.Style.FILL);
+                if (bitmap != null) {
+                }
+                canvas.drawPath(path, paint22);
+            }
+            d3 = d - ((tan2 * ((double) i4)) / 2.0d);
+            i7 = (int) d3;
+            if (tan > i3) {
+            }
+            if (tan < 0) {
+            }
+            if (i7 > i4) {
+            }
+            if (i7 < 0) {
+            }
+            i8 = 3;
+            int i132 = i4 / 2;
+            Point[] pointArr2 = {new Point(i3, 0), new Point(0, 0), new Point(0, i4), new Point(i3, i4), new Point(i3, i132)};
+            Path path2 = new Path();
+            float f3 = (float) i3;
+            float f22 = (float) i132;
+            path2.moveTo(f3, f22);
+            path2.lineTo((float) (i3 / 2), f22);
+            path2.lineTo((float) tan, (float) i7);
+            if (i7 != 0) {
+            }
+            while (i8 < 4) {
+            }
+            path2.lineTo(f3, f22);
+            Paint paint222 = new Paint(2);
+            paint222.setStyle(Paint.Style.FILL);
+            if (bitmap != null) {
+            }
+            canvas.drawPath(path2, paint222);
+        }
     }
 
-    /* JADX WARNING: Code restructure failed: missing block: B:10:0x0053, code lost:
-        r13 = 0;
-        r14 = 0;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:12:0x0057, code lost:
-        r7 = r14;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:15:0x0061, code lost:
-        r7 = r14;
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:16:0x0062, code lost:
-        r0 = (float) r1;
-        r8.postTranslate(((float) 0) + ((((float) ((r13 - 0) * r12)) * 1.0f) / r0), ((float) r14) + ((((float) ((r7 - r14) * r12)) * 1.0f) / r0));
-        r6.drawBitmap(r10, r8, r9);
-     */
-    /* JADX WARNING: Code restructure failed: missing block: B:17:0x007d, code lost:
-        return;
-     */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private void slide(Canvas r6, Matrix r7, Matrix r8, Paint r9, Bitmap r10, int r11, int r12, int r13, int r14, Transition r15) {
-        /*
-            r5 = this;
-            com.photoeditor.slideshow.imagetovideo.VideoMaker r0 = r5.mVideoMaker
-            java.util.List r0 = r0.getListImageModel()
-            java.lang.Object r0 = r0.get(r11)
-            com.photoeditor.slideshow.models.ImageModel r0 = (com.photoeditor.slideshow.models.ImageModel) r0
-            float r0 = r0.getSecond()
-            float r11 = r5.getStartFrame(r11)
-            int r11 = (int) r11
-            int[] r11 = r5.getStartAndStopFrameOfImageNew(r0, r11)
-            if (r10 != 0) goto L_0x001c
-            return
-        L_0x001c:
-            r10.getWidth()
-            int r0 = r10.getHeight()
-            boolean r1 = r5.isPreviewTransition
-            r2 = 1106247680(0x41f00000, float:30.0)
-            if (r1 == 0) goto L_0x0034
-            r11 = 60
-            r1 = 1073741824(0x40000000, float:2.0)
-            float r3 = com.photoeditor.slideshow.imagetovideo.VideoMaker.DURATION_TRANSITION
-            float r3 = r3 + r1
-            float r3 = r3 * r2
-            int r1 = (int) r3
-            goto L_0x0041
-        L_0x0034:
-            r1 = 1
-            r3 = r11[r1]
-            float r3 = (float) r3
-            float r4 = com.photoeditor.slideshow.imagetovideo.VideoMaker.DURATION_TRANSITION
-            float r4 = r4 * r2
-            float r3 = r3 - r4
-            int r2 = (int) r3
-            r1 = r11[r1]
-            r11 = r2
-        L_0x0041:
-            int r12 = r12 - r11
-            int r1 = r1 - r11
-            r8.set(r7)
-            int[] r7 = com.photoeditor.slideshow.imagetovideo.TransitionUtils.C26691.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition
-            int r11 = r15.ordinal()
-            r7 = r7[r11]
-            r11 = 0
-            switch(r7) {
-                case 10: goto L_0x005d;
-                case 11: goto L_0x0059;
-                case 12: goto L_0x0056;
-                case 13: goto L_0x0057;
-                default: goto L_0x0052;
+
+    private void slide(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4, Transition transition) {
+        int i5;
+        int i6;
+        int i7;
+        int i8;
+        int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i));
+        if (bitmap != null) {
+            bitmap.getWidth();
+            int height = bitmap.getHeight();
+            if (this.isPreviewTransition) {
+                i5 = 60;
+                i6 = (int) ((VideoMaker.DURATION_TRANSITION + 2.0f) * 30.0f);
+            } else {
+                i6 = startAndStopFrameOfImageNew[1];
+                i5 = (int) (((float) startAndStopFrameOfImageNew[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f));
             }
-        L_0x0052:
-            r7 = 0
-        L_0x0053:
-            r13 = 0
-            r14 = 0
-            goto L_0x0062
-        L_0x0056:
-            int r14 = -r14
-        L_0x0057:
-            r7 = r14
-            goto L_0x0053
-        L_0x0059:
-            int r14 = r14 - r0
-            int r14 = r14 / 2
-            goto L_0x0061
-        L_0x005d:
-            int r13 = -r13
-            int r14 = r14 - r0
-            int r14 = r14 / 2
-        L_0x0061:
-            r7 = r14
-        L_0x0062:
-            float r15 = (float) r11
-            int r13 = r13 - r11
-            int r13 = r13 * r12
-            float r11 = (float) r13
-            r13 = 1065353216(0x3f800000, float:1.0)
-            float r11 = r11 * r13
-            float r0 = (float) r1
-            float r11 = r11 / r0
-            float r15 = r15 + r11
-            float r11 = (float) r14
-            int r7 = r7 - r14
-            int r7 = r7 * r12
-            float r7 = (float) r7
-            float r7 = r7 * r13
-            float r7 = r7 / r0
-            float r11 = r11 + r7
-            r8.postTranslate(r15, r11)
-            r6.drawBitmap(r10, r8, r9)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.photoeditor.slideshow.imagetovideo.TransitionUtils.slide(android.graphics.Canvas, android.graphics.Matrix, android.graphics.Matrix, android.graphics.Paint, android.graphics.Bitmap, int, int, int, int, com.photoeditor.slideshow.imagetovideo.Transition):void");
+            int i9 = i2 - i5;
+            int i10 = i6 - i5;
+            matrix2.set(matrix);
+            switch (transition) {
+                case SLIDE_LEFT:
+                    i3 = -i3;
+                    i7 = (i4 - height) / 2;
+                    i8 = i7;
+                    float f = (float) i10;
+                    matrix2.postTranslate(((float) 0) + ((((float) ((i3 - 0) * i9)) * 1.0f) / f), ((float) i7) + ((((float) ((i8 - i7) * i9)) * 1.0f) / f));
+                    canvas.drawBitmap(bitmap, matrix2, paint2);
+                    return;
+                case SLIDE_RIGHT:
+                    i7 = (i4 - height) / 2;
+                    i8 = i7;
+                    float f2 = (float) i10;
+                    matrix2.postTranslate(((float) 0) + ((((float) ((i3 - 0) * i9)) * 1.0f) / f2), ((float) i7) + ((((float) ((i8 - i7) * i9)) * 1.0f) / f2));
+                    canvas.drawBitmap(bitmap, matrix2, paint2);
+                    return;
+                case SLIDE_UP:
+                    i4 = -i4;
+                    i8 = i4;
+                    i3 = 0;
+                    i7 = 0;
+                    float f22 = (float) i10;
+                    matrix2.postTranslate(((float) 0) + ((((float) ((i3 - 0) * i9)) * 1.0f) / f22), ((float) i7) + ((((float) ((i8 - i7) * i9)) * 1.0f) / f22));
+                    canvas.drawBitmap(bitmap, matrix2, paint2);
+                    return;
+                case SLIDE_DOWN:
+                    i8 = i4;
+                    i3 = 0;
+                    i7 = 0;
+                    float f222 = (float) i10;
+                    matrix2.postTranslate(((float) 0) + ((((float) ((i3 - 0) * i9)) * 1.0f) / f222), ((float) i7) + ((((float) ((i8 - i7) * i9)) * 1.0f) / f222));
+                    canvas.drawBitmap(bitmap, matrix2, paint2);
+                    return;
+                default:
+                    i8 = 0;
+                    i3 = 0;
+                    i7 = 0;
+                    float f2222 = (float) i10;
+                    matrix2.postTranslate(((float) 0) + ((((float) ((i3 - 0) * i9)) * 1.0f) / f2222), ((float) i7) + ((((float) ((i8 - i7) * i9)) * 1.0f) / f2222));
+                    canvas.drawBitmap(bitmap, matrix2, paint2);
+                    return;
+            }
+        }
     }
+
 
     private void fadeTransition(Canvas canvas, Matrix matrix, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
         Paint paint3 = paint2;

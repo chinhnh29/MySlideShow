@@ -112,7 +112,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.photoeditor.slideshow.imagetovideo.CustomPreviewView
-            android:id="@+id/mCustomPreviewViewGif"
+            android:id="@+id/mCustomPreviewView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@color/purple_200"
@@ -169,6 +169,73 @@
 
     </LinearLayout>
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_alignParentBottom="true">
+
+<!--        <include-->
+<!--            layout="@layout/layout_edit_clip"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_watermark"-->
+<!--            layout="@layout/layout_watermark"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_ratio_2"-->
+<!--            layout="@layout/layout_ratio_2"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_theme_new"-->
+<!--            layout="@layout/layout_theme_new"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_has_music_new"-->
+<!--            layout="@layout/layout_has_music"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_adjust_time"-->
+<!--            layout="@layout/layout_adjust_time"-->
+<!--            android:visibility="gone" />-->
+
+        <include
+            android:id="@+id/layout_transition_new"
+            layout="@layout/layout_transition_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+<!--        <include-->
+<!--            android:id="@+id/layout_time_position"-->
+<!--            layout="@layout/layout_time_position"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_position_image"-->
+<!--            layout="@layout/layout_position_image"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_cut_music"-->
+<!--            layout="@layout/layout_cut_music"-->
+<!--            android:visibility="gone" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/layout_cut_music_new"-->
+<!--            layout="@layout/layout_cut_music_new"-->
+<!--            android:visibility="gone" />-->
+    </RelativeLayout>
 
 
     <!--    <ImageView-->

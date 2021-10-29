@@ -30,9 +30,9 @@ public class TimeUtils {
         return new int[]{i2, (int) (((float) i2) + ((f + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
-    public static int[] getStartAndStopFrameOfImage2(float f, float f2) {
-        int i = (int) f2;
-        return new int[]{i, (int) (((float) i) + ((f + VideoMaker.DURATION_TRANSITION) * 30.0f))};
+    public static int[] getStartAndStopFrameOfImage2(float secondImage, float startFrameImage) {
+        int startFrame = (int) startFrameImage;
+        return new int[]{startFrame, (int) (((float) startFrame) + ((secondImage + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
     static boolean checkStartTime2(int i, float f, float f2) {
