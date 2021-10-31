@@ -10,20 +10,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.photoeditor.slideshow.R;
+import com.photoeditor.slideshow.components.MyTranController;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CategoryTransitAdapter extends RecyclerView.Adapter<CategoryTransitAdapter.CategoryViewHolder> {
     private List<DataCategoryTrans> dataCategoryList;
     private Context context;
+    private MyTranController myTranController;
 
-    public CategoryTransitAdapter(Context context, List<DataCategoryTrans> dataCategoryList) {
+    public CategoryTransitAdapter(Context context, List<DataCategoryTrans> dataCategoryList, MyTranController myTranController) {
         this.dataCategoryList = dataCategoryList;
         this.context = context;
+        this.myTranController = myTranController;
     }
 
     @NonNull
@@ -50,6 +54,11 @@ public class CategoryTransitAdapter extends RecyclerView.Adapter<CategoryTransit
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.txt_name_tab)
+        void onClick() {
+            myTranController.updateListTransit(dataCategoryList.get(getAdapterPosition()).getName());
         }
 
         public void onBind(int position) {

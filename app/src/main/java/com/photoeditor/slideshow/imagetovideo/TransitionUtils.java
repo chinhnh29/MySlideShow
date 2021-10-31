@@ -17,6 +17,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Xfermode;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieDrawable;
 
@@ -79,54 +80,64 @@ class TransitionUtils extends TransitionUtilsEx {
             zoomTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CLOCK.ordinal()) {
             Log.e("ChinhNH", "transition: " + "clock");
+
+            //chua chay duoc
             clockTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+        } else if (tran == Transition.CIRCLE.ordinal()) {
+            Log.e("ChinhNH", "transition: " + "clock");
+            circleTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+        } else if (tran == Transition.COLUMN1.ordinal()) {
+            testColumn(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        }  else if (tran == Transition.COLUMN2.ordinal()) {
+            testColumnCenter(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        }  else if (tran == Transition.TRIANGLE.ordinal()) {
+            testTryangle(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+        } else if (tran == Transition.BOARD.ordinal()) {
+            chessBoardTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        } else if (tran == Transition.BLIND_H.ordinal()) {
+            blindTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        } else if (tran == Transition.BLIND_V.ordinal()) {
+            blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        } else if (tran == Transition.DISSOLVE.ordinal()) {
+            dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
         }
 //        switch (transition.ordinal()) {
 
 //            case 3:
-//                testColumn(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+
 //                break;
 //            case 4:
 //            case 5:
 //                transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
 //                break;
 //            case 6:
-//                testTryangle(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+//
 //                break;
 //            case 7:
-//                testColumnCenter(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+//
 //                break;
 //            case 8:
 //                drawImageLottieTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
 //                break;
-//            case 9:
-//                break;
-//            case 14:
-//
-//                break;
-//            case 15:
-//                circleTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-//                break;
-//            case 16:
-//
+
 //                break;
 //            case 19:
-//                blindTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+//
 //                break;
 //            case 20:
-//                blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+//
 //                break;
 //            case 21:
-//                chessBoardTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+//
 //                break;
 //            case 22:
-//                dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+
 //                break;
 //            default:
 //                canvas.drawBitmap(bitmap2, matrix3, paint3);
 //                break;
 //        }
-            paint3.setAlpha(255);
+        paint3.setAlpha(255);
     }
 
 

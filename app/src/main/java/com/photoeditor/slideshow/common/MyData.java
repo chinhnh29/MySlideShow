@@ -9,8 +9,6 @@ import com.photoeditor.slideshow.models.GifTransition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
 
 
 public final class MyData {
@@ -29,9 +27,9 @@ public final class MyData {
             new GifTransition("Fade", "Fade", "classic", R.drawable.fade, true, (Boolean) null, Transition.FADE));
 
     private static final ArrayList<GifTransition> listGifTranSpecial1 = (ArrayList<GifTransition>) Arrays.asList(
-            new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.TEST2),
-            new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.TEST),
-            new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, true, Transition.TEST1),
+            new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN1),
+            new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN2),
+            new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, true, Transition.TRIANGLE),
             new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, true, Transition.CIRCLE),
             new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, true, Transition.BOARD),
             new GifTransition("BLIND_H", "BLIND_H", "Special", R.drawable.ramdom, true, true, Transition.BLIND_H));

@@ -2,14 +2,11 @@ package com.photoeditor.slideshow.components;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.View;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.photoeditor.slideshow.R;
-import com.photoeditor.slideshow.customView.TabTranIndicator;
 //import com.photoeditor.slideshow.customView.recyclical.RecyclicalKt;
 //import com.photoeditor.slideshow.customView.recyclical.datasource.DataSource;
 //import com.photoeditor.slideshow.customView.recyclical.datasource.SelectableDataSource;
@@ -29,7 +26,6 @@ import com.photoeditor.slideshow.models.GifTransition;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
-import com.photoeditor.slideshow.my_slide_show.obj.Transit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,14 +184,31 @@ public final class MyTranController {
 //        this.jobLoadBitmap = JobKt.Job$default((Job) null, 1, (Object) null);
     }
 
+    TransitionAdapter transitionAdapter;
     private void initRecycleTran() {
         dataCategoryTransList = initListCategoryTran();
-        CategoryTransitAdapter adapter = new CategoryTransitAdapter(context, dataCategoryTransList);
+        CategoryTransitAdapter adapter = new CategoryTransitAdapter(context, dataCategoryTransList, this);
         rcvTabTrans.setAdapter(adapter);
 
         transitList = initListTransit();
-        TransitionAdapter transitionAdapter = new TransitionAdapter(context, transitList, this);
+        transitionAdapter = new TransitionAdapter(context, transitList, this);
         rcvListTran.setAdapter(transitionAdapter);
+    }
+
+    public void updateListTransit(String name) {
+        transitList.clear();
+        if (name.equals("Mate")) {
+            transitList.add(new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN1));
+            transitList.add(new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN2));
+            transitList.add(new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, true, Transition.TRIANGLE));
+            transitList.add(new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, true, Transition.CIRCLE));
+            transitList.add(new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, true, Transition.BOARD));
+            transitList.add(new GifTransition("BLIND_H", "BLIND_H", "Special", R.drawable.ramdom, true, true, Transition.BLIND_H));
+            transitList.add(new GifTransition("BLIND_V", "BLIND_V", "Special", R.drawable.ramdom, true, true, Transition.BLIND_V));
+            transitList.add(new GifTransition("DISSOLVE", "DISSOLVE", "Special", R.drawable.ramdom, true, true, Transition.DISSOLVE));
+        }
+        rcvListTran.setAdapter(transitionAdapter);
+        transitionAdapter.notifyDataSetChanged();
     }
 
     private List<GifTransition> initListTransit() {

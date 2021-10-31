@@ -22,9 +22,9 @@ public enum Transition {
     SLIDE_RIGHT,
     SLIDE_UP,
     SLIDE_DOWN,
-    TEST,
-    TEST1,
-    TEST2,
+    COLUMN2,
+    TRIANGLE,
+    COLUMN1,
     CIRCLE,
     BOARD,
     BLIND_H
