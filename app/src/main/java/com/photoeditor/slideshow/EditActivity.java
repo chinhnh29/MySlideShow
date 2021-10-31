@@ -29,7 +29,8 @@ import java.util.List;
 
 import com.photoeditor.slideshow.interfaces.VideoPlayInterface;
 import com.photoeditor.slideshow.models.GifTransition;
-import com.photoeditor.slideshow.models.GifTransitionViewModel;
+import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
+//import com.photoeditor.slideshow.models.GifTransitionViewModel;
 //import com.photoeditor.slideshow.models.GifTransitionViewModel;
 
 import butterknife.BindView;
@@ -44,8 +45,6 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 
     @BindView(R.id.sb_range_1)
     RangeSeekBar rangeSeekBar;
-    @BindView(R.id.list_transit)
-    RecyclerView rvListTransit;
     @BindView(R.id.mImgControl)
     ImageView imageView;
     @BindView(R.id.img_play)
@@ -56,6 +55,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     TextView mTvDuration;
     @BindView(R.id.rcv_list_tab_transit)
     RecyclerView rcvListTabTransit;
+    @BindView(R.id.list_transit)
+    RecyclerView rcvListTransit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +86,17 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 
     }
 
+
     private void createListTransit() {
         List<String> listEffect = Arrays.asList(getResources().getStringArray(R.array.list_effect));
         TransitionAdapter transitionAdapter = new TransitionAdapter(this, listEffect, this, 0);
-        rvListTransit.setAdapter(transitionAdapter);
+        rcvListTransit.setAdapter(transitionAdapter);
     }
 
 
     private MyTranController myTranController;
-    public GifTransitionViewModel transitionViewModel;
+//    public GifTransitionViewModel transitionViewModel;
+
 
     private void initVideo() {
 //        ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
@@ -123,14 +126,16 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         myVideoPlayer.playSlideShow();
 //        }
 
-        ViewModel viewModel2 = new ViewModelProvider(this).get(GifTransitionViewModel.class);
-        transitionViewModel = ((GifTransitionViewModel) viewModel2);
-        GifTransition transition = new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true,  null, Transition.SLIDE_LEFT);
+//        ViewModel viewModel2 = new ViewModelProvider(this).get(GifTransitionViewModel.class);
+//        transitionViewModel = ((GifTransitionViewModel) viewModel2);
+        GifTransition transition = new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT);
 //        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_tran);
 //        TabTranIndicator tabTranIndicator = (TabTranIndicator) findViewById(R.id.tab_layout_tran);
-        myTranController = (new MyTranController(transition, transitionViewModel, this,
-                this, null, null, videoMaker, this));
 
+
+
+        myTranController = (new MyTranController(transition/*, transitionViewModel*/, this,
+                this, rcvListTabTransit, rcvListTransit, videoMaker, this));
 
 
 //        MyTranController myTranController = getMyTranController();
@@ -153,6 +158,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 //            myTranController.setEditStickerListener(this);
 //        }
     }
+
+
 
     private final void doneTransitionNew() {
 //        MyTranController myTranController = getMyTranController();

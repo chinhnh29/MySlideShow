@@ -1,6 +1,6 @@
 package com.photoeditor.slideshow.my_slide_show.obj;
 
-public class DataCategory {
+public class DataCategoryTrans {
     private String appName;
     private String id;
     private String image = "";
@@ -12,21 +12,25 @@ public class DataCategory {
     private Integer status;
     private String thumbnail;
 
-    public DataCategory() {
+    public DataCategoryTrans() {
     }
 
-    public DataCategory(String str, String str2) {
+    public DataCategoryTrans(String name) {
+        this.name = name;
+    }
+
+    public DataCategoryTrans(String str, String str2) {
         this.id = str;
         this.name = str2;
     }
 
-    public DataCategory(String str, String str2, String str3) {
+    public DataCategoryTrans(String str, String str2, String str3) {
         this.id = str;
         this.name = str2;
         this.image = str3;
     }
 
-    public DataCategory(String str, String str2, String str3, String str4) {
+    public DataCategoryTrans(String str, String str2, String str3, String str4) {
         this.id = str;
         this.name = str3;
         this.moduleId = str2;

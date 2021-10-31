@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_tran"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
-        android:src="@drawable/fade" />
+        android:layout_margin="10dp"
+        android:src="@drawable/transit" />
 
+    <TextView
+        android:id="@+id/txt_tran"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/img_tran"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="FADE"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="17dp" />
 
 </RelativeLayout>

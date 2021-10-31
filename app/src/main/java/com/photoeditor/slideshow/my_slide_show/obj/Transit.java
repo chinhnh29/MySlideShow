@@ -3,7 +3,7 @@ package com.photoeditor.slideshow.my_slide_show.obj;
 import com.photoeditor.slideshow.enumm.TYPE_TRAN;
 import com.photoeditor.slideshow.imagetovideo.Transition;
 
-public class GifTransition {
+public class Transit {
     private String displayName = "";
     private String fileName = "";
     private String id;
@@ -117,7 +117,7 @@ public class GifTransition {
         this.localFile = bool;
     }
 
-    public GifTransition() {
+    public Transit() {
     }
 
     public int getResId() {
@@ -128,22 +128,22 @@ public class GifTransition {
         this.resId = i;
     }
 
-    public void setData(GifTransition gifTransition) {
-        this.id = gifTransition.id;
-        this.fileName = gifTransition.fileName;
-        this.moduleId = gifTransition.moduleId;
-        this.parentId = gifTransition.parentId;
-        this.image = gifTransition.image;
-        this.thumbnail = gifTransition.thumbnail;
-        this.localFile = gifTransition.localFile;
-        this.type = gifTransition.type;
+    public void setData(Transit transit) {
+        this.id = transit.id;
+        this.fileName = transit.fileName;
+        this.moduleId = transit.moduleId;
+        this.parentId = transit.parentId;
+        this.image = transit.image;
+        this.thumbnail = transit.thumbnail;
+        this.localFile = transit.localFile;
+        this.type = transit.type;
     }
 
-    public GifTransition(Transition transition) {
+    public Transit(Transition transition) {
         this.type = transition;
     }
 
-    public GifTransition(String str, String str2, String str3, int i, Boolean bool, Boolean bool2, Transition transition) {
+    public Transit(String str, String str2, String str3, int i, Boolean bool, Boolean bool2, Transition transition) {
         this.id = str;
         this.fileName = str2;
         this.displayName = str2;
@@ -154,20 +154,20 @@ public class GifTransition {
         this.type = transition;
     }
 
-    public GifTransition(GifTransition gifTransition) {
-        this.id = gifTransition.id;
-        this.preview = gifTransition.preview;
-        this.displayName = gifTransition.displayName;
-        this.fileName = gifTransition.fileName;
-        this.moduleId = gifTransition.moduleId;
-        this.parentId = gifTransition.parentId;
-        this.image = gifTransition.image;
-        this.thumbnail = gifTransition.thumbnail;
-        this.localFile = gifTransition.localFile;
-        this.pro = gifTransition.pro;
-        this.resId = gifTransition.resId;
-        this.type = gifTransition.type;
-        this.isJsonTran = gifTransition.isJsonTran;
+    public Transit(Transit transit) {
+        this.id = transit.id;
+        this.preview = transit.preview;
+        this.displayName = transit.displayName;
+        this.fileName = transit.fileName;
+        this.moduleId = transit.moduleId;
+        this.parentId = transit.parentId;
+        this.image = transit.image;
+        this.thumbnail = transit.thumbnail;
+        this.localFile = transit.localFile;
+        this.pro = transit.pro;
+        this.resId = transit.resId;
+        this.type = transit.type;
+        this.isJsonTran = transit.isJsonTran;
     }
 
     public Boolean getPro() {

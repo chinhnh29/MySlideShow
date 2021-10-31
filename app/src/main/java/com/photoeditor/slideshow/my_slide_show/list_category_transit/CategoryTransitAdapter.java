@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.photoeditor.slideshow.R;
-import com.photoeditor.slideshow.my_slide_show.obj.DataCategory;
+import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CategoryTransitAdapter extends RecyclerView.Adapter<CategoryTransitAdapter.CategoryViewHolder> {
-    private List<DataCategory> dataCategoryList;
+    private List<DataCategoryTrans> dataCategoryList;
     private Context context;
 
-    public CategoryTransitAdapter(List<DataCategory> dataCategoryList, Context context) {
+    public CategoryTransitAdapter(Context context, List<DataCategoryTrans> dataCategoryList) {
         this.dataCategoryList = dataCategoryList;
         this.context = context;
     }

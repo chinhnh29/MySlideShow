@@ -2,10 +2,7 @@ package com.photoeditor.slideshow.components;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.SystemClock;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -28,15 +25,14 @@ import com.photoeditor.slideshow.models.GifTransition;
 //import com.photoeditor.slideshow.utils.ViewUtils;
 //import com.photoeditor.slideshow.viewmodel.DialogViewModel;
 //import com.photoeditor.slideshow.viewmodel.GifTransitionViewModel;
-import com.photoeditor.slideshow.models.GifTransitionViewModel;
-import com.zxy.tiny.Tiny;
-import com.zxy.tiny.common.BitmapResult;
+//import com.photoeditor.slideshow.models.GifTransitionViewModel;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
+import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
+import com.photoeditor.slideshow.my_slide_show.obj.Transit;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.concurrent.CancellationException;
+import java.util.List;
 
 
 public final class MyTranController {
@@ -72,22 +68,26 @@ public final class MyTranController {
     /* access modifiers changed from: private */
     public String parentId = "classic";
     /* access modifiers changed from: private */
-    public final RecyclerView recycleTran;
+    public final RecyclerView rcvTabTrans;
+    public final RecyclerView rcvListTran;
     /* access modifiers changed from: private */
-    public final TabTranIndicator tabTran;
+//    public final TabTranIndicator tabTran;
     //    private TransitionInterface transitionInterface;
     /* access modifiers changed from: private */
-    public final GifTransitionViewModel transitionViewModel;
+//    public final GifTransitionViewModel transitionViewModel;
     /* access modifiers changed from: private */
 //    public final View viewEmpty;
+
+    private List<DataCategoryTrans> dataCategoryTransList;
+    private List<GifTransition> transitList;
 
 
     public interface TransitionDownloadInterface {
         void downloadSuccess(GifTransition gifTransition);
     }
 
-    public static final /* synthetic */ class WhenMappings {
-        public static final /* synthetic */ int[] $EnumSwitchMapping$0;
+    public static final  class WhenMappings {
+        public static final int[] $EnumSwitchMapping$0;
 
         static {
             int[] iArr = new int[Transition.values().length];
@@ -99,68 +99,70 @@ public final class MyTranController {
         }
     }
 
-    public MyTranController(/*DialogViewModel dialogViewModel,*/ GifTransition gifTransition,
-                                                                 GifTransitionViewModel gifTransitionViewModel, LifecycleOwner lifecycleOwner,
-                                                                 Context context2, RecyclerView recyclerView, TabTranIndicator tabTranIndicator,
+    public MyTranController(GifTransition transit,
+                                                                 /*GifTransitionViewModel gifTransitionViewModel,*/ LifecycleOwner lifecycleOwner,
+                                                                 Context context2, RecyclerView recyclerView, RecyclerView rcvListTrans,
                                                                  VideoMaker videoMaker/*, View view*/, Activity activity2) {
+
+
 //        final DialogViewModel dialogViewModel2 = dialogViewModel;
-        GifTransition gifTransition2 = gifTransition;
         LifecycleOwner lifecycleOwner2 = lifecycleOwner;
         Context context3 = context2;
 //        RecyclerView recyclerView2 = recyclerView;
 //        TabTranIndicator tabTranIndicator2 = tabTranIndicator;
 //        View view2 = view;
-        this.transitionViewModel = gifTransitionViewModel;
+//        this.transitionViewModel = gifTransitionViewModel;
         this.context = context3;
-        this.recycleTran = recyclerView;
-        this.tabTran = tabTranIndicator;
+        this.dataCategoryTransList = dataCategoryTransList;
+        this.rcvTabTrans = recyclerView;
+        this.rcvListTran = rcvListTrans;
         this.mVideoMaker = videoMaker;
 //        this.viewEmpty = view2;
         this.activity = activity2;
-        if (gifTransition2 != null) {
-            this.currentTransition = gifTransition2;
-            this.oldTransition = gifTransition2;
-            if (gifTransition.getId() != null) {
-                String id = gifTransition.getId();
+        this.currentTransition = transit;
+        if (currentTransition != null) {
+            this.oldTransition = transit;
+            if (transit.getId() != null) {
+                String id = transit.getId();
                 this.currentIdTranSelected = id;
             }
         }
-        gifTransitionViewModel.getListGifCategory().observe(lifecycleOwner2, new Observer<ArrayList<DataCategory>>() {
-            public final void onChanged(final ArrayList<DataCategory> arrayList) {
-                isHaveCategory = true;
-                listCategory = arrayList;
-                tabTran.addTabsFromUrl(listCategory);
-                tabTran.setVisibility(View.VISIBLE);
-                tabTran.display();
-                tabTran.setListener(new TabTranIndicator.OnTabListener() {
-                    public void onTabChanged(int i) {
-                    }
-
-                    public void onTabClicked(int i) {
-                        tabTran.setCurrentTab(i);
-//                        dataSourceTran.clear();
-                        parentId = listCategory.get(i).getId();
-                        moduleId = listCategory.get(i).getModuleId();
-                        transitionViewModel.getDataGif(parentId, moduleId);
-                    }
-                });
-                tabTran.setCurrentTab(0);
-//                dataSourceTran.clear();
-                parentId = "Classic";
-                transitionViewModel.getDataGif(parentId, moduleId);
-            }
-        });
-        gifTransitionViewModel.getListGifTransition().observe(lifecycleOwner2, new Observer<ArrayList<GifTransition>>(this) {
-
-            public final void onChanged(ArrayList<GifTransition> arrayList) {
-                if (isModeTran) {
-                    ViewUtils.INSTANCE.runLayoutAnimation(recycleTran);
-                    listTransition = arrayList;
-                    Intrinsics.checkNotNullExpressionValue(arrayList, "it");
-                    DataSource.DefaultImpls.set$default(dataSourceTran, arrayList, (Function2) null, (Function2) null, 6, (Object) null);
-                }
-            }
-        });
+//        gifTransitionViewModel.getListGifCategory().observe(lifecycleOwner2, new Observer<ArrayList<DataCategory>>() {
+//            public final void onChanged(final ArrayList<DataCategory> arrayList) {
+//                isHaveCategory = true;
+//                listCategory = arrayList;
+//                tabTran.addTabsFromUrl(listCategory);
+//                tabTran.setVisibility(View.VISIBLE);
+//                tabTran.display();
+//                tabTran.setListener(new TabTranIndicator.OnTabListener() {
+//                    public void onTabChanged(int i) {
+//                    }
+//
+//                    public void onTabClicked(int i) {
+//                        tabTran.setCurrentTab(i);
+////                        dataSourceTran.clear();
+//                        parentId = listCategory.get(i).getId();
+//                        moduleId = listCategory.get(i).getModuleId();
+//                        transitionViewModel.getDataGif(parentId, moduleId);
+//                    }
+//                });
+//                tabTran.setCurrentTab(0);
+////                dataSourceTran.clear();
+//                parentId = "Classic";
+//                transitionViewModel.getDataGif(parentId, moduleId);
+//            }
+//        });
+//        gifTransitionViewModel.getListGifTransition().observe(lifecycleOwner2, new Observer<ArrayList<GifTransition>>(this) {
+//
+//            public final void onChanged(ArrayList<GifTransition> arrayList) {
+//                if (isModeTran) {
+//                    ViewUtils.INSTANCE.runLayoutAnimation(rcvTabTrans);
+//                    listTransition = arrayList;
+//                    Intrinsics.checkNotNullExpressionValue(arrayList, "it");
+//                    DataSource.DefaultImpls.set$default(dataSourceTran, arrayList, (Function2) null, (Function2) null, 6, (Object) null);
+//                }
+//            }
+//        });
 //        gifTransitionViewModel.isShowProgress().observe(lifecycleOwner2, new Observer<Boolean>(this) {
 //            final /* synthetic */ MyTranController this$0;
 //
@@ -181,9 +183,44 @@ public final class MyTranController {
 //            gifTransitionViewModel.getProgress().observe(lifecycleOwner2, C25314.INSTANCE);
 //        } catch (Exception unused) {
 //        }
-//        initRecyleTran();
+        initRecycleTran();
 //        this.jobRandom = JobKt.Job$default((Job) null, 1, (Object) null);
 //        this.jobLoadBitmap = JobKt.Job$default((Job) null, 1, (Object) null);
+    }
+
+    private void initRecycleTran() {
+        dataCategoryTransList = initListCategoryTran();
+        CategoryTransitAdapter adapter = new CategoryTransitAdapter(context, dataCategoryTransList);
+        rcvTabTrans.setAdapter(adapter);
+
+        transitList = initListTransit();
+        TransitionAdapter transitionAdapter = new TransitionAdapter(context, transitList, this);
+        rcvListTran.setAdapter(transitionAdapter);
+    }
+
+    private List<GifTransition> initListTransit() {
+        List<GifTransition> transitList = new ArrayList<>();
+        transitList.add(new GifTransition("Clock", "Clock", "classic", R.drawable.clock, true,  null, Transition.CLOCK));
+        transitList.add(new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true,  null, Transition.SLIDE_LEFT));
+        transitList.add(new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true,  null, Transition.SLIDE_RIGHT));
+        transitList.add(new GifTransition("Slide D", "Slide D", "classic", R.drawable.slide_d, true,  null, Transition.SLIDE_DOWN));
+        transitList.add(new GifTransition("Slide U", "Slide U", "classic", R.drawable.slide_u, true,  null, Transition.SLIDE_UP));
+        transitList.add(new GifTransition("Flash B", "Flash B", "classic", R.drawable.flash_b, true,  null, Transition.FLASH_B));
+        transitList.add(new GifTransition("Flash W", "Flash W", "classic", R.drawable.flash_w, true, (Boolean) null, Transition.FLASH_W));
+        transitList.add(new GifTransition("Zoom", "Zoom", "classic", R.drawable.zoom, true, (Boolean) null, Transition.ZOOM));
+        transitList.add(new GifTransition("Fade", "Fade", "classic", R.drawable.fade, true, (Boolean) null, Transition.FADE));
+        return transitList;
+    }
+
+    private List<DataCategoryTrans> initListCategoryTran() {
+        List<DataCategoryTrans> dataCategoryTransList = new ArrayList<>();
+        dataCategoryTransList.add(new DataCategoryTrans("Classic"));
+        dataCategoryTransList.add(new DataCategoryTrans("Mate"));
+        dataCategoryTransList.add(new DataCategoryTrans("Water"));
+        dataCategoryTransList.add(new DataCategoryTrans("Arrow"));
+        dataCategoryTransList.add(new DataCategoryTrans("Brush"));
+        dataCategoryTransList.add(new DataCategoryTrans("Valentine"));
+        return dataCategoryTransList;
     }
 
 //    public final EditStickerListener getEditStickerListener() {
@@ -271,7 +308,10 @@ public final class MyTranController {
     private final void actionChangeTransition(GifTransition gifTransition) {
         if (this.mVideoMaker != null) {
             this.currentTransition = gifTransition;
-//            Transition type = gifTransition.getType();
+            Transition type = gifTransition.getType();
+            if (type != null) {
+                int i = WhenMappings.$EnumSwitchMapping$0[type.ordinal()];
+            }
 //            if (type != null) {
 //                int i = WhenMappings.$EnumSwitchMapping$0[type.ordinal()];
 //                if (i == 1) {
@@ -291,6 +331,9 @@ public final class MyTranController {
             this.mVideoMaker.applyTransitionNew(gifTransition);
         }
     }
+
+
+
 
     //    private final void applyTransitionJson(GifTransition gifTransition) {
 //        ArrayList arrayList = new ArrayList();

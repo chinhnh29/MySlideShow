@@ -30,6 +30,7 @@ import com.photoeditor.slideshow.common.AppConst;
 import com.photoeditor.slideshow.common.MyData;
 //import com.photoeditor.slideshow.java.PhotorTool;
 //import com.photoeditor.slideshow.models.DrafVideoModel;
+import com.photoeditor.slideshow.java.PhotorTool;
 import com.photoeditor.slideshow.models.GifImage;
 import com.photoeditor.slideshow.models.GifTheme;
 import com.photoeditor.slideshow.models.GifTransition;
@@ -42,6 +43,7 @@ import com.photoeditor.slideshow.models.ThemeLottieModel;
 import com.photoeditor.slideshow.models.TransitionDrawableModel;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
+import com.photoeditor.slideshow.my_slide_show.obj.Transit;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
 
@@ -389,7 +391,7 @@ public class VideoMaker {
 
     /* renamed from: com.photoeditor.slideshow.imagetovideo.VideoMaker$1 */
     static /* synthetic */ class C26701 {
-         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
+        static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition;
 
         static {
@@ -717,14 +719,14 @@ public class VideoMaker {
 
     private void drawImages(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
         int i4;
-        int index = 0;
-        while (index < this.listImageModel.size()) {
-            if (checkImageToDraw(index, currentFrame)) {
-                updateImageCache(index, widthPreview, heightPreview);
+        int indexImageModel = 0;
+        while (indexImageModel < this.listImageModel.size()) {
+            if (checkImageToDraw(indexImageModel, currentFrame)) {
+                updateImageCache(indexImageModel, widthPreview, heightPreview);
 
                 //xóa bớt bitmap trong danh sách đi để đỡ tốn bộ nhớ
                 if (this.mBufferImage.size() >= 3) {
-                    for (int i = 0; i <= index - 3; i++) {
+                    for (int i = 0; i <= indexImageModel - 3; i++) {
                         Bitmap bitmap = this.mBufferImage.get(i);
                         if (bitmap != null) {
                             bitmap.recycle();
@@ -732,16 +734,16 @@ public class VideoMaker {
                         this.mBufferImage.remove(i);
                     }
                 }
-                Bitmap bitmap = this.mBufferImage.get(index);
+                Bitmap bitmap = this.mBufferImage.get(indexImageModel);
                 if (bitmap != null) {
                     Matrix matrix = new Matrix();
                     Matrix matrix2 = matrix;
-                    this.mEffectUtils.effect(this.mEffectList.get(index), matrix, bitmap, index, currentFrame, widthPreview, heightPreview);
-                    if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(index).getSecond(), getStartFrame(index))) {
+                    this.mEffectUtils.effect(this.mEffectList.get(indexImageModel), matrix, bitmap, indexImageModel, currentFrame, widthPreview, heightPreview);
+                    if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(indexImageModel).getSecond(), getStartFrame(indexImageModel))) {
                         this.mLastMatrix = matrix2;
                     }
-                    if (index > 0) {
-                        this.bmIdNew = index - 1;
+                    if (indexImageModel > 0) {
+                        this.bmIdNew = indexImageModel - 1;
                     }
                     if (this.bmIdNew < this.listTransitionModel.size()) {
                         if (!this.isGif) {
@@ -765,15 +767,15 @@ public class VideoMaker {
                             TransitionUtils transitionUtils = this.mTransitionUtils;
                             Transition type = gifTransition.getType();
 //                            i4 = index;
-                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap, this.mPaintImage, index, currentFrame, widthPreview, heightPreview, false, 0);
+                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap, this.mPaintImage, indexImageModel, currentFrame, widthPreview, heightPreview, false, 0);
                         }
                     } else {
                         return;
                     }
                 }
             }
-            i4 = index;
-            index = i4 + 1;
+            i4 = indexImageModel;
+            indexImageModel = i4 + 1;
         }
     }
 
@@ -982,59 +984,61 @@ public class VideoMaker {
         deleteOldTran();
         this.hashMapMovie.remove(this.oldTransitionPath);
         this.currentTransition = gifTransition;
-//        new Thread(new Runnable(gifTransition) {
-//
-//            public final void run() {
-//                com.photoeditor.slideshow.imagetovideo.VideoMaker.this.lambda$applyTransitionNew$3$VideoMaker(this.f$1);
-//                int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[gifTransition.getType().ordinal()];
-//                if (i == 1) {
-//                    this.listTransitionModel.clear();
-//                    for (ImageModel next : this.listImageModel) {
-//                        this.listTransitionModel.add(getRandomClassicTran());
-//                    }
-//                } else if (i == 2) {
-//                    this.listTransitionModel.clear();
-//                    for (ImageModel next2 : this.listImageModel) {
-//                        this.listTransitionModel.add(getRandomMateTran());
-//                    }
-//                } else if (i != 4) {
+        new Thread(new Runnable() {
+            public final void run() {
+                int i = gifTransition.getType().ordinal();
+
+                if (i == Transition.RANDOM_CLASSIC.ordinal()) {
+                    listTransitionModel.clear();
+                    for (ImageModel next : listImageModel) {
+                        listTransitionModel.add(getRandomClassicTran());
+                    }
+                } else if (i == Transition.RANDOM_MATE.ordinal()) {
+                    listTransitionModel.clear();
+                    for (ImageModel next2 : listImageModel) {
+                        listTransitionModel.add(getRandomMateTran());
+                    }
+                }
+//                else if (i != 4) {
 //                    this.listTransitionModel.clear();
 //                    this.listGifImage.clear();
 //                    for (ImageModel next3 : this.listImageModel) {
 //                        this.listTransitionModel.add(gifTransition);
 //                    }
-//                } else {
-//                    this.listTransitionModel.clear();
-//                    for (ImageModel next4 : this.listImageModel) {
-//                        this.listTransitionModel.add(gifTransition);
-//                    }
-//                    this.listGifImage.clear();
-//                    this.transitionDrawableModel = new TransitionDrawableModel();
-//                    this.lottieDrawableTransition = new LottieDrawable();
+//                }
+                else {
+                    listTransitionModel.clear();
+                    for (ImageModel next4 : listImageModel) {
+                        listTransitionModel.add(gifTransition);
+                    }
+                    listGifImage.clear();
+//                    transitionDrawableModel = new TransitionDrawableModel();
+//                    lottieDrawableTransition = new LottieDrawable();
 //                    try {
 //                        File file = new File(gifTransition.getPath());
 //                        LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
 //                                file.getAbsolutePath()).addListener(new LottieListener() {
 //                            public final void onResult(Object obj) {
-//                                com.photoeditor.slideshow.imagetovideo.VideoMaker.this.lambda$null$2$VideoMaker((LottieComposition) obj);
+//                                lambda$null$2$VideoMaker((LottieComposition) obj);
 //                            }
 //                        });
 //                    } catch (FileNotFoundException e) {
 //                        e.printStackTrace();
 //                    }
-//                    for (int i2 = 0; i2 < this.listImageModel.size(); i2++) {
+//                    for (int i2 = 0; i2 < listImageModel.size(); i2++) {
 //                        int startFrame = (int) getStartFrame(i2);
 //                        if (startFrame > 0) {
-//                            this.transitionDrawableModel.addFrameTransition(startFrame);
+//                            transitionDrawableModel.addFrameTransition(startFrame);
 //                        }
 //                    }
-//                }
-//            }
-//        }).start();
+                }
+            }
+        }).start();
     }
 
-    public /* synthetic */ void lambda$applyTransitionNew$3$VideoMaker(GifTransition gifTransition) {
-//        int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[gifTransition.getType().ordinal()];
+    public  void lambda$applyTransitionNew$3$VideoMaker(GifTransition gifTransition) {
+        int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[gifTransition.getType().ordinal()];
+//        int i = gifTransition.get
 //        if (i == 1) {
 //            this.listTransitionModel.clear();
 //            for (ImageModel next : this.listImageModel) {
@@ -1087,13 +1091,13 @@ public class VideoMaker {
 //        }
     }
 
-//    private GifTransition getRandomClassicTran() {
-//        return MyData.INSTANCE.getListGifTran().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTran().size() - 1));
-//    }
+    private GifTransition getRandomClassicTran() {
+        return MyData.INSTANCE.getListGifTran().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTran().size() - 1));
+    }
 
-//    private GifTransition getRandomMateTran() {
-//        return MyData.INSTANCE.getListGifTranSpecial1().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTranSpecial1().size() - 1));
-//    }
+    private GifTransition getRandomMateTran() {
+        return MyData.INSTANCE.getListGifTranSpecial1().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTranSpecial1().size() - 1));
+    }
 
     public void chooseThemeNew(GifTheme gifTheme) {
 //        this.listThemeLottieModel.clear();

@@ -10,8 +10,7 @@ public class DataCategory {
     @SerializedName("id")
     @Expose
 
-    /* renamed from: id */
-    private String f504id;
+    private String id;
     @SerializedName("image")
     @Expose
     private String image = "";
@@ -41,28 +40,28 @@ public class DataCategory {
     }
 
     public DataCategory(String str, String str2) {
-        this.f504id = str;
+        this.id = str;
         this.name = str2;
     }
 
     public DataCategory(String str, String str2, String str3) {
-        this.f504id = str;
+        this.id = str;
         this.name = str2;
         this.image = str3;
     }
 
     public DataCategory(String str, String str2, String str3, String str4) {
-        this.f504id = str;
+        this.id = str;
         this.name = str3;
         this.moduleId = str2;
     }
 
     public String getId() {
-        return this.f504id;
+        return this.id;
     }
 
     public void setId(String str) {
-        this.f504id = str;
+        this.id = str;
     }
 
     public String getName() {
@@ -138,6 +137,6 @@ public class DataCategory {
     }
 
     public String toString() {
-        return "DataCategory{id='" + this.f504id + '\'' + ", name='" + this.name + '\'' + ", isPro=" + this.isPro + ", moduleId=" + this.moduleId + ", moduleName='" + this.moduleName + '\'' + ", appName='" + this.appName + '\'' + ", image='" + this.image + '\'' + ", thumbnail='" + this.thumbnail + '\'' + ", status=" + this.status + ", priority=" + this.priority + '}';
+        return "DataCategory{id='" + this.id + '\'' + ", name='" + this.name + '\'' + ", isPro=" + this.isPro + ", moduleId=" + this.moduleId + ", moduleName='" + this.moduleName + '\'' + ", appName='" + this.appName + '\'' + ", image='" + this.image + '\'' + ", thumbnail='" + this.thumbnail + '\'' + ", status=" + this.status + ", priority=" + this.priority + '}';
     }
 }
