@@ -77,10 +77,10 @@ class TransitionUtils extends TransitionUtilsEx {
         } else if (tran == Transition.FLASH_W.ordinal()) {
             flashTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, true);
         } else if (tran == Transition.ZOOM.ordinal()) {
+//            transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
             zoomTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CLOCK.ordinal()) {
             Log.e("ChinhNH", "transition: " + "clock");
-
             //chua chay duoc
             clockTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CIRCLE.ordinal()) {
@@ -100,39 +100,15 @@ class TransitionUtils extends TransitionUtilsEx {
             blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
         } else if (tran == Transition.DISSOLVE.ordinal()) {
             dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+        } else {
+            canvas.drawBitmap(bitmap2, matrix3, paint3);
         }
-//        switch (transition.ordinal()) {
 
-//            case 3:
-
-//                break;
-//            case 4:
 //            case 5:
-//                transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-//                break;
-//            case 6:
-//
-//                break;
-//            case 7:
-//
+//        transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
 //                break;
 //            case 8:
 //                drawImageLottieTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-//                break;
-
-//                break;
-//            case 19:
-//
-//                break;
-//            case 20:
-//
-//                break;
-//            case 21:
-//
-//                break;
-//            case 22:
-
-//                break;
 //            default:
 //                canvas.drawBitmap(bitmap2, matrix3, paint3);
 //                break;
@@ -157,13 +133,8 @@ class TransitionUtils extends TransitionUtilsEx {
         int i5 = i;
         canvas.save();
         if (!checkStartTime(i5, i2)) {
-            Matrix matrix3 = matrix2;
-            Bitmap bitmap2 = bitmap;
             canvas.drawBitmap(bitmap, matrix2, paint2);
         } else {
-            Matrix matrix4 = matrix2;
-            Bitmap bitmap3 = bitmap;
-            Matrix matrix5 = matrix;
             canvas.drawBitmap(this.mVideoMaker.getLastImage(i5), matrix, paint2);
             if (i5 != 0) {
                 drawTest(canvas, matrix2, bitmap, i5 - 1, i2, i3, i4);

@@ -117,7 +117,7 @@ public class VideoMaker {
     private SparseArray<Bitmap> mBufferImage = new SparseArray<>();
     private SparseArray<Bitmap> mBufferSticker = new SparseArray<>();
     private SparseArray<Bitmap> mBufferTextSticker = new SparseArray<>();
-//    private List<Decor> mDecorBackupList = new ArrayList();
+    //    private List<Decor> mDecorBackupList = new ArrayList();
 //    private List<Decor> mDecorList = new ArrayList();
     private List<Effect> mEffectList = new ArrayList();
     private EffectUtils mEffectUtils = new EffectUtils(this);
@@ -130,18 +130,18 @@ public class VideoMaker {
     private Movie mMovie;
     private Paint mPaintImage = new Paint(2);
     private int mStartTimeAudio;
-//    private List<DecorText> mTextList = new ArrayList();
+    //    private List<DecorText> mTextList = new ArrayList();
     private List mThemeContainer = new ArrayList();
     private TransitionUtils mTransitionUtils = new TransitionUtils(this);
     private String oldTransitionPath = "";
     private Tiny.BitmapCompressOptions options = new Tiny.BitmapCompressOptions();
     private Random random = new Random();
-//    private LocalSong song;
+    //    private LocalSong song;
     private Rect srcRect = new Rect();
     private int start;
     public int totalFrame = 1;
     public int totalFrameTransition = 0;
-//    private TransitionDrawableModel transitionDrawableModel;
+    private TransitionDrawableModel transitionDrawableModel;
 
     public void setProcessing(boolean z) {
     }
@@ -234,7 +234,7 @@ public class VideoMaker {
             this.listImageModel.add(imageModel);
             this.mEffectList.add(Effect.values()[5]);
             this.listTransitionModel.add(
-                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true,  null, Transition.SLIDE_RIGHT)
+                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT)
             );
         }
     }
@@ -256,42 +256,42 @@ public class VideoMaker {
             this.mEffectList.add(Effect.values()[5]); //zoom
 //            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
             this.listTransitionModel.add(
-                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true,  null, Transition.SLIDE_RIGHT)
+                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT)
             );
         }
     }
 
     public void hasNewImage(ArrayList<String> arrayList) {
-//        this.bmIdNew = 0;
-//        this.mBufferImage.clear();
-//        float second = this.listImageModel.get(0).getSecond();
-//        GifTransition gifTransition = this.listTransitionModel.get(0);
-//        this.listTransitionModel.clear();
-//        this.listImageModel.clear();
-//        Iterator<String> it = arrayList.iterator();
-//        while (it.hasNext()) {
-//            ImageModel imageModel = new ImageModel();
-//            imageModel.setUrl(it.next());
-//            imageModel.setSecond(second);
-//            this.listImageModel.add(imageModel);
-//            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
-//            int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[this.currentTransition.getType().ordinal()];
-//            if (i == 1) {
-//                this.listTransitionModel.add(getRandomClassicTran());
-//            } else if (i == 2) {
-//                this.listTransitionModel.add(getRandomMateTran());
-//            } else if (i != 3) {
-//                this.listTransitionModel.add(gifTransition);
-//            }
-//        }
-//        if (this.currentTransition.getType().ordinal() == 3) {
-//            updateRandomTransitionDraw();
-//        }
-//        this.totalFrame = getTotalFrames();
-//        updateTimeVideo();
-//        if (!this.listTransitionJson.isEmpty()) {
-//            updateTransitionJson();
-//        }
+        this.bmIdNew = 0;
+        this.mBufferImage.clear();
+        float second = this.listImageModel.get(0).getSecond();
+        GifTransition gifTransition = this.listTransitionModel.get(0);
+        this.listTransitionModel.clear();
+        this.listImageModel.clear();
+        Iterator<String> it = arrayList.iterator();
+        while (it.hasNext()) {
+            ImageModel imageModel = new ImageModel();
+            imageModel.setUrl(it.next());
+            imageModel.setSecond(second);
+            this.listImageModel.add(imageModel);
+            this.mEffectList.add(Effect.values()[this.random.nextInt(Effect.values().length)]);
+            int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[this.currentTransition.getType().ordinal()];
+            if (i == 1) {
+                this.listTransitionModel.add(getRandomClassicTran());
+            } else if (i == 2) {
+                this.listTransitionModel.add(getRandomMateTran());
+            } else if (i != 3) {
+                this.listTransitionModel.add(gifTransition);
+            }
+        }
+        if (this.currentTransition.getType().ordinal() == 3) {
+            updateRandomTransitionDraw();
+        }
+        this.totalFrame = getTotalFrames();
+        updateTimeVideo();
+        if (!this.listTransitionJson.isEmpty()) {
+            updateTransitionJson();
+        }
     }
 
 //    public void addVideoModel(DrafVideoModel drafVideoModel) {
@@ -390,7 +390,7 @@ public class VideoMaker {
     }
 
     /* renamed from: com.photoeditor.slideshow.imagetovideo.VideoMaker$1 */
-    static /* synthetic */ class C26701 {
+    public static /* synthetic */ class C26701 {
         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition;
 
@@ -648,6 +648,31 @@ public class VideoMaker {
         }
     }
 
+    private void drawTransitionJson(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
+        int startFrame;
+        if (this.lottieTransition == null) {
+            this.lottieTransition = new LottieAnimationView(this.context);
+        }
+        if (!this.listTransitionJson.isEmpty()) {
+            try {
+                Iterator<TransitionJsonModel> it = this.listTransitionJson.iterator();
+                while (it.hasNext()) {
+                    TransitionJsonModel transitionJsonModel = it.next();
+                    if (transitionJsonModel.getComposition() != null && transitionJsonModel.getStartFrame() >= 0 && transitionJsonModel.getEndFrame() >= 0 &&
+                            currentFrame >= transitionJsonModel.getStartFrame() && currentFrame <= transitionJsonModel.getEndFrame() && (startFrame = currentFrame - transitionJsonModel.getStartFrame()) >= 0) {
+                        this.lottieTransition.setComposition(transitionJsonModel.getComposition());
+                        LottieDrawable lottieDrawable = (LottieDrawable) this.lottieTransition.getDrawable();
+                        lottieDrawable.setProgress(((float) startFrame) / lottieDrawable.getMaxFrame());
+                        lottieDrawable.setFrame(startFrame);
+                        drawLottieDrawable(lottieDrawable, canvas, widthPreview, heightPreview);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void drawLottieDrawable(LottieDrawable lottieDrawable, Canvas canvas, int i, int i2) {
         float intrinsicWidth = ((float) i) / ((float) lottieDrawable.getIntrinsicWidth());
         float intrinsicHeight = ((float) i2) / ((float) lottieDrawable.getIntrinsicHeight());
@@ -674,30 +699,6 @@ public class VideoMaker {
         }
     }
 
-    private void drawTransitionJson(Canvas canvas, int i, int i2, int i3) {
-        int startFrame;
-        if (this.lottieTransition == null) {
-            this.lottieTransition = new LottieAnimationView(this.context);
-        }
-        if (!this.listTransitionJson.isEmpty()) {
-            try {
-                Iterator<TransitionJsonModel> it = this.listTransitionJson.iterator();
-                while (it.hasNext()) {
-                    TransitionJsonModel next = it.next();
-                    if (next.getComposition() != null && next.getStartFrame() >= 0 && next.getEndFrame() >= 0 &&
-                            i >= next.getStartFrame() && i <= next.getEndFrame() && (startFrame = i - next.getStartFrame()) >= 0) {
-                        this.lottieTransition.setComposition(next.getComposition());
-                        LottieDrawable lottieDrawable = (LottieDrawable) this.lottieTransition.getDrawable();
-                        lottieDrawable.setProgress(((float) startFrame) / lottieDrawable.getMaxFrame());
-                        lottieDrawable.setFrame(startFrame);
-                        drawLottieDrawable(lottieDrawable, canvas, i2, i3);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public GifTheme getCurrentThemeModel() {
         return this.currentThemeModel;
@@ -929,11 +930,11 @@ public class VideoMaker {
     }
 
     private void updateRandomTransitionDraw() {
-//        for (ImageModel next : this.listImageModel) {
-//            TransitionDrawModel transitionDrawModel = this.listDrawModel.get(PhotorTool.getRandomIndex(0, this.listDrawModel.size() - 1));
-//            this.hashMapBitmapDraw.put(transitionDrawModel.getTransition().getId(), transitionDrawModel.getListBitmap());
-//            this.listTransitionModel.add(transitionDrawModel.getTransition());
-//        }
+        for (ImageModel next : this.listImageModel) {
+            TransitionDrawModel transitionDrawModel = this.listDrawModel.get(PhotorTool.getRandomIndex(0, this.listDrawModel.size() - 1));
+            this.hashMapBitmapDraw.put(transitionDrawModel.getTransition().getId(), transitionDrawModel.getListBitmap());
+            this.listTransitionModel.add(transitionDrawModel.getTransition());
+        }
     }
 
     private void deleteOldTran() {
@@ -941,29 +942,28 @@ public class VideoMaker {
         this.listTransitionJson.clear();
         this.hashMapBitmapDraw.clear();
         this.listTransitionModel.clear();
-//        this.transitionDrawableModel = null;
+        this.transitionDrawableModel = null;
         if (this.mTransitionUtils.getListBitmap() != null) {
             this.mTransitionUtils.getListBitmap().clear();
         }
     }
 
-    public void applyRandomJsonTransition(GifTransition gifTransition, ArrayList<TransitionJsonModel> arrayList) {
+    public void applyRandomJsonTransition(GifTransition gifTransition, ArrayList<TransitionJsonModel> transitionJsonModelList) {
         deleteOldTran();
-        this.listTransitionJsonToRandom = arrayList;
+        this.listTransitionJsonToRandom = transitionJsonModelList;
         this.currentTransition = gifTransition;
         updateTransitionJson();
     }
 
     private void updateTransitionJson() {
-//        ArrayList<TransitionJsonModel> arrayList = this.listTransitionJsonToRandom;
-//        if (arrayList != null && !arrayList.isEmpty()) {
-//            for (ImageModel next : this.listImageModel) {
-//                TransitionJsonModel transitionJsonModel = this.listTransitionJsonToRandom.get(PhotorTool.getRandomIndex(0, this.listTransitionJsonToRandom.size() - 1));
-//                this.listTransitionJson.add(new TransitionJsonModel(transitionJsonModel));
-//                this.listTransitionModel.add(transitionJsonModel.getTransition());
-//            }
-//            updateTimeListTranJson();
-//        }
+        if (listTransitionJsonToRandom != null && !listTransitionJsonToRandom.isEmpty()) {
+            for (ImageModel next : this.listImageModel) {
+                TransitionJsonModel transitionJsonModel = this.listTransitionJsonToRandom.get(PhotorTool.getRandomIndex(0, this.listTransitionJsonToRandom.size() - 1));
+                this.listTransitionJson.add(transitionJsonModel);
+                this.listTransitionModel.add(transitionJsonModel.getTransition());
+            }
+            updateTimeListTranJson();
+        }
     }
 
     private void updateTimeListTranJson() {
@@ -984,59 +984,53 @@ public class VideoMaker {
         deleteOldTran();
         this.hashMapMovie.remove(this.oldTransitionPath);
         this.currentTransition = gifTransition;
-        new Thread(new Runnable() {
-            public final void run() {
-                int i = gifTransition.getType().ordinal();
-
-                if (i == Transition.RANDOM_CLASSIC.ordinal()) {
-                    listTransitionModel.clear();
-                    for (ImageModel next : listImageModel) {
-                        listTransitionModel.add(getRandomClassicTran());
-                    }
-                } else if (i == Transition.RANDOM_MATE.ordinal()) {
-                    listTransitionModel.clear();
-                    for (ImageModel next2 : listImageModel) {
-                        listTransitionModel.add(getRandomMateTran());
-                    }
+        new Thread(() -> {
+            int i = gifTransition.getType().ordinal();
+            if (i == Transition.RANDOM_CLASSIC.ordinal()) {
+                listTransitionModel.clear();
+                for (ImageModel next : listImageModel) {
+                    listTransitionModel.add(getRandomClassicTran());
                 }
-//                else if (i != 4) {
-//                    this.listTransitionModel.clear();
-//                    this.listGifImage.clear();
-//                    for (ImageModel next3 : this.listImageModel) {
-//                        this.listTransitionModel.add(gifTransition);
-//                    }
-//                }
-                else {
-                    listTransitionModel.clear();
-                    for (ImageModel next4 : listImageModel) {
-                        listTransitionModel.add(gifTransition);
+            } else if (i == Transition.RANDOM_MATE.ordinal()) {
+                listTransitionModel.clear();
+                for (ImageModel next2 : listImageModel) {
+                    listTransitionModel.add(getRandomMateTran());
+                }
+            } else if (i != Transition.IMAGE.ordinal()) {
+                listTransitionModel.clear();
+                listGifImage.clear();
+                for (ImageModel next3 : listImageModel) {
+                    listTransitionModel.add(gifTransition);
+                }
+            } else {
+                listTransitionModel.clear();
+                for (ImageModel next4 : listImageModel) {
+                    listTransitionModel.add(gifTransition);
+                }
+                listGifImage.clear();
+                transitionDrawableModel = new TransitionDrawableModel();
+                lottieDrawableTransition = new LottieDrawable();
+                try {
+                    File file = new File(gifTransition.getPath());
+                    LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
+                            file.getAbsolutePath()).addListener(obj -> {
+                                lottieDrawableTransition.setComposition(obj);
+                                transitionDrawableModel.setLottieDrawable(lottieDrawableTransition);
+                            });
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                for (int i2 = 0; i2 < listImageModel.size(); i2++) {
+                    int startFrame = (int) getStartFrame(i2);
+                    if (startFrame > 0) {
+                        transitionDrawableModel.addFrameTransition(startFrame);
                     }
-                    listGifImage.clear();
-//                    transitionDrawableModel = new TransitionDrawableModel();
-//                    lottieDrawableTransition = new LottieDrawable();
-//                    try {
-//                        File file = new File(gifTransition.getPath());
-//                        LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
-//                                file.getAbsolutePath()).addListener(new LottieListener() {
-//                            public final void onResult(Object obj) {
-//                                lambda$null$2$VideoMaker((LottieComposition) obj);
-//                            }
-//                        });
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    for (int i2 = 0; i2 < listImageModel.size(); i2++) {
-//                        int startFrame = (int) getStartFrame(i2);
-//                        if (startFrame > 0) {
-//                            transitionDrawableModel.addFrameTransition(startFrame);
-//                        }
-//                    }
                 }
             }
         }).start();
     }
 
-    public  void lambda$applyTransitionNew$3$VideoMaker(GifTransition gifTransition) {
+    public void lambda$applyTransitionNew$3$VideoMaker(GifTransition gifTransition) {
         int i = C26701.$SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition[gifTransition.getType().ordinal()];
 //        int i = gifTransition.get
 //        if (i == 1) {
@@ -1080,14 +1074,6 @@ public class VideoMaker {
 //                    this.transitionDrawableModel.addFrameTransition(startFrame);
 //                }
 //            }
-//        }
-    }
-
-    public /* synthetic */ void lambda$null$2$VideoMaker(LottieComposition lottieComposition) {
-//        this.lottieDrawableTransition.setComposition(lottieComposition);
-//        TransitionDrawableModel transitionDrawableModel2 = this.transitionDrawableModel;
-//        if (transitionDrawableModel2 != null) {
-//            transitionDrawableModel2.setLottieDrawable(this.lottieDrawableTransition);
 //        }
     }
 

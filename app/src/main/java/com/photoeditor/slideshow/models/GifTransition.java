@@ -170,6 +170,18 @@ public class GifTransition {
         this.type = type;
     }
 
+    public GifTransition(String id, String fileName, String parentId, int resId, Boolean localFile, Boolean pro, Transition type, String path) {
+        this.id = id;
+        this.fileName = fileName;
+        this.displayName = fileName;
+        this.parentId = parentId;
+        this.resId = resId;
+        this.localFile = localFile;
+        this.pro = pro;
+        this.type = type;
+        this.path = path;
+    }
+
     public GifTransition(GifTransition gifTransition) {
         this.id = gifTransition.id;
         this.preview = gifTransition.preview;
