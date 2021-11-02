@@ -58,7 +58,7 @@ class TransitionUtils extends TransitionUtilsEx {
     }
 
     public void transition(Transition transition, Canvas canvas, Matrix matrix, Matrix matrix2,
-                           Bitmap bitmap, Paint paint2, int index, int currentFrame, int widthPreview, int heightPreview, boolean z, int i5) {
+                           Bitmap bitmap, Paint paint2, int indexModel, int currentFrame, int widthPreview, int heightPreview, boolean z, int i5) {
         Matrix matrix3 = matrix2;
         Bitmap bitmap2 = bitmap;
         Paint paint3 = paint2;
@@ -69,37 +69,39 @@ class TransitionUtils extends TransitionUtilsEx {
             setNone(canvas, matrix3, bitmap2, paint3);
         } else if (tran == Transition.SLIDE_LEFT.ordinal() || tran == Transition.SLIDE_DOWN.ordinal() ||
                 tran == Transition.SLIDE_RIGHT.ordinal() || tran == Transition.SLIDE_UP.ordinal()) {
-            slideTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview, transition);
+            slideTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview, transition);
         } else if (tran == Transition.FADE.ordinal()) {
-            fadeTransition(canvas, matrix2, paint2, bitmap, index, currentFrame, 100, 255);
+            fadeTransition(canvas, matrix2, paint2, bitmap, indexModel, currentFrame, 100, 255);
         } else if (tran == Transition.FLASH_B.ordinal()) {
-            flashTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, false);
+            flashTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, false);
         } else if (tran == Transition.FLASH_W.ordinal()) {
-            flashTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, true);
+            flashTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, true);
         } else if (tran == Transition.ZOOM.ordinal()) {
 //            transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-            zoomTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+            zoomTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CLOCK.ordinal()) {
             Log.e("ChinhNH", "transition: " + "clock");
             //chua chay duoc
-            clockTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+            clockTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CIRCLE.ordinal()) {
             Log.e("ChinhNH", "transition: " + "clock");
-            circleTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+            circleTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.COLUMN1.ordinal()) {
-            testColumn(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            testColumn(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         }  else if (tran == Transition.COLUMN2.ordinal()) {
-            testColumnCenter(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            testColumnCenter(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         }  else if (tran == Transition.TRIANGLE.ordinal()) {
-            testTryangle(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
+            testTryangle(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.BOARD.ordinal()) {
-            chessBoardTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            chessBoardTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         } else if (tran == Transition.BLIND_H.ordinal()) {
-            blindTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            blindTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         } else if (tran == Transition.BLIND_V.ordinal()) {
-            blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         } else if (tran == Transition.DISSOLVE.ordinal()) {
-            dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame);
+            dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
+        } else if (tran == Transition.DRAW.ordinal()){
+            transitionDraw(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else {
             canvas.drawBitmap(bitmap2, matrix3, paint3);
         }
@@ -129,41 +131,43 @@ class TransitionUtils extends TransitionUtilsEx {
         canvas.drawBitmap(bitmap, matrix, paint2);
     }
 
-    private void transitionDraw(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        int i5 = i;
+    private void transitionDraw(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int indexModel, int currentFrame,
+                                int widthPreview, int heightPreview) {
+
         canvas.save();
-        if (!checkStartTime(i5, i2)) {
+        if (!checkStartTime(indexModel, currentFrame)) {
             canvas.drawBitmap(bitmap, matrix2, paint2);
+
         } else {
-            canvas.drawBitmap(this.mVideoMaker.getLastImage(i5), matrix, paint2);
-            if (i5 != 0) {
-                drawTest(canvas, matrix2, bitmap, i5 - 1, i2, i3, i4);
+            Log.e("ChinhNH", "transitionDraw: " + 124);
+            canvas.drawBitmap(this.mVideoMaker.getLastImage(indexModel), matrix, paint2);
+            if (indexModel != 0) {
+                drawTest(canvas, matrix2, bitmap, indexModel -1, currentFrame, widthPreview, heightPreview);
             }
         }
         canvas.restore();
     }
 
-    private void drawTest(Canvas canvas, Matrix matrix, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        int i5;
-        int i6;
+    private void drawTest(Canvas canvas, Matrix matrix, Bitmap bitmap, int indexModel, int currentFrame, int widthPreview, int heightPreview) {
+        int startTimeDrawImage;
+        int endTimeDrawImage;
         int size;
         int i7;
         float f;
         if (this.listBitmap != null) {
-            int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i));
+            int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(indexModel).getSecond(), (int) getStartFrame(indexModel));
             if (this.isPreviewTransition) {
-                i5 = 60;
-                i6 = (int) ((VideoMaker.DURATION_TRANSITION + 2.0f) * 30.0f);
+                startTimeDrawImage = 60;
+                endTimeDrawImage = (int) ((VideoMaker.DURATION_TRANSITION + 2.0f) * 30.0f);
             } else {
-                int i8 = (int) (((float) startAndStopFrameOfImageNew[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f));
-                i6 = startAndStopFrameOfImageNew[1];
-                i5 = i8;
+                startTimeDrawImage = (int) (((float) startAndStopFrameOfImageNew[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f));
+                endTimeDrawImage = startAndStopFrameOfImageNew[1];
             }
-            int i9 = i2 - i5;
+            int i9 = currentFrame - startTimeDrawImage;
             if (i9 >= 0 && ((float) i9) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
-                int i10 = i6 - i5;
-                if (this.listBitmap.size() != 0 && (size = i10 / this.listBitmap.size()) > 0) {
-                    int i11 = i9 / size;
+                size = endTimeDrawImage - startTimeDrawImage;
+                if (this.listBitmap.size() != 0 && (size) > 0) {
+                    int i11 = i9 % size;
                     this.paint.setColor(-1);
                     if (i11 >= this.listBitmap.size()) {
                         i11 = this.listBitmap.size() - 1;
@@ -172,17 +176,17 @@ class TransitionUtils extends TransitionUtilsEx {
                     this.paint.setColor(-1);
                     Bitmap bitmap2 = this.listBitmap.get(i11);
                     if (bitmap2 != null && bitmap2.getWidth() > 0 && bitmap2.getHeight() > 0) {
-                        if (i3 > i4) {
-                            f = (float) i3;
+                        if (widthPreview > heightPreview) {
+                            f = (float) widthPreview;
                             i7 = bitmap2.getWidth();
                         } else {
-                            f = (float) i4;
+                            f = (float) heightPreview;
                             i7 = bitmap2.getHeight();
                         }
                         float f2 = f / ((float) i7);
                         int save = canvas.save();
-                        float f3 = ((float) i3) / 2.0f;
-                        float f4 = ((float) i4) / 2.0f;
+                        float f3 = ((float) widthPreview) / 2.0f;
+                        float f4 = ((float) heightPreview) / 2.0f;
                         canvas.scale(f2, f2, f3, f4);
                         canvas.translate(f3 - (((float) bitmap2.getWidth()) / 2.0f), f4 - (((float) bitmap2.getWidth()) / 2.0f));
                         canvas.drawBitmap(this.listBitmap.get(i11), 0.0f, 0.0f, this.paint);

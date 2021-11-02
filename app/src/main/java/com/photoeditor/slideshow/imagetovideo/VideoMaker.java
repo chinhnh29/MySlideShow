@@ -66,7 +66,7 @@ import jp.wasabeef.blurry.internal.BlurFactor;
 
 
 public class VideoMaker {
-    public static float DURATION_TRANSITION = 0.7f;
+    public static float DURATION_TRANSITION = 1.5f;
     public static final int FPS = 30;
     public static int HEIGHT_PREVIEW = 0;
     private static final String TAG = "dsk";
@@ -75,7 +75,7 @@ public class VideoMaker {
     public static float VOLUME = 1.0f;
     public static int WIDTH_PREVIEW;
     private static VideoMaker instance;
-    public int DURATION_IMAGE = 2;
+    public int DURATION_IMAGE = 4;
     private Activity activity;
     private float arX = 1.0f;
     private float arY = 1.0f;
@@ -765,10 +765,10 @@ public class VideoMaker {
                             if (!this.hashMapBitmapDraw.isEmpty()) {
                                 this.mTransitionUtils.setListBitmap(this.hashMapBitmapDraw.get(gifTransition.getId()));
                             }
-                            TransitionUtils transitionUtils = this.mTransitionUtils;
                             Transition type = gifTransition.getType();
 //                            i4 = index;
-                            transitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap, this.mPaintImage, indexImageModel, currentFrame, widthPreview, heightPreview, false, 0);
+                            mTransitionUtils.transition(type, canvas, this.mLastMatrix, matrix2, bitmap, this.mPaintImage,
+                                    indexImageModel, currentFrame, widthPreview, heightPreview, false, 0);
                         }
                     } else {
                         return;
@@ -912,14 +912,14 @@ public class VideoMaker {
 //        return new DrafVideoModel(list, gifTransition, gifTheme, "DraftVideo_" + (System.currentTimeMillis() / WorkRequest.MIN_BACKOFF_MILLIS), TimeUtils.parseTimeStampToString(System.currentTimeMillis()), System.currentTimeMillis(), this.song, this.start, this.end, this.idWatermark);
 //    }
 
-    public void applyTransitionDraw(GifTransition gifTransition, ArrayList<List<Bitmap>> arrayList) {
-//        deleteOldTran();
-//        this.mTransitionUtils.setListBitmap(arrayList.get(0));
-//        this.listTransitionModel.clear();
-//        this.listGifImage.clear();
-//        for (ImageModel next : this.listImageModel) {
-//            this.listTransitionModel.add(gifTransition);
-//        }
+    public void applyTransitionDraw(GifTransition gifTransition, ArrayList<Bitmap> bitmapList) {
+        deleteOldTran();
+        this.mTransitionUtils.setListBitmap(bitmapList);
+        this.listTransitionModel.clear();
+        this.listGifImage.clear();
+        for (ImageModel next : this.listImageModel) {
+            this.listTransitionModel.add(gifTransition);
+        }
     }
 
     public void applyTransitionRandomDraw(GifTransition gifTransition, ArrayList<TransitionDrawModel> arrayList) {

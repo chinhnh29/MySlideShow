@@ -1,5 +1,8 @@
 package com.photoeditor.slideshow;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModel;
@@ -7,16 +10,25 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jaygoo.widget.RangeSeekBar;
 import com.orhanobut.hawk.Hawk;
+import com.photoeditor.slideshow.common.AppConst;
 import com.photoeditor.slideshow.components.MyTranController;
 import com.photoeditor.slideshow.components.MyVideoPlayer;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
@@ -64,6 +76,17 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         setContentView(R.layout.activity_edit);
         ButterKnife.bind(this);
 
+//        try {
+//            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+//            intent.addCategory("android.intent.category.DEFAULT");
+//            intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
+//            startActivityForResult(intent, 2000);
+//        } catch (Exception e) {
+//            Log.e("ChinhNH", "onCreate: " + "llll");
+//            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+//            startActivityForResult(intent, 2000);
+//        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(EditActivity.this,
@@ -85,7 +108,6 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         }
 
     }
-
 
     private void createListTransit() {
         List<String> listEffect = Arrays.asList(getResources().getStringArray(R.array.list_effect));

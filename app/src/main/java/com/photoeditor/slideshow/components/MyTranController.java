@@ -2,6 +2,7 @@ package com.photoeditor.slideshow.components;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,11 +34,14 @@ import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
+import com.zxy.tiny.Tiny;
+import com.zxy.tiny.common.BitmapResult;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -222,21 +226,21 @@ public final class MyTranController {
             transitList.add(new GifTransition("DISSOLVE", "DISSOLVE", "Special", R.drawable.ramdom, true, null, Transition.DISSOLVE));
         } else if (name.equalsIgnoreCase("Brush")) {
             transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1/107.png"));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
             transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()  + "Brush 2"));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()  + "Brush 2"));
             transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
-                    R.drawable.ramdom, true, null, Transition.RANDOM_JSON, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
         }
         rcvListTran.setAdapter(transitionAdapter);
         transitionAdapter.notifyDataSetChanged();
@@ -362,7 +366,7 @@ public final class MyTranController {
 //                    randomTranDraw(gifTransition);
                     return;
                 } else if (type.ordinal() == Transition.DRAW.ordinal()) {
-//                    getBitmapForTransition(gifTransition);
+                    getBitmapForTransition(gifTransition);
                     return;
                 } else if (type.ordinal() == Transition.IMAGE.ordinal()) {
 //                    applyTransitionJson(gifTransition);
@@ -381,36 +385,39 @@ public final class MyTranController {
 //    }
 //
     private final void randomTranJson(GifTransition gifTransition) {
-//        List<GifTransition> gifTransitionList = new ArrayList<>();
-//        Iterator<GifTransition> iterator = transitList.iterator();
-//        while (iterator.hasNext()) {
-//            GifTransition next = iterator.next();
-//            boolean localFile = next.getLocalFile();
-//
-//            if (localFile && next.getPath() != null) {
-//                Log.e("ChinhNH", "randomTranJson: " + next.getPath());
-//                gifTransitionList.add(next);
-//            }
-//        }
-//        if (!gifTransitionList.isEmpty()) {
-//            ArrayList<TransitionJsonModel> jsonModelArrayList = new ArrayList<>();
-//            Iterator<GifTransition> it = gifTransitionList.iterator();
-//            while (it.hasNext()) {
-//                GifTransition gifTransition1 = it.next();
-//                try {
-//                    File file = new File(gifTransition.getPath());
-//                    LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
-//                            file.getAbsolutePath()).addListener(obj -> {
-//                        jsonModelArrayList.add(new TransitionJsonModel(gifTransition, obj, 0, 0));
-//                    });
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (!jsonModelArrayList.isEmpty()) {
-//                mVideoMaker.applyRandomJsonTransition(gifTransition, jsonModelArrayList);
-//            }
-//        }
+        List<GifTransition> gifTransitionList = new ArrayList<>();
+        Iterator<GifTransition> iterator = transitList.iterator();
+        while (iterator.hasNext()) {
+            GifTransition next = iterator.next();
+            boolean localFile = next.getLocalFile();
+
+            if (localFile && next.getPath() != null) {
+                Log.e("ChinhNH", "randomTranJson: " + next.getPath());
+                gifTransitionList.add(next);
+            }
+        }
+        if (!gifTransitionList.isEmpty()) {
+            ArrayList<TransitionJsonModel> jsonModelArrayList = new ArrayList<>();
+            Iterator<GifTransition> it = gifTransitionList.iterator();
+            while (it.hasNext()) {
+                GifTransition gifTransition1 = it.next();
+                try {
+                    File file = new File(gifTransition.getPath());
+                    LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
+                            file.getAbsolutePath()).addListener(obj -> {
+                        jsonModelArrayList.add(new TransitionJsonModel(gifTransition, obj, 0, 0));
+                    });
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            if (!jsonModelArrayList.isEmpty()) {
+                mVideoMaker.applyRandomJsonTransition(gifTransition, jsonModelArrayList);
+            }
+
+        }
     }
 //
 //    private final void randomTranDraw(GifTransition gifTransition) {
@@ -420,25 +427,30 @@ public final class MyTranController {
 //        this.jobRandom = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO()), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$randomTranDraw$1(this, arrayList, gifTransition, (Continuation) null), 3, (Object) null);
 //    }
 //
-//    private final void getBitmapForTransition(GifTransition gifTransition) {
+    private final void getBitmapForTransition(GifTransition gifTransition) {
 //        Job unused = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO().plus(this.jobLoadBitmap)), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$getBitmapForTransition$1(this, gifTransition, (Continuation) null), 3, (Object) null);
-//    }
-//
-//    /* access modifiers changed from: private */
-//    public final ArrayList<Bitmap> getListBitmap(File file) {
-//        Tiny.BitmapCompressOptions bitmapCompressOptions = new Tiny.BitmapCompressOptions();
-//        ArrayList<Bitmap> arrayList = new ArrayList<>();
-//        File[] listFiles = file.listFiles();
-//        Arrays.sort(listFiles);
-//        for (File source : listFiles) {
-//            BitmapResult compressSync = Tiny.getInstance().source(source).asBitmap().withOptions(bitmapCompressOptions).compressSync();
-//            Bitmap bitmap = compressSync.bitmap;
-//            if (bitmap != null) {
-//                arrayList.add(bitmap);
-//            }
-//        }
-//        return arrayList;
-//    }
+        File file = new File(gifTransition.getPath());
+        if (file.exists()) {
+            ArrayList<Bitmap> listBitmap = getListBitmap(file);
+            mVideoMaker.applyTransitionDraw(gifTransition, listBitmap);
+        }
+    }
+
+    /* access modifiers changed from: private */
+    public final ArrayList<Bitmap> getListBitmap(File file) {
+        Tiny.BitmapCompressOptions bitmapCompressOptions = new Tiny.BitmapCompressOptions();
+        ArrayList<Bitmap> arrayList = new ArrayList<>();
+        File[] listFiles = file.listFiles();
+        Arrays.sort(listFiles);
+        for (File source : listFiles) {
+            BitmapResult compressSync = Tiny.getInstance().source(source).asBitmap().withOptions(bitmapCompressOptions).compressSync();
+            Bitmap bitmap = compressSync.bitmap;
+            if (bitmap != null) {
+                arrayList.add(bitmap);
+            }
+        }
+        return arrayList;
+    }
 //
 //    public final void cancelTranNew() {
 //        this.isModeTran = false;
