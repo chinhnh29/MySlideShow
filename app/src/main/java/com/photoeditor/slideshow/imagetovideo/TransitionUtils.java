@@ -88,9 +88,9 @@ class TransitionUtils extends TransitionUtilsEx {
             circleTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.COLUMN1.ordinal()) {
             testColumn(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
-        }  else if (tran == Transition.COLUMN2.ordinal()) {
+        } else if (tran == Transition.COLUMN2.ordinal()) {
             testColumnCenter(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
-        }  else if (tran == Transition.TRIANGLE.ordinal()) {
+        } else if (tran == Transition.TRIANGLE.ordinal()) {
             testTryangle(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.BOARD.ordinal()) {
             chessBoardTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
@@ -100,21 +100,14 @@ class TransitionUtils extends TransitionUtilsEx {
             blindVerticalTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
         } else if (tran == Transition.DISSOLVE.ordinal()) {
             dissolveTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);
-        } else if (tran == Transition.DRAW.ordinal()){
+        } else if (tran == Transition.DRAW.ordinal()) {
             transitionDraw(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else {
             canvas.drawBitmap(bitmap2, matrix3, paint3);
         }
 
-//            case 5:
-//        transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-//                break;
 //            case 8:
 //                drawImageLottieTransition(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
-//            default:
-//                canvas.drawBitmap(bitmap2, matrix3, paint3);
-//                break;
-//        }
         paint3.setAlpha(255);
     }
 
@@ -139,7 +132,7 @@ class TransitionUtils extends TransitionUtilsEx {
         } else {
             canvas.drawBitmap(this.mVideoMaker.getLastImage(indexModel), matrix, paint2);
             if (indexModel != 0) {
-                drawTest(canvas, matrix2, bitmap, indexModel-1, currentFrame, widthPreview, heightPreview);
+                drawTest(canvas, matrix2, bitmap, indexModel - 1, currentFrame, widthPreview, heightPreview);
             }
         }
         canvas.restore();
@@ -162,7 +155,7 @@ class TransitionUtils extends TransitionUtilsEx {
             }
             int currentSizeTime = currentFrame - startTimeDrawImage;
             if (currentSizeTime >= 0 && ((float) currentSizeTime) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
-                int i10= endTimeDrawImage - startTimeDrawImage;
+                int i10 = endTimeDrawImage - startTimeDrawImage;
                 if (this.listBitmap.size() != 0 && (i10 / this.listBitmap.size()) > 0) {
                     sizeTimeDraw = i10 / this.listBitmap.size();
                     int i11 = currentSizeTime / sizeTimeDraw;
