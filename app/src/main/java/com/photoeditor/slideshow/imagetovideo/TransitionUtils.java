@@ -134,7 +134,7 @@ class TransitionUtils extends TransitionUtilsEx {
     private void transitionDraw(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int indexModel, int currentFrame,
                                 int widthPreview, int heightPreview) {
         canvas.save();
-        if (!checkStartTime(indexModel, currentFrame)) {
+        if (!checkStartTime(indexModel, currentFrame) || indexModel == 0) {
             canvas.drawBitmap(bitmap, matrix2, paint2);
         } else {
             canvas.drawBitmap(this.mVideoMaker.getLastImage(indexModel), matrix, paint2);
