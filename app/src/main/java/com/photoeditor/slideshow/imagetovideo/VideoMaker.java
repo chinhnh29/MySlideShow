@@ -75,7 +75,7 @@ public class VideoMaker {
     public static float VOLUME = 1.0f;
     public static int WIDTH_PREVIEW;
     private static VideoMaker instance;
-    public int DURATION_IMAGE = 4;
+    public int DURATION_IMAGE = 2;
     private Activity activity;
     private float arX = 1.0f;
     private float arY = 1.0f;

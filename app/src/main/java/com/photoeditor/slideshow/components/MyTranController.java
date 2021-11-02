@@ -228,7 +228,7 @@ public final class MyTranController {
             transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
             transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()  + "Brush 2"));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()  + "Arrow 1"));
             transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",

@@ -43,9 +43,9 @@ public class TimeUtils {
         return true;
     }
 
-    static boolean checkStartTime3(int i, float f) {
-        int[] iArr = {(int) f, (int) (f + (VideoMaker.DURATION_TRANSITION * 30.0f))};
-        if (i < iArr[0] || i > iArr[1]) {
+    static boolean checkStartTime3(int currentFrame, float startFrame) {
+        int[] iArr = {(int) startFrame, (int) (startFrame + (VideoMaker.DURATION_TRANSITION * 30.0f))};
+        if (currentFrame < iArr[0] || currentFrame > iArr[1]) {
             return false;
         }
         return true;

@@ -133,16 +133,13 @@ class TransitionUtils extends TransitionUtilsEx {
 
     private void transitionDraw(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int indexModel, int currentFrame,
                                 int widthPreview, int heightPreview) {
-
         canvas.save();
         if (!checkStartTime(indexModel, currentFrame)) {
             canvas.drawBitmap(bitmap, matrix2, paint2);
-
         } else {
-            Log.e("ChinhNH", "transitionDraw: " + 124);
             canvas.drawBitmap(this.mVideoMaker.getLastImage(indexModel), matrix, paint2);
             if (indexModel != 0) {
-                drawTest(canvas, matrix2, bitmap, indexModel -1, currentFrame, widthPreview, heightPreview);
+                drawTest(canvas, matrix2, bitmap, indexModel-1, currentFrame, widthPreview, heightPreview);
             }
         }
         canvas.restore();
@@ -151,7 +148,7 @@ class TransitionUtils extends TransitionUtilsEx {
     private void drawTest(Canvas canvas, Matrix matrix, Bitmap bitmap, int indexModel, int currentFrame, int widthPreview, int heightPreview) {
         int startTimeDrawImage;
         int endTimeDrawImage;
-        int size;
+        int sizeTimeDraw;
         int i7;
         float f;
         if (this.listBitmap != null) {
@@ -163,11 +160,12 @@ class TransitionUtils extends TransitionUtilsEx {
                 startTimeDrawImage = (int) (((float) startAndStopFrameOfImageNew[1]) - (VideoMaker.DURATION_TRANSITION * 30.0f));
                 endTimeDrawImage = startAndStopFrameOfImageNew[1];
             }
-            int i9 = currentFrame - startTimeDrawImage;
-            if (i9 >= 0 && ((float) i9) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
-                size = endTimeDrawImage - startTimeDrawImage;
-                if (this.listBitmap.size() != 0 && (size) > 0) {
-                    int i11 = i9 % size;
+            int currentSizeTime = currentFrame - startTimeDrawImage;
+            if (currentSizeTime >= 0 && ((float) currentSizeTime) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
+                int i10= endTimeDrawImage - startTimeDrawImage;
+                if (this.listBitmap.size() != 0 && (i10 / this.listBitmap.size()) > 0) {
+                    sizeTimeDraw = i10 / this.listBitmap.size();
+                    int i11 = currentSizeTime / sizeTimeDraw;
                     this.paint.setColor(-1);
                     if (i11 >= this.listBitmap.size()) {
                         i11 = this.listBitmap.size() - 1;
@@ -201,11 +199,11 @@ class TransitionUtils extends TransitionUtilsEx {
         }
     }
 
-    private boolean checkStartTime(int i, int i2) {
+    private boolean checkStartTime(int imageModel, int currentFrame) {
         if (this.isPreviewTransition) {
-            return checkStartTimePreviewTran(i, i2);
+            return checkStartTimePreviewTran(imageModel, currentFrame);
         }
-        return TimeUtils.checkStartTime3(i2, getStartFrame(i));
+        return TimeUtils.checkStartTime3(currentFrame, getStartFrame(imageModel));
     }
 
     private boolean checkStartTimePreviewTran(int i, int i2) {
@@ -225,12 +223,12 @@ class TransitionUtils extends TransitionUtilsEx {
         return true;
     }
 
-    private float getStartFrame(int i) {
+    private float getStartFrame(int imageModel) {
         float f = 0.0f;
-        if (i <= 0) {
+        if (imageModel <= 0) {
             return 0.0f;
         }
-        for (int i2 = 0; i2 < i; i2++) {
+        for (int i2 = 0; i2 < imageModel; i2++) {
             f += this.mVideoMaker.getListImageModel().get(i2).getSecond();
         }
         return f * 30.0f;
