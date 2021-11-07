@@ -371,12 +371,11 @@ public final class MyTranController {
 //        this.isUseTranFromTheme = z;
 //    }
 //
-//    public final void changeTransitionByTheme(GifTransition gifTransition) {
-//        Intrinsics.checkNotNullParameter(gifTransition, "tranModel");
-//        this.isUseTranFromTheme = true;
-//        actionChangeTransition(gifTransition);
-//    }
-//
+    public final void changeTransitionByTheme(GifTransition gifTransition) {
+        this.isUseTranFromTheme = true;
+        actionChangeTransition(gifTransition);
+    }
+
     public final void changeTransition(GifTransition gifTransition) {
         this.isUseTranFromTheme = false;
         actionChangeTransition(gifTransition);
@@ -407,20 +406,20 @@ public final class MyTranController {
 
 
     private void applyTransitionJson(GifTransition gifTransition) {
-        ArrayList<TransitionJsonModel> arrayList = new ArrayList<>();
+        ArrayList<TransitionJsonModel> transitionJsonModelArrayList = new ArrayList<>();
         LottieResult<LottieComposition> fromJsonInputStreamSync;
         try {
             if ((fromJsonInputStreamSync = LottieCompositionFactory.fromJsonInputStreamSync(
                     new FileInputStream(new File(gifTransition.getPath())), gifTransition.getPath())) != null) {
                 LottieComposition value = fromJsonInputStreamSync.getValue();
-                arrayList.add(new TransitionJsonModel(gifTransition, value, 0, 0));
+                transitionJsonModelArrayList.add(new TransitionJsonModel(gifTransition, value, 0, 0));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return;
         }
-        if ((!arrayList.isEmpty()) && mVideoMaker != null) {
-            mVideoMaker.applyRandomJsonTransition(gifTransition, arrayList);
+        if ((!transitionJsonModelArrayList.isEmpty()) && mVideoMaker != null) {
+            mVideoMaker.applyRandomJsonTransition(gifTransition, transitionJsonModelArrayList);
         }
     }
 
@@ -433,13 +432,13 @@ public final class MyTranController {
             }
         }
         if (!gifTransitionList.isEmpty()) {
-            ArrayList<TransitionJsonModel> jsonModelArrayList = new ArrayList<>();
+            ArrayList<TransitionJsonModel> transitionJsonModelArrayList = new ArrayList<>();
             for (GifTransition gifTransition1 : gifTransitionList) {
                 try {
                     File file = new File(gifTransition.getPath());
                     LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
                             file.getAbsolutePath()).addListener(obj -> {
-                        jsonModelArrayList.add(new TransitionJsonModel(gifTransition, obj, 0, 0));
+                        transitionJsonModelArrayList.add(new TransitionJsonModel(gifTransition, obj, 0, 0));
                     });
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -447,8 +446,8 @@ public final class MyTranController {
             }
 
 
-            if (!jsonModelArrayList.isEmpty()) {
-                mVideoMaker.applyRandomJsonTransition(gifTransition, jsonModelArrayList);
+            if (!transitionJsonModelArrayList.isEmpty()) {
+                mVideoMaker.applyRandomJsonTransition(gifTransition, transitionJsonModelArrayList);
             }
         }
     }

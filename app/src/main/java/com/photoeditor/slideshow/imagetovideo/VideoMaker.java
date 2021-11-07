@@ -544,8 +544,8 @@ public class VideoMaker {
     /* access modifiers changed from: package-private */
     public void previewImage(Canvas canvas, int currentFrame) {
         drawImages(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-//        drawTransitionJson(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-//        drawThemeNew(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+        drawTransitionJson(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+        drawThemeNew(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
     }
 
     /* access modifiers changed from: package-private */
@@ -627,20 +627,20 @@ public class VideoMaker {
 //        drawWatermark(canvas, i2, i3);
     }
 
-    private void drawThemeNew(Canvas canvas, int i, int i2, int i3) {
+    private void drawThemeNew(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
         if (listThemeLottieModel != null && listThemeLottieModel.size() > 0) {
             for (ThemeLottieModel themeLottieModel : this.listThemeLottieModel) {
-                if ((i > themeLottieModel.getStart() && i <= themeLottieModel.getEnd()) ||
-                        (i > themeLottieModel.getStart2() && i <= themeLottieModel.getEnd2())) {
-                    this.frameDraw = i;
-                    if (i > themeLottieModel.getMaxFrame()) {
-                        this.frameDraw = i % themeLottieModel.getMaxFrame();
+                if ((currentFrame > themeLottieModel.getStart() && currentFrame <= themeLottieModel.getEnd()) ||
+                        (currentFrame > themeLottieModel.getStart2() && currentFrame <= themeLottieModel.getEnd2())) {
+                    frameDraw = currentFrame;
+                    if (currentFrame > themeLottieModel.getMaxFrame()) {
+                        frameDraw = currentFrame % themeLottieModel.getMaxFrame();
                     }
                     try {
                         this.lottieAnimationView.setComposition(themeLottieModel.getLottieComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieAnimationView.getDrawable();
                         lottieDrawable.setProgress(((float) this.frameDraw) / lottieDrawable.getMaxFrame());
-                        drawLottieDrawable(lottieDrawable, canvas, i2, i3);
+                        drawLottieDrawable(lottieDrawable, canvas, widthPreview, heightPreview);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1094,11 +1094,11 @@ public class VideoMaker {
     }
 
     public void chooseThemeNew(GifTheme gifTheme) {
-//        this.listThemeLottieModel.clear();
-//        this.currentThemeModel = gifTheme;
-//        if (gifTheme.getJson().booleanValue()) {
-//            chooseThemeNewLottie(gifTheme);
-//        }
+        this.listThemeLottieModel.clear();
+        this.currentThemeModel = gifTheme;
+        if (gifTheme.getJson()) {
+            chooseThemeNewLottie(gifTheme);
+        }
     }
 
     public void chooseThemeNewLottie(GifTheme gifTheme) {
@@ -1114,9 +1114,8 @@ public class VideoMaker {
                 File file = new File(this.currentThemeModel.getThemePath());
                 if (file.exists()) {
                     this.listThemeLottieModel.clear();
-                    File[] listFiles = file.listFiles();
-                    this.listFile = listFiles;
-                    Arrays.sort(listFiles);
+                    listFile = file.listFiles();
+                    Arrays.sort(listFile);
                     getDrawbleTheme(0);
                 }
             }
@@ -1129,9 +1128,8 @@ public class VideoMaker {
             File file = fileArr[i];
             if (file != null && file.getAbsolutePath().contains(".json")) {
                 try {
-                    LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file), file.getAbsolutePath()).addListener((LottieListener) obj -> {
+                    LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file), file.getAbsolutePath()).addListener(lottieComposition -> {
                         ThemeLottieModel themeLottieModel = new ThemeLottieModel();
-                        LottieComposition lottieComposition = (LottieComposition) obj;
                         themeLottieModel.setLottieComposition(lottieComposition);
                         themeLottieModel.setMaxFrame((int) lottieComposition.getEndFrame());
                         listThemeLottieModel.add(themeLottieModel);

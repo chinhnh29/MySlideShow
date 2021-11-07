@@ -58,6 +58,7 @@ public final class MyData {
         listGifTranSpecial1.add(new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, true, Transition.CIRCLE));
         listGifTranSpecial1.add(new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, true, Transition.BOARD));
         listGifTranSpecial1.add(new GifTransition("BLIND_H", "BLIND_H", "Special", R.drawable.ramdom, true, true, Transition.BLIND_H));
+        listGifTranSpecial1.add(new GifTransition("DISSOLVE", "DISSOLVE", "Special", R.drawable.ramdom, true, true, Transition.DISSOLVE));
 
         listGifTranDrawBrush = new ArrayList<>();
         listGifTranDrawBrush.add(new GifTransition("BRUSH 1", "Brush 1", "Special",

@@ -3,16 +3,16 @@ package com.photoeditor.slideshow.imagetovideo;
 public enum Transition {
     NONE, //
     IMAGE,
-    DRAW,
+    DRAW,//
     GIF,
     RANDOM_IMAGE,
     RANDOM,
     RANDOM_CLASSIC, //
-    RANDOM_MATE,
-    RANDOM_DRAW,
+    RANDOM_MATE,//
+    RANDOM_DRAW,//
     RANDOM_JSON,
     CLOCK, //
-    DISSOLVE,
+    DISSOLVE,//
     BLIND_V,
     FADE, //
     ZOOM, //
@@ -22,10 +22,10 @@ public enum Transition {
     SLIDE_RIGHT, //
     SLIDE_UP, //
     SLIDE_DOWN, //
-    COLUMN2,
-    TRIANGLE,
-    COLUMN1,
-    CIRCLE,
-    BOARD,
-    BLIND_H
+    COLUMN2,//
+    TRIANGLE,//
+    COLUMN1,//
+    CIRCLE,//
+    BOARD,//
+    BLIND_H//
 }
