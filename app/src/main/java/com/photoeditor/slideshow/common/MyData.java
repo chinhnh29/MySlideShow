@@ -8,7 +8,6 @@ import com.photoeditor.slideshow.models.GifTransition;
 //import com.photoeditor.slideshow.models.music.Music;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -20,6 +19,7 @@ public final class MyData {
 
 
     private ArrayList<GifTransition> listGifTranSpecial1;
+    private ArrayList<GifTransition> listGifTranDrawBrush;
 //    private static final ArrayList<ItemShare> listShare = CollectionsKt.arrayListOf(
 //            new ItemShare("Instagram", R.drawable.icon_share_instagram),
 //            new ItemShare("Instagram story", R.drawable.icon_share_instagram_story),
@@ -58,6 +58,25 @@ public final class MyData {
         listGifTranSpecial1.add(new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, true, Transition.CIRCLE));
         listGifTranSpecial1.add(new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, true, Transition.BOARD));
         listGifTranSpecial1.add(new GifTransition("BLIND_H", "BLIND_H", "Special", R.drawable.ramdom, true, true, Transition.BLIND_H));
+
+        listGifTranDrawBrush = new ArrayList<>();
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 2"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 3"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 4"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 5"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 6"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 7"));
+        listGifTranDrawBrush.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
+                R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 8"));
+
     }
 
 
@@ -83,6 +102,10 @@ public final class MyData {
 
     public final ArrayList<GifTransition> getListGifTranSpecial1() {
         return listGifTranSpecial1;
+    }
+
+    public final ArrayList<GifTransition> getListGifTranDrawBrush() {
+        return listGifTranDrawBrush;
     }
 
 //    public final ArrayList<ItemShare> getListShare() {

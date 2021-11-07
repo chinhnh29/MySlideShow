@@ -156,8 +156,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 
 
 
-        myTranController = (new MyTranController(transition/*, transitionViewModel*/, this,
-                this, rcvListTabTransit, rcvListTransit, videoMaker, this));
+        myTranController = new MyTranController(transition/*, transitionViewModel*/, this,
+                this, rcvListTabTransit, rcvListTransit, videoMaker, this);
 
 
 //        MyTranController myTranController = getMyTranController();

@@ -19,6 +19,7 @@ import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.customView.recyclical.datasource.SelectableDataSourceKt;
 //import com.photoeditor.slideshow.dialog.DialogDownloadDetail;
 import com.photoeditor.slideshow.common.AppConst;
+import com.photoeditor.slideshow.common.MyData;
 import com.photoeditor.slideshow.imagetovideo.Transition;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 //import com.photoeditor.slideshow.interfaces.EditStickerListener;
@@ -30,6 +31,7 @@ import com.photoeditor.slideshow.models.GifTransition;
 //import com.photoeditor.slideshow.viewmodel.DialogViewModel;
 //import com.photoeditor.slideshow.viewmodel.GifTransitionViewModel;
 //import com.photoeditor.slideshow.models.GifTransitionViewModel;
+import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
@@ -92,7 +94,7 @@ public final class MyTranController {
 
     private List<DataCategoryTrans> dataCategoryTransList;
     private List<GifTransition> transitList;
-
+    private MyData myData;
 
     public interface TransitionDownloadInterface {
         void downloadSuccess(GifTransition gifTransition);
@@ -113,18 +115,18 @@ public final class MyTranController {
 
     public MyTranController(GifTransition transit,
             /*GifTransitionViewModel gifTransitionViewModel,*/ LifecycleOwner lifecycleOwner,
-                            Context context2, RecyclerView recyclerView, RecyclerView rcvListTrans,
+                            Context context, RecyclerView recyclerView, RecyclerView rcvListTrans,
                             VideoMaker videoMaker/*, View view*/, Activity activity2) {
 
 
 //        final DialogViewModel dialogViewModel2 = dialogViewModel;
-        LifecycleOwner lifecycleOwner2 = lifecycleOwner;
-        Context context3 = context2;
+//        LifecycleOwner lifecycleOwner2 = lifecycleOwner;
+//        Context context3 = context2;
 //        RecyclerView recyclerView2 = recyclerView;
 //        TabTranIndicator tabTranIndicator2 = tabTranIndicator;
 //        View view2 = view;
 //        this.transitionViewModel = gifTransitionViewModel;
-        this.context = context3;
+        this.context = context;
         this.dataCategoryTransList = dataCategoryTransList;
         this.rcvTabTrans = recyclerView;
         this.rcvListTran = rcvListTrans;
@@ -139,6 +141,8 @@ public final class MyTranController {
                 this.currentIdTranSelected = id;
             }
         }
+        if (listTransition == null) listTransition = new ArrayList<>();
+        myData = new MyData();
 //        gifTransitionViewModel.getListGifCategory().observe(lifecycleOwner2, new Observer<ArrayList<DataCategory>>() {
 //            public final void onChanged(final ArrayList<DataCategory> arrayList) {
 //                isHaveCategory = true;
@@ -215,11 +219,11 @@ public final class MyTranController {
 
     public void updateListTransit(String name) {
         transitList.clear();
-        if (name.equalsIgnoreCase("Mate")) {
+        if (name.equalsIgnoreCase("Mate")) { //ok
             transitList.add(new GifTransition("none", "none", "Special", R.color.trans, true, null, Transition.NONE));
-            transitList.add(new GifTransition("RandomMate", "Random", "Special", R.drawable.ic_random, true, (Boolean) null, Transition.RANDOM_MATE));
-            transitList.add(new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN1));
-            transitList.add(new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN2));
+            transitList.add(new GifTransition("RandomMate", "Random", "Special", R.drawable.ic_random, true, null, Transition.RANDOM_MATE));
+            transitList.add(new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, null, Transition.COLUMN1));
+            transitList.add(new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, null, Transition.COLUMN2));
             transitList.add(new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, null, Transition.TRIANGLE));
             transitList.add(new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, null, Transition.CIRCLE));
             transitList.add(new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, null, Transition.BOARD));
@@ -227,22 +231,24 @@ public final class MyTranController {
             transitList.add(new GifTransition("BLIND_V", "BLIND_V", "Special", R.drawable.ramdom, true, null, Transition.BLIND_V));
             transitList.add(new GifTransition("DISSOLVE", "DISSOLVE", "Special", R.drawable.ramdom, true, null, Transition.DISSOLVE));
         } else if (name.equalsIgnoreCase("Brush")) {
+            transitList.add(new GifTransition("RANDOM Brush", "Random", "Special",
+                    R.drawable.ramdom, true, null, Transition.RANDOM_DRAW));
             transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
             transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Arrow 1"));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 2"));
             transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 3"));
             transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 4"));
             transitList.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 5"));
             transitList.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 6"));
             transitList.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 7"));
             transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 8"));
         } else if (name.equalsIgnoreCase("Json")) {
             transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween/Video 6 P1.json"));
@@ -385,7 +391,7 @@ public final class MyTranController {
                     randomTranJson(gifTransition);
                     return;
                 } else if (type.ordinal() == Transition.RANDOM_DRAW.ordinal()) {
-//                    randomTranDraw(gifTransition);
+                    randomTranDraw(gifTransition);
                     return;
                 } else if (type.ordinal() == Transition.DRAW.ordinal()) {
                     getBitmapForTransition(gifTransition);
@@ -395,7 +401,7 @@ public final class MyTranController {
                     return;
                 }
             }
-            this.mVideoMaker.applyTransitionNew(gifTransition);
+            mVideoMaker.applyTransitionNew(gifTransition);
         }
     }
 
@@ -447,11 +453,25 @@ public final class MyTranController {
         }
     }
 
-    private final void randomTranDraw(GifTransition gifTransition) {
-//        ArrayList arrayList = new ArrayList();
-//
-//        Job.DefaultImpls.cancel$default(this.jobRandom, (CancellationException) null, 1, (Object) null);
-//        this.jobRandom = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO()), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$randomTranDraw$1(this, arrayList, gifTransition, (Continuation) null), 3, (Object) null);
+    private void randomTranDraw(GifTransition gifTrans) {
+        ArrayList<TransitionDrawModel> transitionDrawModelArrayList = new ArrayList<>();
+        listTransition = myData.getListGifTranDrawBrush();
+        new Thread(() -> {
+            if (listTransition != null) {
+                for (GifTransition gifTransition : listTransition) {
+                    boolean localFile = gifTransition.getLocalFile();
+                    if (localFile && gifTransition.getPath() != null) {
+                        File file = new File(gifTransition.getPath());
+                        if (file.exists()) {
+                            transitionDrawModelArrayList.add(new TransitionDrawModel(gifTransition, getListBitmap(file)));
+                        }
+                    }
+                }
+                if (!transitionDrawModelArrayList.isEmpty()) {
+                    mVideoMaker.applyTransitionRandomDraw(gifTrans, transitionDrawModelArrayList);
+                }
+            }
+        }).start();
     }
 
     //

@@ -544,8 +544,8 @@ public class VideoMaker {
     /* access modifiers changed from: package-private */
     public void previewImage(Canvas canvas, int currentFrame) {
         drawImages(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-        drawTransitionJson(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
-        drawThemeNew(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+//        drawTransitionJson(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
+//        drawThemeNew(canvas, currentFrame, (int) (((float) WIDTH_PREVIEW) * this.arX), (int) (((float) HEIGHT_PREVIEW) * this.arY));
     }
 
     /* access modifiers changed from: package-private */
@@ -767,7 +767,7 @@ public class VideoMaker {
                             //Kiểm tra xem có phải vẽ hình ảnh hay không?
                             GifTransition gifTransition = this.listTransitionModel.get(this.bmIdNew);
                             if (!this.hashMapBitmapDraw.isEmpty()) {
-                                this.mTransitionUtils.setListBitmap(this.hashMapBitmapDraw.get(gifTransition.getId()));
+                                mTransitionUtils.setListBitmap(this.hashMapBitmapDraw.get(gifTransition.getId()));
                             }
                             Transition type = gifTransition.getType();
 //                            i4 = index;
@@ -926,9 +926,9 @@ public class VideoMaker {
         }
     }
 
-    public void applyTransitionRandomDraw(GifTransition gifTransition, ArrayList<TransitionDrawModel> arrayList) {
+    public void applyTransitionRandomDraw(GifTransition gifTransition, ArrayList<TransitionDrawModel> transitionDrawModelArrayList) {
         deleteOldTran();
-        this.listDrawModel = arrayList;
+        this.listDrawModel = transitionDrawModelArrayList;
         this.currentTransition = gifTransition;
         updateRandomTransitionDraw();
     }

@@ -62,8 +62,6 @@ public final class TransitionDrawModel {
     }
 
     public TransitionDrawModel(GifTransition gifTransition, List<Bitmap> list) {
-//        Intrinsics.checkNotNullParameter(gifTransition, "transition");
-//        Intrinsics.checkNotNullParameter(list, "listBitmap");
         this.transition = gifTransition;
         this.listBitmap = list;
     }

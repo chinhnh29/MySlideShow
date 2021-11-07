@@ -35,7 +35,8 @@
 //    final /* synthetic */ MyTranController this$0;
 //
 //    /* JADX INFO: super call moved to the top of the method (can break code semantics) */
-//    MyTranController$randomTranDraw$1(MyTranController myTranController, ArrayList arrayList, GifTransition gifTransition) {
+//    MyTranController$randomTranDraw$1(MyTranController myTranController, ArrayList arrayList, GifTransition gifTransition, Continuation continuation) {
+//        super(2, continuation);
 //        this.this$0 = myTranController;
 //        this.$list = arrayList;
 //        this.$tranModel = gifTransition;
@@ -56,17 +57,12 @@
 //        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
 //        int i = this.label;
 //        if (i == 0) {
-//            ResultKt.throwOnFailure(obj);
-//            CoroutineScope coroutineScope = this.f465p$;
 //            if (this.this$0.listTransition != null) {
 //                ArrayList access$getListTransition$p = this.this$0.listTransition;
-//                Intrinsics.checkNotNull(access$getListTransition$p);
 //                Iterator it = access$getListTransition$p.iterator();
 //                while (it.hasNext()) {
 //                    GifTransition gifTransition = (GifTransition) it.next();
-//                    Intrinsics.checkNotNullExpressionValue(gifTransition, "tran");
 //                    Boolean localFile = gifTransition.getLocalFile();
-//                    Intrinsics.checkNotNullExpressionValue(localFile, "tran.localFile");
 //                    if (localFile.booleanValue() && gifTransition.getPath() != null) {
 //                        File file = new File(gifTransition.getPath());
 //                        if (file.exists()) {
