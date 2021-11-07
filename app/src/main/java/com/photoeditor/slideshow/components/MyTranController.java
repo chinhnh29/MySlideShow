@@ -216,6 +216,8 @@ public final class MyTranController {
     public void updateListTransit(String name) {
         transitList.clear();
         if (name.equalsIgnoreCase("Mate")) {
+            transitList.add(new GifTransition("none", "none", "Special", R.color.trans, true, null, Transition.NONE));
+            transitList.add(new GifTransition("RandomMate", "Random", "Special", R.drawable.ic_random, true, (Boolean) null, Transition.RANDOM_MATE));
             transitList.add(new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN1));
             transitList.add(new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, (Boolean) null, Transition.COLUMN2));
             transitList.add(new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, null, Transition.TRIANGLE));
