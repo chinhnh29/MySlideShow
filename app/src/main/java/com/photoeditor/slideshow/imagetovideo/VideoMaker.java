@@ -234,7 +234,7 @@ public class VideoMaker {
             this.listImageModel.add(imageModel);
             this.mEffectList.add(Effect.values()[5]);
             this.listTransitionModel.add(
-                    new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT)
+                    new GifTransition(Transition.NONE)
             );
         }
     }
@@ -289,7 +289,7 @@ public class VideoMaker {
         }
         this.totalFrame = getTotalFrames();
         updateTimeVideo();
-        if (!this.listTransitionJson.isEmpty()) {
+        if (!listTransitionJson.isEmpty()) {
             updateTransitionJson();
         }
     }
@@ -619,24 +619,24 @@ public class VideoMaker {
 
     /* access modifiers changed from: package-private */
     public void generateFrame(Canvas canvas, int i, int i2, int i3) {
-        canvas.drawColor(-16777216);
-        drawImages(canvas, i, i2, i3);
-        drawTransitionJson(canvas, i, i2, i3);
-        drawThemeNew(canvas, i, i2, i3);
-        drawWatermark(canvas, i2, i3);
+//        canvas.drawColor(-16777216);
+//        drawImages(canvas, i, i2, i3);
+//        drawTransitionJson(canvas, i, i2, i3);
+//        drawThemeNew(canvas, i, i2, i3);
+//        drawWatermark(canvas, i2, i3);
     }
 
     private void drawThemeNew(Canvas canvas, int i, int i2, int i3) {
-        List<ThemeLottieModel> list = this.listThemeLottieModel;
-        if (list != null && list.size() > 0) {
-            for (ThemeLottieModel next : this.listThemeLottieModel) {
-                if ((i > next.getStart() && i <= next.getEnd()) || (i > next.getStart2() && i <= next.getEnd2())) {
+        if (listThemeLottieModel != null && listThemeLottieModel.size() > 0) {
+            for (ThemeLottieModel themeLottieModel : this.listThemeLottieModel) {
+                if ((i > themeLottieModel.getStart() && i <= themeLottieModel.getEnd()) ||
+                        (i > themeLottieModel.getStart2() && i <= themeLottieModel.getEnd2())) {
                     this.frameDraw = i;
-                    if (i > next.getMaxFrame()) {
-                        this.frameDraw = i % next.getMaxFrame();
+                    if (i > themeLottieModel.getMaxFrame()) {
+                        this.frameDraw = i % themeLottieModel.getMaxFrame();
                     }
                     try {
-                        this.lottieAnimationView.setComposition(next.getLottieComposition());
+                        this.lottieAnimationView.setComposition(themeLottieModel.getLottieComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieAnimationView.getDrawable();
                         lottieDrawable.setProgress(((float) this.frameDraw) / lottieDrawable.getMaxFrame());
                         drawLottieDrawable(lottieDrawable, canvas, i2, i3);
@@ -650,17 +650,15 @@ public class VideoMaker {
 
     private void drawTransitionJson(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
         int startFrame;
-        if (this.lottieTransition == null) {
-            this.lottieTransition = new LottieAnimationView(this.context);
+        if (lottieTransition == null) {
+            lottieTransition = new LottieAnimationView(context);
         }
-        if (!this.listTransitionJson.isEmpty()) {
+        if (!listTransitionJson.isEmpty()) {
             try {
-                Iterator<TransitionJsonModel> it = this.listTransitionJson.iterator();
-                while (it.hasNext()) {
-                    TransitionJsonModel transitionJsonModel = it.next();
+                for (TransitionJsonModel transitionJsonModel : listTransitionJson) {
                     if (transitionJsonModel.getComposition() != null && transitionJsonModel.getStartFrame() >= 0 && transitionJsonModel.getEndFrame() >= 0 &&
                             currentFrame >= transitionJsonModel.getStartFrame() && currentFrame <= transitionJsonModel.getEndFrame() && (startFrame = currentFrame - transitionJsonModel.getStartFrame()) >= 0) {
-                        this.lottieTransition.setComposition(transitionJsonModel.getComposition());
+                        lottieTransition.setComposition(transitionJsonModel.getComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieTransition.getDrawable();
                         lottieDrawable.setProgress(((float) startFrame) / lottieDrawable.getMaxFrame());
                         lottieDrawable.setFrame(startFrame);
@@ -721,9 +719,9 @@ public class VideoMaker {
     private void drawImages(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
         int i4;
         int indexImageModel = 0;
-        while (indexImageModel < this.listImageModel.size()) {
-            if (checkImageToDraw(indexImageModel, currentFrame)) {
-                updateImageCache(indexImageModel, widthPreview, heightPreview);
+        while (indexImageModel < this.listImageModel.size()) { // duyệt danh sách hình ảnh
+            if (checkImageToDraw(indexImageModel, currentFrame)) { //kiểm tra hình ảnh xem đã vẽ chưa
+                updateImageCache(indexImageModel, widthPreview, heightPreview); //nếu chưa thì update vào buffer để vẽ
 
                 //xóa bớt bitmap trong danh sách đi để đỡ tốn bộ nhớ
                 if (this.mBufferImage.size() >= 3) {
@@ -739,7 +737,10 @@ public class VideoMaker {
                 if (bitmap != null) {
                     Matrix matrix = new Matrix();
                     Matrix matrix2 = matrix;
-                    this.mEffectUtils.effect(this.mEffectList.get(indexImageModel), matrix, bitmap, indexImageModel, currentFrame, widthPreview, heightPreview);
+
+                    //zoom nhẹ lên để hiển thị trước trong khi chờ chuyển cảnh
+                    this.mEffectUtils.effect(this.mEffectList.get(indexImageModel),
+                            matrix, bitmap, indexImageModel, currentFrame, widthPreview, heightPreview);
                     if (TimeUtils.checkEndTime2(currentFrame, this.listImageModel.get(indexImageModel).getSecond(), getStartFrame(indexImageModel))) {
                         this.mLastMatrix = matrix2;
                     }
@@ -761,6 +762,8 @@ public class VideoMaker {
                         if (this.listTransitionModel.get(this.bmIdNew) == null || this.listTransitionModel.get(this.bmIdNew).getType() == null) {
 //                            i4 = index;
                         } else {
+
+                            //Kiểm tra xem có phải vẽ hình ảnh hay không?
                             GifTransition gifTransition = this.listTransitionModel.get(this.bmIdNew);
                             if (!this.hashMapBitmapDraw.isEmpty()) {
                                 this.mTransitionUtils.setListBitmap(this.hashMapBitmapDraw.get(gifTransition.getId()));

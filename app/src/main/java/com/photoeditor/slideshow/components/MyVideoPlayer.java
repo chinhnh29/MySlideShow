@@ -270,12 +270,8 @@ public final class MyVideoPlayer {
     }
 
     private final void initView() {
-        CustomPreviewView customPreviewView = this.mCustomPreviewView;
-        if (customPreviewView != null) {
-            customPreviewView.setVideoMaker(this.mVideoMaker);
-        }
-        VideoMaker videoMaker = this.mVideoMaker;
-        this.mTotalFrames = videoMaker.getTotalFrames();
+        mCustomPreviewView.setVideoMaker(mVideoMaker);
+        this.mTotalFrames = mVideoMaker.getTotalFrames();
         this.mImagePreview = new Handler();
         this.transitionPreview = new Handler();
         this.mTvDuration.setText(ConvertDurationUtils.convertDurationText(this.mTotalFrames / 30));
@@ -482,13 +478,70 @@ public final class MyVideoPlayer {
     public final void playSlideShow() {
         if (mImagePreview != null) {
             mImagePreview.removeCallbacksAndMessages(null);
-            mImagePreview.post(runnablePreview(mImagePreview));
+            mImagePreview.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (getMAudioPreview() != null) {
+                        if (getMCurrentFrame() < 30) {
+                            setMVolume((((float) getMCurrentFrame()) * 1.0f) / ((float) 30));
+                        } else {
+                            int mCurrentFrame = getMCurrentFrame();
+                            VideoMaker mVideoMaker = getMVideoMaker();
+                            if (mCurrentFrame >= mVideoMaker.totalFrame - 30) {
+                                int mCurrentFrame2 = getMCurrentFrame();
+                                VideoMaker mVideoMaker2 = getMVideoMaker();
+                                setMVolume(1.0f - ((((float) ((mCurrentFrame2 - mVideoMaker2.totalFrame) + 30)) * 1.0f) / ((float) 30)));
+                            } else {
+                                setMVolume(1.0f);
+                            }
+                        }
+                        MediaPlayer mAudioPreview = getMAudioPreview();
+                        if (mAudioPreview != null) {
+                            mAudioPreview.setVolume(getMVolume(), getMVolume());
+                        }
+                        if (getMCurrentFrame() > totalFrameMusic) {
+                            if (!isLoopMusic()) {
+                                MediaPlayer mAudioPreview2 = getMAudioPreview();
+                                if (mAudioPreview2 != null) {
+                                    mAudioPreview2.pause();
+                                }
+                            } else if (isChangeTime) {
+                                isChangeTime = false;
+                                MediaPlayer mAudioPreview3 = getMAudioPreview();
+                                if (mAudioPreview3 != null) {
+                                    mAudioPreview3.seekTo(getStartTime() * 1000);
+                                }
+                            }
+                        }
+                    }
+                    if (getMCurrentFrame() >= getMTotalFrames() || !mIsImagePreviewing) {
+                        restartEnd();
+                    } else {
+                        mImagePreview.postDelayed(this, 33);
+                    }
+                    float mCurrentFrame3 = ((float) getMCurrentFrame()) / ((float) getMTotalFrames());
+                    VideoPlayInterface access$getVideoPlayInterface$p = videoPlayInterface;
+                    if (access$getVideoPlayInterface$p != null) {
+                        access$getVideoPlayInterface$p.currentVideoPercent(mCurrentFrame3);
+                    }
+                    if (mSeekBar.isShown()) {
+                        mSeekBar.setProgress(mCurrentFrame3 * ((float) 100));
+                    }
+                    if (mTvTimeControl.isShown()) {
+                        mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
+                    }
+//        this.this$0.getMusicCutView().setTimePlay(MathKt.roundToInt((((float) this.this$0.getMCurrentFrame()) / ((float) 30)) * ((float) 1000)));
+
+                    previewFrame(getMCurrentFrame());
+                    setBeforeFrame(getMCurrentFrame());
+                    setMCurrentFrame(getMCurrentFrame() + 1);
+                }
+
+            });
         }
+
     }
 
-    private final Runnable runnablePreview(Handler handler) {
-        return new MyVideoPlayer$runnablePreview$1(this, handler, (long) 33);
-    }
 
     /* access modifiers changed from: private */
     public final void previewFrame(int i) {

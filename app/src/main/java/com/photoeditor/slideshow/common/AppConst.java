@@ -17,6 +17,7 @@ public final class AppConst {
     public static final String EVENT_TEMPLATE_NEW = "Template_New";
     public static final String EVENT_TEMPLATE_VALENTINE = "Template_valentine";
     private static final String FOLDER_JSON = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/SlideShow/.json/");
+    private static final String FOLDER_LOTTIE = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/SlideShow/.themes/");
     private static final String FOLDER_MUSIC;
     private static final String FOLDER_TEMPLATE = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/SlideShow/.template/");
     private static final String FOLDER_TEMP_GIF = (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/SlideShow/.gif/");
@@ -160,6 +161,9 @@ public final class AppConst {
 
     public final String getFOLDER_JSON() {
         return FOLDER_JSON;
+    }
+    public final String getFOLDER_LOTTIE() {
+        return FOLDER_LOTTIE;
     }
 
     public final String getFOLDER_TEMPLATE() {

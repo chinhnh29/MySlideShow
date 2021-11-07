@@ -77,14 +77,12 @@ class TransitionUtils extends TransitionUtilsEx {
         } else if (tran == Transition.FLASH_W.ordinal()) {
             flashTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, true);
         } else if (tran == Transition.ZOOM.ordinal()) {
-//            transitionDraw(canvas, matrix, matrix2, paint2, bitmap, index, currentFrame, widthPreview, heightPreview);
             zoomTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CLOCK.ordinal()) {
             Log.e("ChinhNH", "transition: " + "clock");
             //chua chay duoc
             clockTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.CIRCLE.ordinal()) {
-            Log.e("ChinhNH", "transition: " + "clock");
             circleTransition(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame, widthPreview, heightPreview);
         } else if (tran == Transition.COLUMN1.ordinal()) {
             testColumn(canvas, matrix, matrix2, paint2, bitmap, indexModel, currentFrame);

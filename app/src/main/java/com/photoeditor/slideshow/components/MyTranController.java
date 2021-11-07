@@ -228,7 +228,7 @@ public final class MyTranController {
             transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
             transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
-                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()  + "Arrow 1"));
+                    R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Arrow 1"));
             transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
@@ -241,6 +241,23 @@ public final class MyTranController {
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
             transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON()));
+        } else if (name.equalsIgnoreCase("Json")) {
+            transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween/Video 6 P1.json"));
+            transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Scary night"));
+            transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
+            transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
+            transitList.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
+            transitList.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
+            transitList.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
+            transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
+                    R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
         }
         rcvListTran.setAdapter(transitionAdapter);
         transitionAdapter.notifyDataSetChanged();
@@ -269,6 +286,7 @@ public final class MyTranController {
         dataCategoryTransList.add(new DataCategoryTrans("Arrow"));
         dataCategoryTransList.add(new DataCategoryTrans("Brush"));
         dataCategoryTransList.add(new DataCategoryTrans("Valentine"));
+        dataCategoryTransList.add(new DataCategoryTrans("Json"));
         return dataCategoryTransList;
     }
 
@@ -354,7 +372,7 @@ public final class MyTranController {
         actionChangeTransition(gifTransition);
     }
 
-    private final void actionChangeTransition(GifTransition gifTransition) {
+    private void actionChangeTransition(GifTransition gifTransition) {
         if (this.mVideoMaker != null) {
             this.currentTransition = gifTransition;
             Transition type = gifTransition.getType();
@@ -369,7 +387,7 @@ public final class MyTranController {
                     getBitmapForTransition(gifTransition);
                     return;
                 } else if (type.ordinal() == Transition.IMAGE.ordinal()) {
-//                    applyTransitionJson(gifTransition);
+                    applyTransitionJson(gifTransition);
                     return;
                 }
             }
@@ -378,29 +396,35 @@ public final class MyTranController {
     }
 
 
-    //    private final void applyTransitionJson(GifTransition gifTransition) {
-//        ArrayList arrayList = new ArrayList();
-//        Job.DefaultImpls.cancel$default(this.jobRandom, (CancellationException) null, 1, (Object) null);
-//        this.jobRandom = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO()), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$applyTransitionJson$1(this, gifTransition, arrayList, (Continuation) null), 3, (Object) null);
-//    }
-//
-    private final void randomTranJson(GifTransition gifTransition) {
-        List<GifTransition> gifTransitionList = new ArrayList<>();
-        Iterator<GifTransition> iterator = transitList.iterator();
-        while (iterator.hasNext()) {
-            GifTransition next = iterator.next();
-            boolean localFile = next.getLocalFile();
+    private void applyTransitionJson(GifTransition gifTransition) {
+        ArrayList<TransitionJsonModel> arrayList = new ArrayList<>();
+        LottieResult<LottieComposition> fromJsonInputStreamSync;
+        try {
+            if ((fromJsonInputStreamSync = LottieCompositionFactory.fromJsonInputStreamSync(
+                    new FileInputStream(new File(gifTransition.getPath())), gifTransition.getPath())) != null) {
+                LottieComposition value = fromJsonInputStreamSync.getValue();
+                arrayList.add(new TransitionJsonModel(gifTransition, value, 0, 0));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        if ((!arrayList.isEmpty()) && mVideoMaker != null) {
+            mVideoMaker.applyRandomJsonTransition(gifTransition, arrayList);
+        }
+    }
 
+    private void randomTranJson(GifTransition gifTransition) {
+        List<GifTransition> gifTransitionList = new ArrayList<>();
+        for (GifTransition next : transitList) {
+            boolean localFile = next.getLocalFile();
             if (localFile && next.getPath() != null) {
-                Log.e("ChinhNH", "randomTranJson: " + next.getPath());
                 gifTransitionList.add(next);
             }
         }
         if (!gifTransitionList.isEmpty()) {
             ArrayList<TransitionJsonModel> jsonModelArrayList = new ArrayList<>();
-            Iterator<GifTransition> it = gifTransitionList.iterator();
-            while (it.hasNext()) {
-                GifTransition gifTransition1 = it.next();
+            for (GifTransition gifTransition1 : gifTransitionList) {
                 try {
                     File file = new File(gifTransition.getPath());
                     LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
@@ -416,17 +440,17 @@ public final class MyTranController {
             if (!jsonModelArrayList.isEmpty()) {
                 mVideoMaker.applyRandomJsonTransition(gifTransition, jsonModelArrayList);
             }
-
         }
     }
-//
-//    private final void randomTranDraw(GifTransition gifTransition) {
+
+    private final void randomTranDraw(GifTransition gifTransition) {
 //        ArrayList arrayList = new ArrayList();
 //
 //        Job.DefaultImpls.cancel$default(this.jobRandom, (CancellationException) null, 1, (Object) null);
 //        this.jobRandom = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO()), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$randomTranDraw$1(this, arrayList, gifTransition, (Continuation) null), 3, (Object) null);
-//    }
-//
+    }
+
+    //
     private final void getBitmapForTransition(GifTransition gifTransition) {
 //        Job unused = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO().plus(this.jobLoadBitmap)), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$getBitmapForTransition$1(this, gifTransition, (Continuation) null), 3, (Object) null);
         File file = new File(gifTransition.getPath());
