@@ -266,6 +266,8 @@ public final class MyTranController {
 
     private List<GifTransition> initListTransit() {
         List<GifTransition> transitList = new ArrayList<>();
+        transitList.add(new GifTransition("none", "none", "classic", R.color.trans, true, null, Transition.NONE));
+        transitList.add(new GifTransition("RandomClassic", "Random", "classic", R.drawable.ic_random, true, (Boolean) null, Transition.RANDOM_CLASSIC));
         transitList.add(new GifTransition("Clock", "Clock", "classic", R.drawable.clock, true, null, Transition.CLOCK));
         transitList.add(new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT));
         transitList.add(new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT));

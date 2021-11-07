@@ -109,7 +109,7 @@ public class VideoMaker {
     private List<ThemeLottieModel> listThemeLottieModel = new ArrayList();
     private ArrayList<TransitionJsonModel> listTransitionJson = new ArrayList<>();
     private ArrayList<TransitionJsonModel> listTransitionJsonToRandom;
-    private List<GifTransition> listTransitionModel = new ArrayList();
+    private List<GifTransition> listTransitionModel = new ArrayList<>();
     private OnFinishEncoderListener listener;
     LottieAnimationView lottieAnimationView;
     private LottieDrawable lottieDrawableTransition;
@@ -142,6 +142,7 @@ public class VideoMaker {
     public int totalFrame = 1;
     public int totalFrameTransition = 0;
     private TransitionDrawableModel transitionDrawableModel;
+    private MyData myData;
 
     public void setProcessing(boolean z) {
     }
@@ -1081,11 +1082,15 @@ public class VideoMaker {
     }
 
     private GifTransition getRandomClassicTran() {
-        return MyData.INSTANCE.getListGifTran().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTran().size() - 1));
+        if (myData == null) myData = new MyData();
+        return myData.getListGifTran().get(PhotorTool.getRandomIndex(0, myData.getListGifTran().size() - 1));
     }
 
+
+
     private GifTransition getRandomMateTran() {
-        return MyData.INSTANCE.getListGifTranSpecial1().get(PhotorTool.getRandomIndex(0, MyData.INSTANCE.getListGifTranSpecial1().size() - 1));
+        if (myData == null) myData = new MyData();
+        return myData.getListGifTranSpecial1().get(PhotorTool.getRandomIndex(0, myData.getListGifTranSpecial1().size() - 1));
     }
 
     public void chooseThemeNew(GifTheme gifTheme) {
