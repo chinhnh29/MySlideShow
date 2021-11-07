@@ -486,31 +486,20 @@ public final class MyVideoPlayer {
                             setMVolume((((float) getMCurrentFrame()) * 1.0f) / ((float) 30));
                         } else {
                             int mCurrentFrame = getMCurrentFrame();
-                            VideoMaker mVideoMaker = getMVideoMaker();
                             if (mCurrentFrame >= mVideoMaker.totalFrame - 30) {
                                 int mCurrentFrame2 = getMCurrentFrame();
-                                VideoMaker mVideoMaker2 = getMVideoMaker();
-                                setMVolume(1.0f - ((((float) ((mCurrentFrame2 - mVideoMaker2.totalFrame) + 30)) * 1.0f) / ((float) 30)));
+                                setMVolume(1.0f - ((((float) ((mCurrentFrame2 - mVideoMaker.totalFrame) + 30)) * 1.0f) / ((float) 30)));
                             } else {
                                 setMVolume(1.0f);
                             }
                         }
-                        MediaPlayer mAudioPreview = getMAudioPreview();
-                        if (mAudioPreview != null) {
-                            mAudioPreview.setVolume(getMVolume(), getMVolume());
-                        }
+                        mAudioPreview.setVolume(getMVolume(), getMVolume());
                         if (getMCurrentFrame() > totalFrameMusic) {
                             if (!isLoopMusic()) {
-                                MediaPlayer mAudioPreview2 = getMAudioPreview();
-                                if (mAudioPreview2 != null) {
-                                    mAudioPreview2.pause();
-                                }
+                                mAudioPreview.pause();
                             } else if (isChangeTime) {
                                 isChangeTime = false;
-                                MediaPlayer mAudioPreview3 = getMAudioPreview();
-                                if (mAudioPreview3 != null) {
-                                    mAudioPreview3.seekTo(getStartTime() * 1000);
-                                }
+                                mAudioPreview.seekTo(getStartTime() * 1000);
                             }
                         }
                     }
@@ -520,10 +509,7 @@ public final class MyVideoPlayer {
                         mImagePreview.postDelayed(this, 33);
                     }
                     float mCurrentFrame3 = ((float) getMCurrentFrame()) / ((float) getMTotalFrames());
-                    VideoPlayInterface access$getVideoPlayInterface$p = videoPlayInterface;
-                    if (access$getVideoPlayInterface$p != null) {
-                        access$getVideoPlayInterface$p.currentVideoPercent(mCurrentFrame3);
-                    }
+                    videoPlayInterface.currentVideoPercent(mCurrentFrame3);
                     if (mSeekBar.isShown()) {
                         mSeekBar.setProgress(mCurrentFrame3 * ((float) 100));
                     }
@@ -531,25 +517,19 @@ public final class MyVideoPlayer {
                         mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
                     }
 //        this.this$0.getMusicCutView().setTimePlay(MathKt.roundToInt((((float) this.this$0.getMCurrentFrame()) / ((float) 30)) * ((float) 1000)));
-
                     previewFrame(getMCurrentFrame());
                     setBeforeFrame(getMCurrentFrame());
                     setMCurrentFrame(getMCurrentFrame() + 1);
                 }
-
             });
         }
-
     }
 
 
     /* access modifiers changed from: private */
     public final void previewFrame(int i) {
         this.lastTime = System.currentTimeMillis();
-        CustomPreviewView customPreviewView = this.mCustomPreviewView;
-        if (customPreviewView != null) {
-            customPreviewView.previewAtFrame(i);
-        }
+        mCustomPreviewView.previewAtFrame(i);
     }
 
     public final int getBeforeFrame() {
