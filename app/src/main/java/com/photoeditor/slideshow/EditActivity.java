@@ -1,34 +1,21 @@
 package com.photoeditor.slideshow;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.IntentSenderRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaygoo.widget.RangeSeekBar;
 import com.orhanobut.hawk.Hawk;
-import com.photoeditor.slideshow.common.AppConst;
 import com.photoeditor.slideshow.components.MyTranController;
 import com.photoeditor.slideshow.components.MyVideoPlayer;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
@@ -41,19 +28,14 @@ import java.util.List;
 
 import com.photoeditor.slideshow.interfaces.VideoPlayInterface;
 import com.photoeditor.slideshow.models.GifTransition;
-import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 //import com.photoeditor.slideshow.models.GifTransitionViewModel;
 //import com.photoeditor.slideshow.models.GifTransitionViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class EditActivity extends AppCompatActivity implements TransitionListener, VideoPlayInterface {
-    private VideoMaker videoMaker;
-    private MyVideoPlayer myVideoPlayer;
-    private ArrayList<String> arrayList = new ArrayList<>();
-    private ImageView imgImage;
-
 
     @BindView(R.id.sb_range_1)
     RangeSeekBar rangeSeekBar;
@@ -65,10 +47,17 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     TextView mTvTimeControl;
     @BindView(R.id.mTvDuration)
     TextView mTvDuration;
-    @BindView(R.id.rcv_list_tab_transit)
-    RecyclerView rcvListTabTransit;
-    @BindView(R.id.list_transit)
-    RecyclerView rcvListTransit;
+
+    @BindView(R.id.ll_transit)
+    LinearLayout llTransit;
+    @BindView(R.id.ll_frame)
+    LinearLayout llFrame;
+
+    private MyTranController myTranController;
+    private VideoMaker videoMaker;
+    private MyVideoPlayer myVideoPlayer;
+    private ArrayList<String> arrayListImage = new ArrayList<>();
+    private ImageView imgImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +83,12 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                     1);
         } else {
             Hawk.init(this).build();
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200901_161012.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_153006.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
-            arrayList.add("/storage/emulated/0/DCIM/Camera/20200715_101738.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200901_161012.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200715_153006.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
+            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200715_101738.jpg");
             initVideo();
 
             imgImage = findViewById(R.id.img_image);
@@ -110,90 +99,44 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     }
 
     private void createListTransit() {
-        List<String> listEffect = Arrays.asList(getResources().getStringArray(R.array.list_effect));
-        TransitionAdapter transitionAdapter = new TransitionAdapter(this, listEffect, this, 0);
-        rcvListTransit.setAdapter(transitionAdapter);
+
     }
 
 
-    private MyTranController myTranController;
-//    public GifTransitionViewModel transitionViewModel;
+
 
 
     private void initVideo() {
-//        ConstraintLayout constraintLayout = findViewById(R.id.layout_edit_video);
-//        videoMaker = VideoMaker.getInstance();
-//        CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewViewGif);
-//        myVideoPlayerGif = new MyVideoPlayerGif(
-//                this, constraintLayout, videoMaker, arrayList, customPreviewView , rangeSeekBar, imageView,
-//                imgPlay, mTvTimeControl, mTvDuration, this/*, (MainFragment) null, (DrafVideoModel) null,
-//                4096, (DefaultConstructorMarker) null)*/);
-////        if (mVideoMaker4 != null) {
-////            float totalDuration = mVideoMaker4.getTotalDuration();
-////            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
-////        }
-//        myVideoPlayerGif.playSlideShow();
-
         CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewView);
         videoMaker = VideoMaker.getInstance();
         myVideoPlayer = new MyVideoPlayer(
-                this, videoMaker, arrayList, customPreviewView, rangeSeekBar, imageView,
+                this, videoMaker, arrayListImage, customPreviewView, rangeSeekBar, imageView,
                 imgPlay, mTvTimeControl, mTvDuration, this);
-//        if (mVideoMaker4 != null) {
-//            float totalDuration = mVideoMaker4.getTotalDuration();
-//            ((GifTimeLineView) _$_findCachedViewById(R.id.view_time_line)).setTime((int) totalDuration);
-//        }
-//        MyVideoPlayerGif myVideoPlayer = getMyVideoPlayer();
-//        if (myVideoPlayer != null) {
+
         myVideoPlayer.playSlideShow();
-//        }
-
-//        ViewModel viewModel2 = new ViewModelProvider(this).get(GifTransitionViewModel.class);
-//        transitionViewModel = ((GifTransitionViewModel) viewModel2);
         GifTransition transition = new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT);
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_tran);
-//        TabTranIndicator tabTranIndicator = (TabTranIndicator) findViewById(R.id.tab_layout_tran);
 
-
-
-        myTranController = new MyTranController(transition/*, transitionViewModel*/, this,
-                this, rcvListTabTransit, rcvListTransit, videoMaker, this);
-
-
-//        MyTranController myTranController = getMyTranController();
-//        if (myTranController != null) {
-//            myTranController.setUnlockMate(isUnlockMate());
-//            myTranController.setPremium(this.isPremium);
-//            myTranController.setEditStickerListener(this);
-//        }
-//
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle_tran);
-//        TabTranIndicator tabTranIndicator = (TabTranIndicator) _$_findCachedViewById(R.id.tab_layout_tran);
-//        VideoMaker mVideoMaker = getMVideoMaker();
-//        RelativeLayout relativeLayout = (RelativeLayout) _$_findCachedViewById(R.id.view_empty_transition);
-//        setMyTranController(new MyTranController(dialogViewModel, transition, transitionViewModel, viewLifecycleOwner,
-//                context, recyclerView, tabTranIndicator, mVideoMaker, relativeLayout, getActivity()));
-//        MyTranController myTranController = getMyTranController();
-//        if (myTranController != null) {
-//            myTranController.setUnlockMate(isUnlockMate());
-//            myTranController.setPremium(this.isPremium);
-//            myTranController.setEditStickerListener(this);
-//        }
+        myTranController = new MyTranController(transition, this/*, transitionViewModel*/, this,
+                this, videoMaker);
     }
 
+    @OnClick({R.id.rl_choose_effect, R.id.rl_frame})
+    void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_choose_effect:
+                goneAllLayoutMenu();
+                llTransit.setVisibility(View.VISIBLE);
+                break;
+            case R.id.rl_frame:
+                goneAllLayoutMenu();
+                llFrame.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 
-
-    private final void doneTransitionNew() {
-//        MyTranController myTranController = getMyTranController();
-//        if (myTranController != null) {
-//            myTranController.doneTranNew();
-//        }
-//        setCurrentViewShow(VIEW_SHOW.VIEW_MAIN);
-//        View _$_findCachedViewById = _$_findCachedViewById(R.id.layout_transition_new);
-//        if (_$_findCachedViewById != null) {
-//            ExtentionsKt.gone(_$_findCachedViewById);
-//        }
-//        animationShowFromBottom(_$_findCachedViewById(R.id.recycle_main_edit));
+    private void goneAllLayoutMenu() {
+        llTransit.setVisibility(View.GONE);
+        llFrame.setVisibility(View.GONE);
     }
 
     @Override

@@ -3,8 +3,7 @@ package com.photoeditor.slideshow.components;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.LottieCompositionFactory;
 import com.airbnb.lottie.LottieResult;
+import com.photoeditor.slideshow.EditActivity;
 import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.customView.recyclical.RecyclicalKt;
 //import com.photoeditor.slideshow.customView.recyclical.datasource.DataSource;
@@ -34,8 +34,12 @@ import com.photoeditor.slideshow.models.GifTransition;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameTabAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
+import com.photoeditor.slideshow.my_slide_show.obj.FrameTab;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
+import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
 
@@ -44,9 +48,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CancellationException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public final class MyTranController {
@@ -82,8 +87,7 @@ public final class MyTranController {
     /* access modifiers changed from: private */
     public String parentId = "classic";
     /* access modifiers changed from: private */
-    public final RecyclerView rcvTabTrans;
-    public final RecyclerView rcvListTran;
+
     /* access modifiers changed from: private */
 //    public final TabTranIndicator tabTran;
     //    private TransitionInterface transitionInterface;
@@ -92,9 +96,28 @@ public final class MyTranController {
     /* access modifiers changed from: private */
 //    public final View viewEmpty;
 
+    @BindView(R.id.rcv_list_tab_transit)
+    RecyclerView rcvTabTrans;
+    @BindView(R.id.list_transit)
+    RecyclerView rcvListTran;
+    @BindView(R.id.rcv_list_tab_frame)
+    RecyclerView rcvTabFrame;
+    @BindView(R.id.rcv_list_frame)
+    RecyclerView rcvListFrame;
+
+
+    private final RelativeLayout rlMenuEditSelected;
+
     private List<DataCategoryTrans> dataCategoryTransList;
     private List<GifTransition> transitList;
+    private TransitionAdapter transitionAdapter;
+
+    private List<FrameTab> frameTabList;
+    private List<FrameInfo> frameList;
+    private FrameAdapter frameAdapter;
+
     private MyData myData;
+
 
     public interface TransitionDownloadInterface {
         void downloadSuccess(GifTransition gifTransition);
@@ -113,12 +136,13 @@ public final class MyTranController {
         }
     }
 
-    public MyTranController(GifTransition transit,
+    public MyTranController(GifTransition transit, EditActivity editActivity,
             /*GifTransitionViewModel gifTransitionViewModel,*/ LifecycleOwner lifecycleOwner,
-                            Context context, RecyclerView recyclerView, RecyclerView rcvListTrans,
-                            VideoMaker videoMaker/*, View view*/, Activity activity2) {
-
-
+                            Context context,
+                            VideoMaker videoMaker/*, View view*/) {
+        this.activity = editActivity;
+        rlMenuEditSelected = activity.findViewById(R.id.rl_mnu_select);
+        ButterKnife.bind(this, rlMenuEditSelected);
 //        final DialogViewModel dialogViewModel2 = dialogViewModel;
 //        LifecycleOwner lifecycleOwner2 = lifecycleOwner;
 //        Context context3 = context2;
@@ -127,12 +151,8 @@ public final class MyTranController {
 //        View view2 = view;
 //        this.transitionViewModel = gifTransitionViewModel;
         this.context = context;
-        this.dataCategoryTransList = dataCategoryTransList;
-        this.rcvTabTrans = recyclerView;
-        this.rcvListTran = rcvListTrans;
         this.mVideoMaker = videoMaker;
 //        this.viewEmpty = view2;
-        this.activity = activity2;
         this.currentTransition = transit;
         if (currentTransition != null) {
             this.oldTransition = transit;
@@ -143,68 +163,48 @@ public final class MyTranController {
         }
         if (listTransition == null) listTransition = new ArrayList<>();
         myData = new MyData();
-//        gifTransitionViewModel.getListGifCategory().observe(lifecycleOwner2, new Observer<ArrayList<DataCategory>>() {
-//            public final void onChanged(final ArrayList<DataCategory> arrayList) {
-//                isHaveCategory = true;
-//                listCategory = arrayList;
-//                tabTran.addTabsFromUrl(listCategory);
-//                tabTran.setVisibility(View.VISIBLE);
-//                tabTran.display();
-//                tabTran.setListener(new TabTranIndicator.OnTabListener() {
-//                    public void onTabChanged(int i) {
-//                    }
-//
-//                    public void onTabClicked(int i) {
-//                        tabTran.setCurrentTab(i);
-////                        dataSourceTran.clear();
-//                        parentId = listCategory.get(i).getId();
-//                        moduleId = listCategory.get(i).getModuleId();
-//                        transitionViewModel.getDataGif(parentId, moduleId);
-//                    }
-//                });
-//                tabTran.setCurrentTab(0);
-////                dataSourceTran.clear();
-//                parentId = "Classic";
-//                transitionViewModel.getDataGif(parentId, moduleId);
-//            }
-//        });
-//        gifTransitionViewModel.getListGifTransition().observe(lifecycleOwner2, new Observer<ArrayList<GifTransition>>(this) {
-//
-//            public final void onChanged(ArrayList<GifTransition> arrayList) {
-//                if (isModeTran) {
-//                    ViewUtils.INSTANCE.runLayoutAnimation(rcvTabTrans);
-//                    listTransition = arrayList;
-//                    Intrinsics.checkNotNullExpressionValue(arrayList, "it");
-//                    DataSource.DefaultImpls.set$default(dataSourceTran, arrayList, (Function2) null, (Function2) null, 6, (Object) null);
-//                }
-//            }
-//        });
-//        gifTransitionViewModel.isShowProgress().observe(lifecycleOwner2, new Observer<Boolean>(this) {
-//            final /* synthetic */ MyTranController this$0;
-//
-//            {
-//                this.this$0 = r1;
-//            }
-//
-//            public final void onChanged(Boolean bool) {
-//                Intrinsics.checkNotNullExpressionValue(bool, "it");
-//                if (bool.booleanValue()) {
-//                    DialogDownloadDetail.Companion.getInstance().showDialog(context, dialogViewModel2);
-//                } else {
-//                    DialogDownloadDetail.Companion.getInstance().hideDialog();
-//                }
-//            }
-//        });
-//        try {
-//            gifTransitionViewModel.getProgress().observe(lifecycleOwner2, C25314.INSTANCE);
-//        } catch (Exception unused) {
-//        }
         initRecycleTran();
-//        this.jobRandom = JobKt.Job$default((Job) null, 1, (Object) null);
-//        this.jobLoadBitmap = JobKt.Job$default((Job) null, 1, (Object) null);
+        initRecycleFrame();
     }
 
-    TransitionAdapter transitionAdapter;
+    private void initRecycleFrame() {
+        frameTabList = initTabFrames();
+        FrameTabAdapter adapter = new FrameTabAdapter(context, frameTabList, this);
+        rcvTabFrame.setAdapter(adapter);
+
+        frameList = initFrameList();
+        frameAdapter = new FrameAdapter(context, frameList, this);
+        rcvListFrame.setAdapter(frameAdapter);
+    }
+
+    private List<FrameInfo> initFrameList() {
+        List<FrameInfo> frameInfoList = new ArrayList<>();
+        frameInfoList.add(new FrameInfo("Frame s1", R.drawable.slide_d));
+        frameInfoList.add(new FrameInfo("Frame s2", R.drawable.slide_d));
+        frameInfoList.add(new FrameInfo("Frame s3", R.drawable.slide_d));
+        return frameInfoList;
+    }
+
+    private List<FrameTab> initTabFrames() {
+        List<FrameTab> frameTabs = new ArrayList<>();
+        frameTabs.add(new FrameTab("Static"));
+        frameTabs.add(new FrameTab("Dynamic"));
+        return frameTabs;
+    }
+
+    public void updateListFrame(String name) {
+        frameList.clear();
+        if (name.equalsIgnoreCase("Static")) {
+            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame s2", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d));
+        } else {
+            frameList.add(new FrameInfo("Frame d1", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame d3", R.drawable.slide_d));
+        }
+        frameAdapter.notifyDataSetChanged();
+    }
 
     private void initRecycleTran() {
         dataCategoryTransList = initListCategoryTran();
