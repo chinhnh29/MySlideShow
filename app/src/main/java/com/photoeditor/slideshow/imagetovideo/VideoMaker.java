@@ -43,6 +43,7 @@ import com.photoeditor.slideshow.models.ThemeLottieModel;
 import com.photoeditor.slideshow.models.TransitionDrawableModel;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
+import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
 import com.photoeditor.slideshow.my_slide_show.obj.Transit;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
@@ -637,6 +638,7 @@ public class VideoMaker {
                         frameDraw = currentFrame % themeLottieModel.getMaxFrame();
                     }
                     try {
+                        if (lottieAnimationView == null) lottieAnimationView = new LottieAnimationView(context);
                         this.lottieAnimationView.setComposition(themeLottieModel.getLottieComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieAnimationView.getDrawable();
                         lottieDrawable.setProgress(((float) this.frameDraw) / lottieDrawable.getMaxFrame());
@@ -1018,9 +1020,9 @@ public class VideoMaker {
                     File file = new File(gifTransition.getPath());
                     LottieCompositionFactory.fromJsonInputStream(new FileInputStream(file),
                             file.getAbsolutePath()).addListener(obj -> {
-                                lottieDrawableTransition.setComposition(obj);
-                                transitionDrawableModel.setLottieDrawable(lottieDrawableTransition);
-                            });
+                        lottieDrawableTransition.setComposition(obj);
+                        transitionDrawableModel.setLottieDrawable(lottieDrawableTransition);
+                    });
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -1087,31 +1089,23 @@ public class VideoMaker {
     }
 
 
-
     private GifTransition getRandomMateTran() {
         if (myData == null) myData = new MyData();
         return myData.getListGifTranSpecial1().get(PhotorTool.getRandomIndex(0, myData.getListGifTranSpecial1().size() - 1));
     }
 
-    public void chooseThemeNew(GifTheme gifTheme) {
+    public void chooseThemeNew(FrameInfo frameInfo) {
         this.listThemeLottieModel.clear();
-        this.currentThemeModel = gifTheme;
-        if (gifTheme.getJson()) {
-            chooseThemeNewLottie(gifTheme);
-        }
+//        this.currentThemeModel = frameInfo;
+        chooseThemeNewLottie(frameInfo);
     }
 
-    public void chooseThemeNewLottie(GifTheme gifTheme) {
+    public void chooseThemeNewLottie(FrameInfo frameInfo) {
         this.listGifThemes.clear();
-        this.currentThemeModel = gifTheme;
-        if (gifTheme != null) {
-            if (gifTheme.getType().equals(Transition.NONE)) {
-                this.listThemeLottieModel.clear();
-                return;
-            }
-            GifTheme gifTheme2 = this.currentThemeModel;
-            if (gifTheme2 != null && gifTheme2.getThemePath() != null) {
-                File file = new File(this.currentThemeModel.getThemePath());
+//        this.currentThemeModel = frameInfo;
+        if (frameInfo != null) {
+            if (frameInfo != null && frameInfo.getThemePath() != null) {
+                File file = new File(frameInfo.getThemePath());
                 if (file.exists()) {
                     this.listThemeLottieModel.clear();
                     listFile = file.listFiles();

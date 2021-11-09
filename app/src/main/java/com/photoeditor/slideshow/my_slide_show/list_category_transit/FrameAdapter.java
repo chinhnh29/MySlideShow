@@ -65,7 +65,7 @@ public class FrameAdapter extends RecyclerView.Adapter<FrameAdapter.FrameHolder>
 
         @OnClick(R.id.img_frame)
         void onClick() {
-//            tranController.changeTransition(frameInfos.get(getAdapterPosition()));
+            tranController.chooseTheme(frameInfos.get(getAdapterPosition()));
         }
 
         public void onBind(int position) {

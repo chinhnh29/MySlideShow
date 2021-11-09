@@ -48,7 +48,7 @@ public class GifTheme {
     private Transition type;
     private String zipName;
 
-    public Boolean getJson() {
+    public boolean getJson() {
         return this.isJson;
     }
 

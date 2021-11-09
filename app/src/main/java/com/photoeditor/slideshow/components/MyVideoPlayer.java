@@ -803,7 +803,7 @@ public final class MyVideoPlayer {
         VideoMaker videoMaker;
         this.currentThemeModel = gifTheme;
         if (!(gifTheme == null || (videoMaker = this.mVideoMaker) == null)) {
-            videoMaker.chooseThemeNew(gifTheme);
+//            videoMaker.chooseThemeNew(gifTheme);
         }
         resumePreview();
     }

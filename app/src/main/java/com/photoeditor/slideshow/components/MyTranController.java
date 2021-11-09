@@ -25,6 +25,7 @@ import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 //import com.photoeditor.slideshow.interfaces.EditStickerListener;
 //import com.photoeditor.slideshow.interfaces.TransitionInterface;
 import com.photoeditor.slideshow.models.DataCategory;
+import com.photoeditor.slideshow.models.GifTheme;
 import com.photoeditor.slideshow.models.GifTransition;
 //import com.photoeditor.slideshow.models.GifTransitionViewModel;
 //import com.photoeditor.slideshow.utils.ViewUtils;
@@ -179,9 +180,9 @@ public final class MyTranController {
 
     private List<FrameInfo> initFrameList() {
         List<FrameInfo> frameInfoList = new ArrayList<>();
-        frameInfoList.add(new FrameInfo("Frame s1", R.drawable.slide_d));
-        frameInfoList.add(new FrameInfo("Frame s2", R.drawable.slide_d));
-        frameInfoList.add(new FrameInfo("Frame s3", R.drawable.slide_d));
+        frameInfoList.add(new FrameInfo("Frame d1", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+        frameInfoList.add(new FrameInfo("Frame d2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+        frameInfoList.add(new FrameInfo("Frame d3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         return frameInfoList;
     }
 
@@ -195,15 +196,20 @@ public final class MyTranController {
     public void updateListFrame(String name) {
         frameList.clear();
         if (name.equalsIgnoreCase("Static")) {
-            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d));
-            frameList.add(new FrameInfo("Frame s2", R.drawable.slide_d));
-            frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d,  AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame s2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         } else {
-            frameList.add(new FrameInfo("Frame d1", R.drawable.slide_d));
-            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d));
-            frameList.add(new FrameInfo("Frame d3", R.drawable.slide_d));
+            frameList.add(new FrameInfo("Frame d1", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame d3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         }
         frameAdapter.notifyDataSetChanged();
+    }
+
+
+    public void chooseTheme(FrameInfo frameInfo) {
+        mVideoMaker.chooseThemeNew(frameInfo);
     }
 
     private void initRecycleTran() {
@@ -474,8 +480,7 @@ public final class MyTranController {
     }
 
     //
-    private final void getBitmapForTransition(GifTransition gifTransition) {
-//        Job unused = BuildersKt__Builders_commonKt.launch$default(CoroutineScopeKt.CoroutineScope(Dispatchers.getIO().plus(this.jobLoadBitmap)), (CoroutineContext) null, (CoroutineStart) null, new MyTranController$getBitmapForTransition$1(this, gifTransition, (Continuation) null), 3, (Object) null);
+    private void getBitmapForTransition(GifTransition gifTransition) {
         File file = new File(gifTransition.getPath());
         if (file.exists()) {
             ArrayList<Bitmap> listBitmap = getListBitmap(file);
@@ -484,7 +489,7 @@ public final class MyTranController {
     }
 
     /* access modifiers changed from: private */
-    public final ArrayList<Bitmap> getListBitmap(File file) {
+    public ArrayList<Bitmap> getListBitmap(File file) {
         Tiny.BitmapCompressOptions bitmapCompressOptions = new Tiny.BitmapCompressOptions();
         ArrayList<Bitmap> arrayList = new ArrayList<>();
         File[] listFiles = file.listFiles();
