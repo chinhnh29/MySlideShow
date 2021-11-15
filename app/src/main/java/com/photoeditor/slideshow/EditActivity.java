@@ -52,6 +52,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     LinearLayout llTransit;
     @BindView(R.id.ll_frame)
     LinearLayout llFrame;
+    @BindView(R.id.ll_ratio)
+    LinearLayout llRatio;
 
     private MyTranController myTranController;
     private VideoMaker videoMaker;
@@ -120,7 +122,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                 this, videoMaker);
     }
 
-    @OnClick({R.id.rl_choose_effect, R.id.rl_frame})
+    @OnClick({R.id.rl_choose_effect, R.id.rl_frame, R.id.rl_ratio})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_choose_effect:
@@ -130,6 +132,10 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
             case R.id.rl_frame:
                 goneAllLayoutMenu();
                 llFrame.setVisibility(View.VISIBLE);
+                break;
+            case R.id.rl_ratio:
+                goneAllLayoutMenu();
+                llRatio.setVisibility(View.VISIBLE);
                 break;
         }
     }

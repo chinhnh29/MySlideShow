@@ -37,10 +37,12 @@ import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameTabAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.RatioAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameTab;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
+import com.photoeditor.slideshow.my_slide_show.obj.Ratio;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
 
@@ -105,6 +107,8 @@ public final class MyTranController {
     RecyclerView rcvTabFrame;
     @BindView(R.id.rcv_list_frame)
     RecyclerView rcvListFrame;
+    @BindView(R.id.rcv_ratio)
+    RecyclerView rcvRatio;
 
 
     private final RelativeLayout rlMenuEditSelected;
@@ -116,6 +120,9 @@ public final class MyTranController {
     private List<FrameTab> frameTabList;
     private List<FrameInfo> frameList;
     private FrameAdapter frameAdapter;
+
+    private List<Ratio> ratioList;
+    private RatioAdapter ratioAdapter;
 
     private MyData myData;
 
@@ -166,6 +173,11 @@ public final class MyTranController {
         myData = new MyData();
         initRecycleTran();
         initRecycleFrame();
+        initRecycleRatio();
+    }
+
+    private void initRecycleRatio() {
+
     }
 
     private void initRecycleFrame() {
@@ -201,10 +213,14 @@ public final class MyTranController {
             frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         } else {
             frameList.add(new FrameInfo("Frame d1", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
-            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Scary night"));
             frameList.add(new FrameInfo("Frame d3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         }
         frameAdapter.notifyDataSetChanged();
+    }
+
+    public void changeRatio(Ratio ratio) {
+
     }
 
 
