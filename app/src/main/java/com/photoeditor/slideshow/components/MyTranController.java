@@ -2,7 +2,9 @@ package com.photoeditor.slideshow.components;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -20,10 +22,12 @@ import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.dialog.DialogDownloadDetail;
 import com.photoeditor.slideshow.common.AppConst;
 import com.photoeditor.slideshow.common.MyData;
+import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
 import com.photoeditor.slideshow.imagetovideo.Transition;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 //import com.photoeditor.slideshow.interfaces.EditStickerListener;
 //import com.photoeditor.slideshow.interfaces.TransitionInterface;
+import com.photoeditor.slideshow.java.PhotorTool;
 import com.photoeditor.slideshow.models.DataCategory;
 import com.photoeditor.slideshow.models.GifTheme;
 import com.photoeditor.slideshow.models.GifTransition;
@@ -43,6 +47,7 @@ import com.photoeditor.slideshow.my_slide_show.obj.FrameTab;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
 import com.photoeditor.slideshow.my_slide_show.obj.Ratio;
+import com.photoeditor.slideshow.my_slide_show.obj.VIDEO_RATIO;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
 
@@ -125,7 +130,7 @@ public final class MyTranController {
     private RatioAdapter ratioAdapter;
 
     private MyData myData;
-
+    private MyVideoPlayer myVideoPlayer;
 
     public interface TransitionDownloadInterface {
         void downloadSuccess(GifTransition gifTransition);
@@ -147,7 +152,7 @@ public final class MyTranController {
     public MyTranController(GifTransition transit, EditActivity editActivity,
             /*GifTransitionViewModel gifTransitionViewModel,*/ LifecycleOwner lifecycleOwner,
                             Context context,
-                            VideoMaker videoMaker/*, View view*/) {
+                            VideoMaker videoMaker/*, View view*/, MyVideoPlayer myVideoPlayer) {
         this.activity = editActivity;
         rlMenuEditSelected = activity.findViewById(R.id.rl_mnu_select);
         ButterKnife.bind(this, rlMenuEditSelected);
@@ -158,6 +163,7 @@ public final class MyTranController {
 //        TabTranIndicator tabTranIndicator2 = tabTranIndicator;
 //        View view2 = view;
 //        this.transitionViewModel = gifTransitionViewModel;
+        this.myVideoPlayer = myVideoPlayer;
         this.context = context;
         this.mVideoMaker = videoMaker;
 //        this.viewEmpty = view2;
@@ -188,6 +194,21 @@ public final class MyTranController {
         frameList = initFrameList();
         frameAdapter = new FrameAdapter(context, frameList, this);
         rcvListFrame.setAdapter(frameAdapter);
+
+        ratioList = initRatioList();
+        ratioAdapter = new RatioAdapter(context, ratioList, this);
+        rcvRatio.setAdapter(ratioAdapter);
+        ratioAdapter.notifyDataSetChanged();
+    }
+
+    private List<Ratio> initRatioList() {
+        List<Ratio> ratioArrayList = new ArrayList<>();
+        ratioArrayList.add(new Ratio("1:1", R.drawable.ic_thumb_new, VIDEO_RATIO.MOT_MOT));
+        ratioArrayList.add(new Ratio("3:4", R.drawable.ic_thumb_new, VIDEO_RATIO.BA_BON));
+        ratioArrayList.add(new Ratio("4:3", R.drawable.ic_thumb_new, VIDEO_RATIO.BON_BA));
+        ratioArrayList.add(new Ratio("9:16", R.drawable.ic_thumb_new, VIDEO_RATIO.CHIN_MUOI_SAU));
+        ratioArrayList.add(new Ratio("16:9", R.drawable.ic_thumb_new, VIDEO_RATIO.MUOI_SAU_CHIN));
+        return ratioArrayList;
     }
 
     private List<FrameInfo> initFrameList() {
@@ -219,8 +240,8 @@ public final class MyTranController {
         frameAdapter.notifyDataSetChanged();
     }
 
-    public void changeRatio(Ratio ratio) {
-
+    public void changeRatio(VIDEO_RATIO video_ratio) {
+        myVideoPlayer.changeVideoRatio(video_ratio);
     }
 
 
@@ -392,7 +413,7 @@ public final class MyTranController {
 //    public final void setUseTranFromTheme(boolean z) {
 //        this.isUseTranFromTheme = z;
 //    }
-//
+
     public final void changeTransitionByTheme(GifTransition gifTransition) {
         this.isUseTranFromTheme = true;
         actionChangeTransition(gifTransition);

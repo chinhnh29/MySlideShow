@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.jaygoo.widget.RangeSeekBar;
 import com.photoeditor.slideshow.R;
 //import com.photoeditor.slideshow.common.ExtentionsKt;
-import com.photoeditor.slideshow.enumm.VIDEO_RATIO;
 //import com.photoeditor.slideshow.fragment.main.MainFragment;
 import com.photoeditor.slideshow.imagetovideo.ConvertDurationUtils;
 import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
@@ -22,6 +21,7 @@ import com.photoeditor.slideshow.java.PhotorTool;
 //import com.photoeditor.slideshow.models.DrafVideoModel;
 import com.photoeditor.slideshow.models.GifTheme;
 import com.photoeditor.slideshow.models.ThemeLottieModel;
+import com.photoeditor.slideshow.my_slide_show.obj.VIDEO_RATIO;
 //import com.photoeditor.slideshow.test.MusicCutView;
 import java.util.ArrayList;
 import java.util.concurrent.CancellationException;
@@ -688,42 +688,41 @@ public final class MyVideoPlayer {
     }
 
     public final void changeVideoRatio(VIDEO_RATIO video_ratio) {
-        int i;
-        ViewGroup.LayoutParams layoutParams;
-        ViewGroup.LayoutParams layoutParams2;
-        int i2 = 0;
-        int i3 = PhotorTool.getDisplayInfo().widthPixels;
-        int i4 = WhenMappings.$EnumSwitchMapping$0[video_ratio.ordinal()];
-        if (i4 != 1) {
-            if (i4 == 2) {
-                i2 = (i3 * 9) / 16;
-            } else if (i4 != 3) {
-                i = i4 != 4 ? i3 : (i3 * 3) / 4;
-            } else {
-                i2 = (i3 * 3) / 4;
-            }
-            int i5 = i2;
-            i = i3;
-            i3 = i5;
-        } else {
-            i = (i3 * 9) / 16;
+        ViewGroup.LayoutParams layoutParams = mCustomPreviewView.getLayoutParams();
+        int widthPixels = PhotorTool.getDisplayInfo().widthPixels;
+        int width, height;
+        switch (video_ratio.ordinal()) {
+            case 0:
+                width = widthPixels;
+                height = widthPixels;
+                break;
+            case 1:
+                height = (widthPixels * 9) / 16;
+                width = widthPixels;
+                break;
+            case 2:
+                height = widthPixels;
+                width = (height * 9) / 16;
+                break;
+            case 3:
+                height = widthPixels;
+                width = (height * 3) / 4;
+                break;
+            case 4:
+                height = (widthPixels * 3) / 4;
+                width = widthPixels;
+                break;
+            default:
+                width = widthPixels;
+                height = width;
+                break;
         }
-        CustomPreviewView customPreviewView = this.mCustomPreviewView;
-        if (!(customPreviewView == null || (layoutParams2 = customPreviewView.getLayoutParams()) == null)) {
-            layoutParams2.width = i3;
-        }
-        CustomPreviewView customPreviewView2 = this.mCustomPreviewView;
-        if (!(customPreviewView2 == null || (layoutParams = customPreviewView2.getLayoutParams()) == null)) {
-            layoutParams.height = i;
-        }
-        CustomPreviewView customPreviewView3 = this.mCustomPreviewView;
-        if (customPreviewView3 != null) {
-            customPreviewView3.requestLayout();
-        }
-        VideoMaker videoMaker = this.mVideoMaker;
-        if (videoMaker != null) {
-            videoMaker.changeVideoRatio(video_ratio);
-        }
+
+        layoutParams.width = width;
+        layoutParams.height = height;
+
+        mCustomPreviewView.requestLayout();
+        mVideoMaker.changeVideoRatio(video_ratio);
     }
 
     public final void changeVideoRatio(View view, View view2, VIDEO_RATIO video_ratio) {

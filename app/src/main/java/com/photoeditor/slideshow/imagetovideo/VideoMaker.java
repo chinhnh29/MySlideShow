@@ -24,7 +24,6 @@ import com.airbnb.lottie.LottieCompositionFactory;
 import com.airbnb.lottie.LottieDrawable;
 import com.airbnb.lottie.LottieListener;
 import com.photoeditor.slideshow.R;
-import com.photoeditor.slideshow.enumm.VIDEO_RATIO;
 import com.orhanobut.hawk.Hawk;
 import com.photoeditor.slideshow.common.AppConst;
 import com.photoeditor.slideshow.common.MyData;
@@ -45,6 +44,7 @@ import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
 import com.photoeditor.slideshow.my_slide_show.obj.Transit;
+import com.photoeditor.slideshow.my_slide_show.obj.VIDEO_RATIO;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.common.BitmapResult;
 
@@ -154,6 +154,9 @@ public class VideoMaker {
         this.arX = (((float) i) * 1.0f) / ((float) WIDTH_PREVIEW);
         this.arY = (((float) i) * 1.0f) / ((float) HEIGHT_PREVIEW);
     }
+
+
+
 
     /* access modifiers changed from: package-private */
     public int getVideoWidth() {
@@ -638,7 +641,8 @@ public class VideoMaker {
                         frameDraw = currentFrame % themeLottieModel.getMaxFrame();
                     }
                     try {
-                        if (lottieAnimationView == null) lottieAnimationView = new LottieAnimationView(context);
+                        if (lottieAnimationView == null)
+                            lottieAnimationView = new LottieAnimationView(context);
                         this.lottieAnimationView.setComposition(themeLottieModel.getLottieComposition());
                         LottieDrawable lottieDrawable = (LottieDrawable) this.lottieAnimationView.getDrawable();
                         lottieDrawable.setProgress(((float) this.frameDraw) / lottieDrawable.getMaxFrame());

@@ -54,6 +54,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     LinearLayout llFrame;
     @BindView(R.id.ll_ratio)
     LinearLayout llRatio;
+    @BindView(R.id.mCustomPreviewView)
+    CustomPreviewView customPreviewView;
 
     private MyTranController myTranController;
     private VideoMaker videoMaker;
@@ -109,7 +111,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
 
 
     private void initVideo() {
-        CustomPreviewView customPreviewView = findViewById(R.id.mCustomPreviewView);
+
         videoMaker = VideoMaker.getInstance();
         myVideoPlayer = new MyVideoPlayer(
                 this, videoMaker, arrayListImage, customPreviewView, rangeSeekBar, imageView,
@@ -119,7 +121,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         GifTransition transition = new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT);
 
         myTranController = new MyTranController(transition, this/*, transitionViewModel*/, this,
-                this, videoMaker);
+                this, videoMaker, myVideoPlayer);
     }
 
     @OnClick({R.id.rl_choose_effect, R.id.rl_frame, R.id.rl_ratio})
@@ -143,6 +145,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     private void goneAllLayoutMenu() {
         llTransit.setVisibility(View.GONE);
         llFrame.setVisibility(View.GONE);
+        llRatio.setVisibility(View.GONE);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -20,6 +21,10 @@ public class CustomPreviewView extends FrameLayout {
     private OnTouchInDecorListener onTouchInDecorListener;
     private PreviewImageView preViewImage;
     private PreviewGifView previewGifView;
+
+    public void setWidthAndHeight(int width, int height) {
+
+    }
 
     public interface OnTouchInDecorListener {
 //        void onTouchInDecor(Decor decor);
@@ -59,6 +64,7 @@ public class CustomPreviewView extends FrameLayout {
         this.previewGifView = new PreviewGifView(getContext());
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
         addView(this.preViewImage, layoutParams);
         this.mVideoMaker = videoMaker;
         this.preViewImage.setVideoMaker(videoMaker);
@@ -72,6 +78,8 @@ public class CustomPreviewView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         VideoMaker.WIDTH_PREVIEW = getMeasuredWidth();
         VideoMaker.HEIGHT_PREVIEW = getMeasuredHeight();
+        Log.e("ChinhNH", "onMeasure: " + VideoMaker.WIDTH_PREVIEW);
+        Log.e("ChinhNH", "onMeasure2: " + VideoMaker.HEIGHT_PREVIEW);
     }
 
     public void previewAtFrame(int currentFrame) {

@@ -803,7 +803,7 @@ public final class MyVideoPlayerGif {
         restartEnd();
         VideoMaker videoMaker = this.mVideoMaker;
         if (videoMaker != null) {
-            videoMaker.changeVideoRatio(video_ratio);
+//            videoMaker.changeVideoRatio(video_ratio);
         }
     }
 

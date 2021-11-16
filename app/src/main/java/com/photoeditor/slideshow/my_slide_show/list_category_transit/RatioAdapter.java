@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.photoeditor.slideshow.R;
 import com.photoeditor.slideshow.components.MyTranController;
 import com.photoeditor.slideshow.my_slide_show.obj.Ratio;
@@ -52,7 +49,6 @@ public class RatioAdapter extends RecyclerView.Adapter<RatioAdapter.RatioHolder>
     }
 
     public class RatioHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.txt_ratio_scale)
         TextView txtRatio;
 
@@ -61,9 +57,9 @@ public class RatioAdapter extends RecyclerView.Adapter<RatioAdapter.RatioHolder>
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick(R.id.img_tran)
+        @OnClick(R.id.txt_ratio_scale)
         void onClick() {
-            tranController.changeRatio(ratioList.get(getAdapterPosition()));
+            tranController.changeRatio(ratioList.get(getAdapterPosition()).getVideo_ratio());
         }
 
         public void onBind(int position) {
