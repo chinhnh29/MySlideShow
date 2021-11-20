@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Movie;
 import android.graphics.Paint;
@@ -154,8 +155,6 @@ public class VideoMaker {
         this.arX = (((float) i) * 1.0f) / ((float) WIDTH_PREVIEW);
         this.arY = (((float) i) * 1.0f) / ((float) HEIGHT_PREVIEW);
     }
-
-
 
 
     /* access modifiers changed from: package-private */
@@ -592,17 +591,17 @@ public class VideoMaker {
 //    }
 
     public void clearBuffer(boolean z, boolean z2, boolean z3) {
-//        if (z) {
-//            List<ImageModel> list = this.listImageModel;
-//            int size = list != null ? list.size() : 0;
-//            for (int i = 0; i < size; i++) {
-//                while (this.mBufferImage.get(i) != null) {
-//                    this.mBufferImage.remove(i);
-//                }
-//            }
-//            this.mBufferImage.clear();
-//        }
-//        if (z2) {
+        if (z) {
+            List<ImageModel> list = this.listImageModel;
+            int size = list != null ? list.size() : 0;
+            for (int i = 0; i < size; i++) {
+                while (this.mBufferImage.get(i) != null) {
+                    this.mBufferImage.remove(i);
+                }
+            }
+            this.mBufferImage.clear();
+        }
+        if (z2) {
 //            List<Decor> list2 = this.mDecorList;
 //            int size2 = list2 != null ? list2.size() : 0;
 //            for (int i2 = 0; i2 < size2; i2++) {
@@ -619,16 +618,17 @@ public class VideoMaker {
 //                }
 //            }
 //            this.mBufferTextSticker.clear();
-//        }
+        }
     }
 
     /* access modifiers changed from: package-private */
     public void generateFrame(Canvas canvas, int i, int i2, int i3) {
-//        canvas.drawColor(-16777216);
-//        drawImages(canvas, i, i2, i3);
-//        drawTransitionJson(canvas, i, i2, i3);
-//        drawThemeNew(canvas, i, i2, i3);
-//        drawWatermark(canvas, i2, i3);
+        /* canvas.drawColor(-16777216); */
+        canvas.drawColor(Color.BLACK);
+        drawImages(canvas, i, i2, i3);
+        drawTransitionJson(canvas, i, i2, i3);
+        drawThemeNew(canvas, i, i2, i3);
+        drawWatermark(canvas, i2, i3);
     }
 
     private void drawThemeNew(Canvas canvas, int currentFrame, int widthPreview, int heightPreview) {
@@ -714,8 +714,8 @@ public class VideoMaker {
         this.mMakeVideoUtils.editAudio(z, z2);
     }
 
-    public void makeVideo(Handler handler, boolean z, boolean z2, boolean z3, boolean z4) {
-        this.mMakeVideoUtils.makeVideo(handler, z, z2, z3, z4);
+    public void makeVideo(Handler handler, boolean mHasTrimAudio, boolean mHasLoopAudio, boolean isAudioVideo, boolean isMusicLonger) {
+        this.mMakeVideoUtils.makeVideo(handler, mHasTrimAudio, mHasLoopAudio, isAudioVideo, isMusicLonger);
     }
 
     public void stopMakerVideo() {
@@ -856,9 +856,9 @@ public class VideoMaker {
         return this.listImageModel;
     }
 
-//    public void setOnFinishEncoderListener(OnFinishEncoderListener onFinishEncoderListener) {
-//        this.listener = onFinishEncoderListener;
-//    }
+    public void setOnFinishEncoderListener(OnFinishEncoderListener onFinishEncoderListener) {
+        this.listener = onFinishEncoderListener;
+    }
 
     public GifImage getGifImage(String str) {
         return this.hashMapGif.get(str);

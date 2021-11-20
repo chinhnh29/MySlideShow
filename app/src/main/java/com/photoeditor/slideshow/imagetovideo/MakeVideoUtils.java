@@ -10,7 +10,6 @@ import androidx.work.WorkRequest;
 import com.photoeditor.slideshow.java.PhotorTool;
 
 import java.io.File;
-import java.util.Locale;
 
 class MakeVideoUtils {
     private static final String TAG = "khanh";
@@ -27,7 +26,7 @@ class MakeVideoUtils {
     private boolean mHasConvertAudio;
     private boolean mHasToLoopAudio;
     private boolean mHasToTrimAudio;
-    private VideoMaker mParent;
+    private VideoMaker videoMaker;
     private Thread mergeVideo;
     private File outputImage;
     private File outputLoopAudio;
@@ -44,19 +43,19 @@ class MakeVideoUtils {
         this.isRunning = true;
         this.mContext = context;
         this.inputAudio = file;
-        this.mParent = VideoMaker.getInstance();
+        this.videoMaker = VideoMaker.getInstance();
         this.mConcatImageUtils = new ConcatImageUtils();
         this.listener = onFinishEncoderListener;
     }
 
     /* access modifiers changed from: package-private */
-    public void makeVideo(Handler handler, boolean z, boolean z2, boolean z3, boolean z4) {
-        this.mHasToTrimAudio = z;
-        this.mHasToLoopAudio = z2;
-        this.isMusicLonger = z4;
+    public void makeVideo(Handler handler, boolean mHasTrimAudio, boolean mHasLoopAudio, boolean isAudioVideo, boolean isMusicLonger) {
+        this.mHasToTrimAudio = mHasTrimAudio;
+        this.mHasToLoopAudio = mHasLoopAudio;
+        this.isMusicLonger = isMusicLonger;
         this.mHasConvertAudio = SharePreferencesUtils.getInstance(this.mContext).getBoolean(GlobalDef.KEY_HAS_CONVERT_AUDIO, false);
         prepare();
-        execute(handler, z3);
+        execute(handler, isAudioVideo);
         finish();
     }
 
@@ -88,7 +87,7 @@ class MakeVideoUtils {
 
     private void prepareImage() {
         this.mConcatImageUtils.prepareEncoder(this.outputImage);
-        this.mParent.clearBuffer(true, false, false);
+        this.videoMaker.clearBuffer(true, false, false);
     }
 
     private void prepareAudio() {
@@ -111,32 +110,30 @@ class MakeVideoUtils {
         }
     }
 
-    private void execute(Handler handler, boolean z) {
-//        try {
-//            Thread thread = new Thread(concatImage(handler));
-//            this.concatImage = thread;
-//            thread.start();
-//            if (z) {
+    private void execute(Handler handler, boolean isAudioVideo) {
+        try {
+            concatImage = new Thread(concatImage(handler));
+            concatImage.start();
+            if (isAudioVideo) {
 //                if (this.editAudioThread == null) {
 //                    Thread thread2 = new Thread(editAudio());
 //                    this.editAudioThread = thread2;
 //                    thread2.start();
 //                }
 //                this.editAudioThread.join();
-//            }
-//            this.concatImage.join();
-//            Thread thread3 = new Thread(mergeVideo(z));
-//            this.mergeVideo = thread3;
-//            thread3.start();
-//            this.mergeVideo.join();
-//        } catch (Exception e) {
-////            C5008Lo.m323e(TAG, e.toString());
-//        }
+            }
+            this.concatImage.join();
+//            mergeVideo = new Thread(mergeVideo(isAudioVideo));
+//            mergeVideo.start();
+//            mergeVideo.join();
+        } catch (Exception e) {
+            Log.e("ChinhNH", "execute: failed");
+        }
     }
 
     private void finish() {
-        this.mParent.clearBuffer(true, true, true);
-        this.mParent.setProcessing(false);
+        this.videoMaker.clearBuffer(true, true, true);
+        this.videoMaker.setProcessing(false);
         OnFinishEncoderListener onFinishEncoderListener = this.listener;
         if (onFinishEncoderListener != null && this.isRunning) {
             onFinishEncoderListener.onFinishEncoder(this.outputVideoPath);
@@ -144,29 +141,27 @@ class MakeVideoUtils {
     }
 
     private Runnable concatImage(Handler handler) {
-        return new Runnable() {
-            public final void run() {
-                int totalFrames = mParent.getTotalFrames();
-                int i = 0;
-                while (i < totalFrames && isRunning) {
-                    try {
-                        mConcatImageUtils.concatImage(i);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    i++;
-                    if (isRunning) {
-                        Message message = new Message();
-                        message.arg1 = (i * 100) / totalFrames;
-                        handler.sendMessage(message);
-                    }
+        return () -> {
+            int totalFrames = videoMaker.getTotalFrames();
+            int currentFrame = 0;
+            while (currentFrame < totalFrames && isRunning) {
+                try {
+                    mConcatImageUtils.concatImage(currentFrame);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                currentFrame++;
                 if (isRunning) {
-                    try {
-                        mConcatImageUtils.finishConcatImage();
-                    } catch (Exception e2) {
-                        e2.printStackTrace();
-                    }
+                    Message message = new Message();
+                    message.arg1 = (currentFrame * 100) / totalFrames;
+                    handler.sendMessage(message);
+                }
+            }
+            if (isRunning) {
+                try {
+                    mConcatImageUtils.finishConcatImage();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
                 }
             }
         };
@@ -268,8 +263,7 @@ class MakeVideoUtils {
 //        return new File(str);
 //    }
 
-    /* JADX WARNING: Removed duplicated region for block: B:29:0x00c7 A[RETURN] */
-    /* JADX WARNING: Removed duplicated region for block: B:30:0x00c8  */
+
 //    private boolean mergeAudioToVideo(File file, File file2, File file3, boolean z) {
 //        String str;
 //        final boolean[] zArr = new boolean[1];

@@ -437,7 +437,7 @@ public class PhotorTool {
     }
 
     public static void scanFile(Context context, String[] strArr) {
-//        MediaScannerConnection.scanFile(context, strArr, null, $$Lambda$PhotorTool$y8ZSGsGom2QI6cOkVlqMtMBoZ2g.INSTANCE);
+        MediaScannerConnection.scanFile(context, strArr, (String[]) null, null);
     }
 
     public static void createFolder(String str) {

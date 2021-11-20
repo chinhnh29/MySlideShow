@@ -78,8 +78,6 @@ public class CustomPreviewView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         VideoMaker.WIDTH_PREVIEW = getMeasuredWidth();
         VideoMaker.HEIGHT_PREVIEW = getMeasuredHeight();
-        Log.e("ChinhNH", "onMeasure: " + VideoMaker.WIDTH_PREVIEW);
-        Log.e("ChinhNH", "onMeasure2: " + VideoMaker.HEIGHT_PREVIEW);
     }
 
     public void previewAtFrame(int currentFrame) {

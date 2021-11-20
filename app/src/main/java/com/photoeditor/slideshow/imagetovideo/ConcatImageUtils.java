@@ -26,7 +26,7 @@ public class ConcatImageUtils {
     private Surface mInputSurface;
     private MediaMuxer mMuxer;
     private boolean mMuxerStarted;
-    private VideoMaker mParent;
+    private VideoMaker videoMaker;
     private int mTrackIndex;
 
     private int calcBitRate(float f, int i, int i2) {
@@ -36,14 +36,14 @@ public class ConcatImageUtils {
     ConcatImageUtils() {
         this.isRunning = true;
         this.isRunning = true;
-        this.mParent = VideoMaker.getInstance();
+        this.videoMaker = VideoMaker.getInstance();
     }
 
     /* access modifiers changed from: package-private */
     public void prepareEncoder(File file) {
         this.mBufferInfo = new MediaCodec.BufferInfo();
-        int intValue = ((Integer) Hawk.get(AppConst.KEY_QUALITY, 1080)).intValue();
-        VideoMaker videoMaker = this.mParent;
+        int intValue = Hawk.get(AppConst.KEY_QUALITY, 1080);
+        VideoMaker videoMaker = this.videoMaker;
         int tileFromData = videoMaker != null ? (int) (((float) intValue) / videoMaker.getTileFromData()) : 0;
         if (intValue % 2 == 1) {
             intValue--;
@@ -53,7 +53,7 @@ public class ConcatImageUtils {
         }
         MediaFormat createVideoFormat = MediaFormat.createVideoFormat("video/avc", intValue, tileFromData);
         createVideoFormat.setInteger("color-format", 2130708361);
-        createVideoFormat.setInteger("bitrate", calcBitRate(0.5f, this.mParent.getVideoWidth(), this.mParent.getVideoHeight()));
+        createVideoFormat.setInteger("bitrate", calcBitRate(0.5f, this.videoMaker.getVideoWidth(), this.videoMaker.getVideoHeight()));
         createVideoFormat.setInteger("frame-rate", 30);
         createVideoFormat.setInteger("i-frame-interval", 5);
         try {
@@ -70,7 +70,7 @@ public class ConcatImageUtils {
         }
         if (file != null) {
             try {
-                this.mMuxer = new MediaMuxer(file.toString(), 0);
+                this.mMuxer = new MediaMuxer(file.toString(), MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
             } catch (IOException e3) {
                 e3.printStackTrace();
             }
@@ -80,18 +80,16 @@ public class ConcatImageUtils {
     }
 
     /* access modifiers changed from: package-private */
-    public void concatImage(int i) {
+    public void concatImage(int currentFrame) {
         if (this.isRunning) {
             try {
                 drainEncoder(false);
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-            Surface surface = this.mInputSurface;
-            if (surface != null) {
-                Canvas lockCanvas = surface.lockCanvas(null);
-                VideoMaker videoMaker = this.mParent;
-                videoMaker.generateFrame(lockCanvas, i, videoMaker.getVideoWidth(), this.mParent.getVideoHeight());
+            if (mInputSurface != null) {
+                Canvas lockCanvas = mInputSurface.lockCanvas(null);
+                videoMaker.generateFrame(lockCanvas, currentFrame, videoMaker.getVideoWidth(), this.videoMaker.getVideoHeight());
                 this.mInputSurface.unlockCanvasAndPost(lockCanvas);
             }
         }
@@ -127,9 +125,8 @@ public class ConcatImageUtils {
             } else if (dequeueOutputBuffer == -2) {
                 if (!this.mMuxerStarted) {
                     MediaFormat outputFormat = this.mEncoder.getOutputFormat();
-                    MediaMuxer mediaMuxer = this.mMuxer;
-                    if (mediaMuxer != null) {
-                        this.mTrackIndex = mediaMuxer.addTrack(outputFormat);
+                    if (mMuxer != null) {
+                        this.mTrackIndex = mMuxer.addTrack(outputFormat);
                         this.mMuxer.start();
                     }
                     this.mMuxerStarted = true;
@@ -139,18 +136,17 @@ public class ConcatImageUtils {
             } else if (dequeueOutputBuffer >= 0) {
                 ByteBuffer byteBuffer = outputBuffers[dequeueOutputBuffer];
                 if (byteBuffer != null) {
-                    if ((this.mBufferInfo.flags & 2) != 0) {
-                        this.mBufferInfo.size = 0;
+                    if ((mBufferInfo.flags & 2) != 0) {
+                        mBufferInfo.size = 0;
                     }
-                    if (this.mBufferInfo.size != 0) {
+                    if (mBufferInfo.size != 0) {
                         if (this.mMuxerStarted) {
                             byteBuffer.position(this.mBufferInfo.offset);
                             byteBuffer.limit(this.mBufferInfo.offset + this.mBufferInfo.size);
-                            this.mBufferInfo.presentationTimeUs = this.mFakePts;
-                            this.mFakePts += 33333;
-                            MediaMuxer mediaMuxer2 = this.mMuxer;
-                            if (mediaMuxer2 != null) {
-                                mediaMuxer2.writeSampleData(this.mTrackIndex, byteBuffer, this.mBufferInfo);
+                            mBufferInfo.presentationTimeUs = this.mFakePts;
+                            mFakePts += 33333;
+                            if (mMuxer != null) {
+                                mMuxer.writeSampleData(this.mTrackIndex, byteBuffer, this.mBufferInfo);
                             }
                         } else {
                             throw new RuntimeException("muxer hasn't started");
@@ -166,7 +162,7 @@ public class ConcatImageUtils {
             }
             if (!this.isRunning) {
                 try {
-                    this.mEncoder.signalEndOfInputStream();
+                    mEncoder.signalEndOfInputStream();
                     try {
                         releaseEncoder();
                         return;
@@ -183,9 +179,8 @@ public class ConcatImageUtils {
     }
 
     private void releaseEncoder() {
-        MediaCodec mediaCodec = this.mEncoder;
-        if (mediaCodec != null) {
-            mediaCodec.stop();
+        if (mEncoder != null) {
+            mEncoder.stop();
             try {
                 this.mEncoder.release();
             } catch (Exception e) {
@@ -193,19 +188,17 @@ public class ConcatImageUtils {
             }
             this.mEncoder = null;
         }
-        Surface surface = this.mInputSurface;
-        if (surface != null) {
+        if (mInputSurface != null) {
             try {
-                surface.release();
+                mInputSurface.release();
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
             this.mInputSurface = null;
         }
-        MediaMuxer mediaMuxer = this.mMuxer;
-        if (mediaMuxer != null) {
+        if (mMuxer != null) {
             try {
-                mediaMuxer.stop();
+                mMuxer.stop();
                 this.mMuxer.release();
             } catch (Exception unused) {
             }
