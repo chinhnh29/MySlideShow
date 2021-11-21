@@ -393,7 +393,6 @@ public class VideoMaker {
         return createBitmap;
     }
 
-    /* renamed from: com.photoeditor.slideshow.imagetovideo.VideoMaker$1 */
     public static /* synthetic */ class C26701 {
         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$enumm$VIDEO_RATIO;
         static final /* synthetic */ int[] $SwitchMap$com$photoeditor$slideshow$imagetovideo$Transition;

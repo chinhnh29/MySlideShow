@@ -301,8 +301,6 @@ class TransitionUtils extends TransitionUtilsEx {
     }
 
     private void testTryangle(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        Canvas canvas2 = canvas;
-        Paint paint3 = paint2;
         int i5 = i;
         int i6 = i2;
         int i7 = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i5).getSecond(), (int) getStartFrame(i5))[0];
@@ -312,8 +310,6 @@ class TransitionUtils extends TransitionUtilsEx {
         }
         int i8 = i6 - i7;
         int i9 = ((int) (((float) i7) + (VideoMaker.DURATION_TRANSITION * 30.0f))) - i7;
-        Matrix matrix3 = matrix2;
-        Bitmap bitmap2 = bitmap;
         canvas.drawBitmap(bitmap, matrix2, paint2);
         if (checkStartTime(i5, i6) && i5 != 0) {
             canvas.drawBitmap(getBitmapTryAngle(matrix, this.mVideoMaker.getLastImage(i5), i8, i9, i3, i4), matrix, paint2);
@@ -411,7 +407,6 @@ class TransitionUtils extends TransitionUtilsEx {
     private void testColumnCenter(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2) {
         Bitmap columeBitmapCenter;
         int i3 = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i))[0];
-        float f = VideoMaker.DURATION_TRANSITION;
         int i4 = i2 - i3;
         canvas.drawBitmap(bitmap, matrix2, paint2);
         if (checkStartTime(i, i2) && i != 0 && (columeBitmapCenter = getColumeBitmapCenter(matrix, this.mVideoMaker.getLastImage(i), i4, 11)) != null) {
@@ -422,7 +417,6 @@ class TransitionUtils extends TransitionUtilsEx {
     private void testColumn(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2) {
         Bitmap lastImage;
         int i3 = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i))[0];
-        float f = VideoMaker.DURATION_TRANSITION;
         int i4 = i2 - i3;
         canvas.drawBitmap(bitmap, matrix2, paint2);
         if (checkStartTime(i, i2) && i != 0 && (lastImage = this.mVideoMaker.getLastImage(i)) != null) {
@@ -516,7 +510,6 @@ class TransitionUtils extends TransitionUtilsEx {
             int i19 = i5;
             int i20 = i3 + i10;
             Canvas canvas2 = canvas;
-            float f3 = f;
             int i21 = i14;
             float f4 = (float) i18;
             Paint paint3 = paint2;
@@ -634,8 +627,6 @@ class TransitionUtils extends TransitionUtilsEx {
             }
             return;
         }
-        Matrix matrix4 = matrix2;
-        Bitmap bitmap2 = bitmap;
         canvas.drawBitmap(bitmap, matrix2, paint2);
     }
 
@@ -676,22 +667,16 @@ class TransitionUtils extends TransitionUtilsEx {
         canvas.save();
         canvas.drawBitmap(bitmap, matrix2, paint2);
         if (checkStartTime(index, currentFrame) && index != 0) {
-            Log.e("ChinhNH", "clockTransition: ");
             clock(canvas, matrix, this.mVideoMaker.getLastImage(index), index - 1, currentFrame, widthPreview, heightPreview);
         }
         canvas.restore();
     }
 
     private void circleTransition(Canvas canvas, Matrix matrix, Matrix matrix2, Paint paint2, Bitmap bitmap, int i, int i2, int i3, int i4) {
-        Canvas canvas2 = canvas;
-        Matrix matrix3 = matrix2;
-        Paint paint3 = paint2;
-        Bitmap bitmap2 = bitmap;
         int i5 = i;
         if (!checkStartTime(i5, i2)) {
             canvas.drawBitmap(bitmap, matrix2, paint2);
         } else if (i5 != 0) {
-            Matrix matrix4 = matrix;
             canvas.drawBitmap(this.mVideoMaker.getLastImage(i5), matrix, paint2);
             canvas.drawARGB(0, 0, 0, 0);
             circle(canvas, matrix2, paint2, bitmap, i, i2, i3, i4);
@@ -771,7 +756,8 @@ class TransitionUtils extends TransitionUtilsEx {
         return new int[]{i, (int) (((float) i) + ((f + VideoMaker.DURATION_TRANSITION) * 30.0f))};
     }
 
-    private void clock(Canvas canvas, Matrix matrix, Bitmap bitmap, int i, int i2, int i3, int i4) {
+    private void clock(Canvas canvas, Matrix matrix, Bitmap bitmap, int index, int currentFrame,
+                       int widthPreview, int heightPreview) {
         int i5;
         int i6;
         int tan;
@@ -782,7 +768,8 @@ class TransitionUtils extends TransitionUtilsEx {
         double d3;
         int i7;
         int i8;
-        int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(this.mVideoMaker.getListImageModel().get(i).getSecond(), (int) getStartFrame(i));
+        int[] startAndStopFrameOfImageNew = getStartAndStopFrameOfImageNew(
+                this.mVideoMaker.getListImageModel().get(index).getSecond(), (int) getStartFrame(index));
         if (this.isPreviewTransition) {
             i6 = 60;
             i5 = (int) ((VideoMaker.DURATION_TRANSITION + 2.0f) * 30.0f);
@@ -791,63 +778,63 @@ class TransitionUtils extends TransitionUtilsEx {
             i5 = startAndStopFrameOfImageNew[1];
             i6 = i9;
         }
-        int i10 = i2 - i6;
+        int i10 = currentFrame - i6;
         if (i10 >= 0 && ((float) i10) <= VideoMaker.DURATION_TRANSITION * 30.0f) {
             int i11 = i5 - i6;
             canvas.concat(matrix);
             int i12 = (i10 * 359) / i11;
             if (i12 <= 90) {
                 double d4 = (double) i12;
-                tan = (int) (((double) (i3 / 2)) + (((1.0d / Math.tan(Math.toRadians(d4))) * ((double) i3)) / 2.0d));
-                d = (double) (i4 / 2);
+                tan = (int) (((double) (widthPreview / 2)) + (((1.0d / Math.tan(Math.toRadians(d4))) * ((double) widthPreview)) / 2.0d));
+                d = (double) (heightPreview / 2);
                 tan2 = Math.tan(Math.toRadians(d4));
             } else {
                 if (i12 <= 180) {
                     double d5 = (double) i12;
-                    tan = (int) (((double) (i3 / 2)) + (((1.0d / Math.tan(Math.toRadians(d5))) * ((double) i3)) / 2.0d));
-                    d2 = (double) (i4 / 2);
+                    tan = (int) (((double) (widthPreview / 2)) + (((1.0d / Math.tan(Math.toRadians(d5))) * ((double) widthPreview)) / 2.0d));
+                    d2 = (double) (heightPreview / 2);
                     tan3 = Math.tan(Math.toRadians(d5));
                 } else if (i12 <= 270) {
                     double d6 = (double) i12;
-                    tan = (int) (((double) (i3 / 2)) - (((1.0d / Math.tan(Math.toRadians(d6))) * ((double) i3)) / 2.0d));
-                    d2 = (double) (i4 / 2);
+                    tan = (int) (((double) (widthPreview / 2)) - (((1.0d / Math.tan(Math.toRadians(d6))) * ((double) widthPreview)) / 2.0d));
+                    d2 = (double) (heightPreview / 2);
                     tan3 = Math.tan(Math.toRadians(d6));
                 } else {
                     double d7 = (double) i12;
-                    tan = (int) (((double) (i3 / 2)) - (((1.0d / Math.tan(Math.toRadians(d7))) * ((double) i3)) / 2.0d));
-                    d = (double) (i4 / 2);
+                    tan = (int) (((double) (widthPreview / 2)) - (((1.0d / Math.tan(Math.toRadians(d7))) * ((double) widthPreview)) / 2.0d));
+                    d = (double) (heightPreview / 2);
                     tan2 = Math.tan(Math.toRadians(d7));
                 }
-                d3 = d2 + ((tan3 * ((double) i4)) / 2.0d);
+                d3 = d2 + ((tan3 * ((double) heightPreview)) / 2.0d);
                 i7 = (int) d3;
-                if (tan > i3) {
-                    tan = i3;
+                if (tan > widthPreview) {
+                    tan = widthPreview;
                 }
                 if (tan < 0) {
                     tan = 0;
                 }
-                if (i7 > i4) {
-                    i7 = i4;
+                if (i7 > heightPreview) {
+                    i7 = heightPreview;
                 }
                 if (i7 < 0) {
                     i7 = 0;
                 }
                 i8 = 3;
-                int i13 = i4 / 2;
-                Point[] pointArr = {new Point(i3, 0), new Point(0, 0), new Point(0, i4), new Point(i3, i4), new Point(i3, i13)};
+                int i13 = heightPreview / 2;
+                Point[] pointArr = {new Point(widthPreview, 0), new Point(0, 0), new Point(0, heightPreview), new Point(widthPreview, heightPreview), new Point(widthPreview, i13)};
                 Path path = new Path();
-                float f = (float) i3;
+                float f = (float) widthPreview;
                 float f2 = (float) i13;
                 path.moveTo(f, f2);
-                path.lineTo((float) (i3 / 2), f2);
+                path.lineTo((float) (widthPreview / 2), f2);
                 path.lineTo((float) tan, (float) i7);
-                if (tan != i3 || i7 > i13) {
+                if (tan != widthPreview || i7 > i13) {
                     if (i7 != 0) {
                         i8 = 1;
                     } else if (tan == 0) {
                         i8 = 2;
-                    } else if (i7 != i4) {
-                        if (tan == i3 && i7 > i13) {
+                    } else if (i7 != heightPreview) {
+                        if (tan == widthPreview && i7 > i13) {
                             i8 = 4;
                         }
                     }
@@ -873,24 +860,24 @@ class TransitionUtils extends TransitionUtilsEx {
                 }
                 canvas.drawPath(path, paint22);
             }
-            d3 = d - ((tan2 * ((double) i4)) / 2.0d);
+            d3 = d - ((tan2 * ((double) heightPreview)) / 2.0d);
             i7 = (int) d3;
-            if (tan > i3) {
+            if (tan > widthPreview) {
             }
             if (tan < 0) {
             }
-            if (i7 > i4) {
+            if (i7 > heightPreview) {
             }
             if (i7 < 0) {
             }
             i8 = 3;
-            int i132 = i4 / 2;
-            Point[] pointArr2 = {new Point(i3, 0), new Point(0, 0), new Point(0, i4), new Point(i3, i4), new Point(i3, i132)};
+            int i132 = heightPreview / 2;
+            Point[] pointArr2 = {new Point(widthPreview, 0), new Point(0, 0), new Point(0, heightPreview), new Point(widthPreview, heightPreview), new Point(widthPreview, i132)};
             Path path2 = new Path();
-            float f3 = (float) i3;
+            float f3 = (float) widthPreview;
             float f22 = (float) i132;
             path2.moveTo(f3, f22);
-            path2.lineTo((float) (i3 / 2), f22);
+            path2.lineTo((float) (widthPreview / 2), f22);
             path2.lineTo((float) tan, (float) i7);
             if (i7 != 0) {
             }

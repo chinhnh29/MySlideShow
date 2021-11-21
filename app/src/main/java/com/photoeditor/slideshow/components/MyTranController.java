@@ -39,10 +39,14 @@ import com.photoeditor.slideshow.models.GifTransition;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.CategoryTransitAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.FilterAdapter;
+import com.photoeditor.slideshow.my_slide_show.list_category_transit.FilterTabAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.FrameTabAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.RatioAdapter;
 import com.photoeditor.slideshow.my_slide_show.list_category_transit.TransitionAdapter;
+import com.photoeditor.slideshow.my_slide_show.obj.FilterModel;
+import com.photoeditor.slideshow.my_slide_show.obj.FilterTab;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameTab;
 import com.photoeditor.slideshow.my_slide_show.obj.DataCategoryTrans;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
@@ -114,7 +118,10 @@ public final class MyTranController {
     RecyclerView rcvListFrame;
     @BindView(R.id.rcv_ratio)
     RecyclerView rcvRatio;
-
+    @BindView(R.id.rcv_list_tab_filter)
+    RecyclerView rcvTabFilters;
+    @BindView(R.id.rcv_list_filter)
+    RecyclerView rcvListFilters;
 
     private final RelativeLayout rlMenuEditSelected;
 
@@ -125,6 +132,10 @@ public final class MyTranController {
     private List<FrameTab> frameTabList;
     private List<FrameInfo> frameList;
     private FrameAdapter frameAdapter;
+
+    private List<FilterTab> filterTabList;
+    private List<FilterModel> filterModelList;
+    private FilterAdapter filterAdapter;
 
     private List<Ratio> ratioList;
     private RatioAdapter ratioAdapter;
@@ -180,10 +191,56 @@ public final class MyTranController {
         initRecycleTran();
         initRecycleFrame();
         initRecycleRatio();
+        initRecycleFilter();
+    }
+
+    private void initRecycleFilter() {
+        filterTabList = initTabFilters();
+        FilterTabAdapter adapter = new FilterTabAdapter(context, filterTabList, this);
+        rcvTabFilters.setAdapter(adapter);
+
+        filterModelList = initFilterList();
+        filterAdapter = new FilterAdapter(context, filterModelList, this);
+        rcvListFilters.setAdapter(filterAdapter);
+    }
+
+    private List<FilterModel> initFilterList() {
+        List<FilterModel> filterModelList = new ArrayList<>();
+        filterModelList.add(new FilterModel("1" , "Brighten.acv", "", R.drawable.slide_d, true, false,
+                Transition.NONE));
+        filterModelList.add(new FilterModel("2" , "Contrast.acv", "", R.drawable.slide_d, true, false,
+                Transition.NONE));
+        filterModelList.add(new FilterModel("3" , "Darken.acv", "", R.drawable.slide_d, true, false,
+                Transition.NONE));
+        return filterModelList;
+    }
+
+    private List<FilterTab> initTabFilters() {
+        List<FilterTab> filterTabs = new ArrayList<>();
+        filterTabs.add(new FilterTab("filter1"));
+        filterTabs.add(new FilterTab("filter2"));
+        return filterTabs;
+    }
+
+    public void updateListFilter(String name) {
+        frameList.clear();
+        if (name.equalsIgnoreCase("filter1")) {
+            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d,  AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame s2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+        } else if (name.equalsIgnoreCase("filter2")) {
+            frameList.add(new FrameInfo("Frame d1", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame d2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Scary night"));
+            frameList.add(new FrameInfo("Frame d3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+        }
+        frameAdapter.notifyDataSetChanged();
     }
 
     private void initRecycleRatio() {
-
+        ratioList = initRatioList();
+        ratioAdapter = new RatioAdapter(context, ratioList, this);
+        rcvRatio.setAdapter(ratioAdapter);
+        ratioAdapter.notifyDataSetChanged();
     }
 
     private void initRecycleFrame() {
@@ -194,11 +251,6 @@ public final class MyTranController {
         frameList = initFrameList();
         frameAdapter = new FrameAdapter(context, frameList, this);
         rcvListFrame.setAdapter(frameAdapter);
-
-        ratioList = initRatioList();
-        ratioAdapter = new RatioAdapter(context, ratioList, this);
-        rcvRatio.setAdapter(ratioAdapter);
-        ratioAdapter.notifyDataSetChanged();
     }
 
     private List<Ratio> initRatioList() {
@@ -244,6 +296,9 @@ public final class MyTranController {
         myVideoPlayer.changeVideoRatio(video_ratio);
     }
 
+    public void chooseFilter(FilterModel filterModel) {
+        mVideoMaker.setFil(filterModel);
+    }
 
     public void chooseTheme(FrameInfo frameInfo) {
         mVideoMaker.chooseThemeNew(frameInfo);

@@ -191,8 +191,9 @@
                 android:textColor="@color/txt_mnu_edit"
                 android:textSize="@dimen/sz_txt_mnu_edit" />
         </LinearLayout>
+
         <LinearLayout
-            android:id="@+id/rl_photo"
+            android:id="@+id/rl_filter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -201,7 +202,7 @@
             tools:ignore="ButtonStyle">
 
             <ImageView
-                android:id="@+id/img_photo"
+                android:id="@+id/img_filter"
                 android:layout_width="@dimen/size_item_mnu_edit"
                 android:layout_height="@dimen/size_item_mnu_edit"
                 android:layout_gravity="center_horizontal"
@@ -210,7 +211,7 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/txt_photo"
+                android:id="@+id/txt_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -220,7 +221,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/photo"
+                android:text="filter"
                 android:textColor="@color/txt_mnu_edit"
                 android:textSize="@dimen/sz_txt_mnu_edit" />
         </LinearLayout>

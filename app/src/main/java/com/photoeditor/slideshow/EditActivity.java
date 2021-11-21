@@ -61,6 +61,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     LinearLayout llFrame;
     @BindView(R.id.ll_ratio)
     LinearLayout llRatio;
+    @BindView(R.id.ll_filter)
+    LinearLayout llFilter;
     @BindView(R.id.mCustomPreviewView)
     CustomPreviewView customPreviewView;
 
@@ -114,11 +116,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     }
 
 
-
-
-
     private void initVideo() {
-
         videoMaker = VideoMaker.getInstance();
         myVideoPlayer = new MyVideoPlayer(
                 this, videoMaker, arrayListImage, customPreviewView, rangeSeekBar, imageView,
@@ -131,7 +129,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                 this, videoMaker, myVideoPlayer);
     }
 
-    @OnClick({R.id.rl_choose_effect, R.id.rl_frame, R.id.rl_ratio, R.id.txt_next_edit})
+    @OnClick({R.id.rl_choose_effect, R.id.rl_frame, R.id.rl_ratio, R.id.txt_next_edit, R.id.rl_filter})
     void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_choose_effect:
@@ -146,9 +144,14 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                 goneAllLayoutMenu();
                 llRatio.setVisibility(View.VISIBLE);
                 break;
+            case R.id.rl_filter:
+                goneAllLayoutMenu();
+                llFilter.setVisibility(View.VISIBLE);
+                break;
             case R.id.txt_next_edit:
                 chooseQualityRenderVideo();
                 break;
+
         }
     }
 
@@ -234,6 +237,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
         llTransit.setVisibility(View.GONE);
         llFrame.setVisibility(View.GONE);
         llRatio.setVisibility(View.GONE);
+        llFilter.setVisibility(View.GONE);
     }
 
     @Override
