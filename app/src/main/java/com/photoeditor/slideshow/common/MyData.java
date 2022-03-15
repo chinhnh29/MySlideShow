@@ -42,12 +42,12 @@ public final class MyData {
     public MyData() {
         listGifTran = new ArrayList<>();
         listGifTran.add(new GifTransition("Clock", "Clock", "classic", R.drawable.clock, true, null, Transition.CLOCK));
-        listGifTran.add(new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT));
-        listGifTran.add(new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT));
-        listGifTran.add(new GifTransition("Slide D", "Slide D", "classic", R.drawable.slide_d, true, null, Transition.SLIDE_DOWN));
-        listGifTran.add(new GifTransition("Slide U", "Slide U", "classic", R.drawable.slide_u, true, null, Transition.SLIDE_UP));
-        listGifTran.add(new GifTransition("Flash B", "Flash B", "classic", R.drawable.flash_b, true, null, Transition.FLASH_B));
-        listGifTran.add(new GifTransition("Flash W", "Flash W", "classic", R.drawable.flash_w, true, (Boolean) null, Transition.FLASH_W));
+        listGifTran.add(new GifTransition("Slide Left", "Slide Left", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT));
+        listGifTran.add(new GifTransition("Slide Right", "Slide Right", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT));
+        listGifTran.add(new GifTransition("Slide Down", "Slide Down", "classic", R.drawable.slide_d, true, null, Transition.SLIDE_DOWN));
+        listGifTran.add(new GifTransition("Slide Up", "Slide Up", "classic", R.drawable.slide_u, true, null, Transition.SLIDE_UP));
+        listGifTran.add(new GifTransition("Flash Black", "Flash B", "classic", R.drawable.flash_b, true, null, Transition.FLASH_B));
+        listGifTran.add(new GifTransition("Flash White", "Flash W", "classic", R.drawable.flash_w, true, (Boolean) null, Transition.FLASH_W));
         listGifTran.add(new GifTransition("Zoom", "Zoom", "classic", R.drawable.zoom, true, (Boolean) null, Transition.ZOOM));
         listGifTran.add(new GifTransition("Fade", "Fade", "classic", R.drawable.fade, true, (Boolean) null, Transition.FADE));
 

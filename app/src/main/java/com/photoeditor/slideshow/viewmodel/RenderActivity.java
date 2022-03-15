@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -127,6 +128,10 @@ public class RenderActivity extends AppCompatActivity implements OnFinishEncoder
         public void onServiceConnected(ComponentName name, IBinder service) {
             mService = ((LocalService.LocalBinder) service).getService();
             mService.setServiceListener(RenderActivity.this);
+            Log.e("ChinhNH", "onServiceConnected:  " + isAudioVideo);
+            Log.e("ChinhNH", "onServiceConnected:  " + mHasTrimAudio);
+            Log.e("ChinhNH", "onServiceConnected:  " + mHasLoopAudio);
+            Log.e("ChinhNH", "onServiceConnected:  " + isMusicLonger);
             mService.renderVideo(mVideoMaker, isAudioVideo, mHasTrimAudio, mHasLoopAudio, isMusicLonger);
         }
 

@@ -428,36 +428,15 @@ public final class MyVideoPlayer {
             int i = this.mCurrentFrame;
             int i2 = this.totalFrameMusic;
             if (i <= i2) {
-                MediaPlayer mediaPlayer = this.mAudioPreview;
-                if (mediaPlayer != null) {
-                    mediaPlayer.seekTo((this.startTime * 1000) + ((i / 30) * 1000));
-                }
-                MediaPlayer mediaPlayer2 = this.mAudioPreview;
-                if (mediaPlayer2 != null) {
-                    mediaPlayer2.setLooping(true);
-                }
-                MediaPlayer mediaPlayer3 = this.mAudioPreview;
-                if (mediaPlayer3 != null) {
-                    mediaPlayer3.start();
-                }
+                mAudioPreview.seekTo((this.startTime * 1000) + ((i / 30) * 1000));
+                mAudioPreview.setLooping(true);
+                mAudioPreview.start();
             } else if (this.isLoopMusic) {
-                MediaPlayer mediaPlayer4 = this.mAudioPreview;
-                if (mediaPlayer4 != null) {
-                    mediaPlayer4.seekTo((this.startTime * 1000) + (((i - i2) / 30) * 1000));
-                }
-                MediaPlayer mediaPlayer5 = this.mAudioPreview;
-                if (mediaPlayer5 != null) {
-                    mediaPlayer5.setLooping(true);
-                }
-                MediaPlayer mediaPlayer6 = this.mAudioPreview;
-                if (mediaPlayer6 != null) {
-                    mediaPlayer6.start();
-                }
+                mAudioPreview.seekTo((this.startTime * 1000) + (((i - i2) / 30) * 1000));
+                mAudioPreview.setLooping(true);
+                mAudioPreview.start();
             } else {
-                MediaPlayer mediaPlayer7 = this.mAudioPreview;
-                if (mediaPlayer7 != null) {
-                    mediaPlayer7.pause();
-                }
+                mAudioPreview.pause();
             }
         } catch (IllegalStateException unused) {
         }
@@ -499,7 +478,7 @@ public final class MyVideoPlayer {
                                 mAudioPreview.pause();
                             } else if (isChangeTime) {
                                 isChangeTime = false;
-                                mAudioPreview.seekTo(getStartTime() * 1000);
+                                mAudioPreview.seekTo(startTime * 1000);
                             }
                         }
                     }
@@ -516,7 +495,7 @@ public final class MyVideoPlayer {
                     if (mTvTimeControl.isShown()) {
                         mTvTimeControl.setText(ConvertDurationUtils.convertDurationText(getMCurrentFrame() / 30));
                     }
-//        this.this$0.getMusicCutView().setTimePlay(MathKt.roundToInt((((float) this.this$0.getMCurrentFrame()) / ((float) 30)) * ((float) 1000)));
+//                    getMusicCutView().setTimePlay(MathKt.roundToInt((((float) this.this$0.getMCurrentFrame()) / ((float) 30)) * ((float) 1000)));
                     previewFrame(getMCurrentFrame());
                     setBeforeFrame(getMCurrentFrame());
                     setMCurrentFrame(getMCurrentFrame() + 1);

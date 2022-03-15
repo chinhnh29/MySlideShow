@@ -2,18 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     >
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_tran"
-        android:layout_width="@dimen/_70sdp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/_70sdp"
         android:layout_margin="10dp"
         android:src="@drawable/transit" />
 
     <TextView
         android:id="@+id/txt_tran"
-        android:layout_width="@dimen/_70sdp"
+        android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_below="@+id/img_tran"
         android:layout_centerHorizontal="true"
@@ -21,6 +23,6 @@
         android:text="FADE"
         android:textAllCaps="true"
         android:textColor="@color/black"
-        android:textSize="17dp" />
+        android:textSize="15dp" />
 
 </RelativeLayout>

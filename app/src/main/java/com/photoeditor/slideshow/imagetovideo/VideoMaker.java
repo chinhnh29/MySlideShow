@@ -43,6 +43,7 @@ import com.photoeditor.slideshow.models.ThemeLottieModel;
 import com.photoeditor.slideshow.models.TransitionDrawableModel;
 import com.photoeditor.slideshow.models.main.TransitionDrawModel;
 import com.photoeditor.slideshow.models.main.TransitionJsonModel;
+import com.photoeditor.slideshow.my_slide_show.obj.FilterModel;
 import com.photoeditor.slideshow.my_slide_show.obj.FrameInfo;
 import com.photoeditor.slideshow.my_slide_show.obj.Transit;
 import com.photoeditor.slideshow.my_slide_show.obj.VIDEO_RATIO;
@@ -84,6 +85,7 @@ public class VideoMaker {
     public Bitmap bitmapWatermark;
     private int bmIdNew = 0;
     private Context context;
+    private FilterModel currentFilter;
     private GifTheme currentThemeModel = new GifTheme("none", "none", "classic", R.color.trans, true,
             (Boolean) null, Transition.NONE);
     private float currentTile = 1.0f;
@@ -183,6 +185,12 @@ public class VideoMaker {
         this.factor = blurFactor;
         blurFactor.radius = 25;
     }
+
+    public void setFilter(FilterModel filterModel) {
+        this.currentFilter = filterModel;
+        this.mBufferImage.clear();
+    }
+
 
     public void setImage(ImageView imageView) {
         this.imgWatermark = imageView;
@@ -1199,6 +1207,7 @@ public class VideoMaker {
                 themeLottieModel2.setEnd(-1);
                 return;
             }
+            Log.e("ChinhNH", "updateTimeThemeNew: " );
             getTotalFrames();
             ThemeLottieModel themeLottieModel3 = this.listThemeLottieModel.get(0);
             themeLottieModel3.setStart(0);

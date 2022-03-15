@@ -58,7 +58,7 @@ public class CategoryTransitAdapter extends RecyclerView.Adapter<CategoryTransit
 
         @OnClick(R.id.txt_name_tab)
         void onClick() {
-            myTranController.updateListTransit(dataCategoryList.get(getAdapterPosition()).getName());
+//            myTranController.updateListTransit(dataCategoryList.get(getAdapterPosition()).getName());
         }
 
         public void onBind(int position) {

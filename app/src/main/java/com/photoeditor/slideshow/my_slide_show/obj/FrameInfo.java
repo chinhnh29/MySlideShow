@@ -1,10 +1,11 @@
 package com.photoeditor.slideshow.my_slide_show.obj;
 
 public class FrameInfo {
-    private String fileName;
     private int resId;
+    private String fileName;
     private String themePath;
-
+    private String tabName;
+    private String url;
 
     public FrameInfo(String fileName, int resId, String themePath) {
         this.fileName = fileName;

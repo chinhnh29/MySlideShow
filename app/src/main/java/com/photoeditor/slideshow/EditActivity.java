@@ -8,9 +8,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +27,11 @@ import com.photoeditor.slideshow.imagetovideo.CustomPreviewView;
 import com.photoeditor.slideshow.imagetovideo.Transition;
 import com.photoeditor.slideshow.imagetovideo.VideoMaker;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,13 +102,19 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         } else {
+            copyFrameFromAssets();
             Hawk.init(this).build();
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200901_161012.jpg");
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20201111_210719.jpg");
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200715_153006.jpg");
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200716_150145.jpg");
-            arrayListImage.add("/storage/emulated/0/DCIM/Camera/20200715_101738.jpg");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_01.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_02.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_03.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_04.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_05.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_06.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_07.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_08.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_09.webp");
+            arrayListImage.add(getFilesDir() + "/frame/img_frame_10.webp");
+
             initVideo();
 
             imgImage = findViewById(R.id.img_image);
@@ -109,6 +122,68 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
             imgImage.setVisibility(View.GONE);
         }
 
+
+    }
+
+    public void copyFrameFromAssets() {
+        AssetManager assetManager = getAssets();
+        String[] files = null;
+        try {
+            files = assetManager.list("frame");
+        } catch (IOException e) {
+        }
+        for (String filename : files) {
+            InputStream in;
+            OutputStream out;
+            try {
+                in = assetManager.open("frame" + "/" + filename);
+
+                String outDir = availableFramePath();
+
+                File file = new File(outDir);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                addPermissionForPrivateFile(file);
+                File outFile = new File(outDir, filename);
+                addPermissionForPrivateFile(outFile);
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+                in.close();
+                in = null;
+                out.flush();
+                out.close();
+                out = null;
+            } catch (IOException e) {
+                Log.e("Chinh", "Failed to copy asset file: " + filename, e);
+            }
+        }
+    }
+
+    private void copyFile(InputStream in, OutputStream out) {
+        try {
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addPermissionForPrivateFile(File file) {
+        if (!file.canExecute()) file.setExecutable(true);
+        if (!file.canRead()) file.setReadable(true);
+        if (!file.canWrite()) file.setWritable(true);
+    }
+
+    public String availableFramePath() {
+        File file = new File(getFilesDir() + "/frame");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file.getPath();
     }
 
     private void createListTransit() {
@@ -145,8 +220,8 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
                 llRatio.setVisibility(View.VISIBLE);
                 break;
             case R.id.rl_filter:
-                goneAllLayoutMenu();
-                llFilter.setVisibility(View.VISIBLE);
+//                goneAllLayoutMenu();
+//                llFilter.setVisibility(View.VISIBLE);
                 break;
             case R.id.txt_next_edit:
                 chooseQualityRenderVideo();
@@ -158,7 +233,7 @@ public class EditActivity extends AppCompatActivity implements TransitionListene
     private void chooseQualityRenderVideo() {
         boolean z;
         boolean z2;
-        List<GifTransition> list = videoMaker.getListTransitionModel();;
+        List<GifTransition> list = videoMaker.getListTransitionModel();
         GifTheme currentThemeModel = videoMaker.getCurrentThemeModel();
         ArrayList arrayList = (ArrayList) Hawk.get(AppConst.KEY_LIST_UNLOCK, new ArrayList());
         boolean z3 = true;

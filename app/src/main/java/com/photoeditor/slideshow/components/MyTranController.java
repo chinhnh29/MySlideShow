@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
@@ -281,7 +282,7 @@ public final class MyTranController {
     public void updateListFrame(String name) {
         frameList.clear();
         if (name.equalsIgnoreCase("Static")) {
-            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d,  AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
+            frameList.add(new FrameInfo("Frame s1", R.drawable.slide_d,   (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/SlideShow/json/a1")));
             frameList.add(new FrameInfo("Frame s2", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
             frameList.add(new FrameInfo("Frame s3", R.drawable.slide_d, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween"));
         } else {
@@ -297,7 +298,7 @@ public final class MyTranController {
     }
 
     public void chooseFilter(FilterModel filterModel) {
-        mVideoMaker.setFil(filterModel);
+//        mVideoMaker.setFil(filterModel);
     }
 
     public void chooseTheme(FrameInfo frameInfo) {
@@ -317,52 +318,52 @@ public final class MyTranController {
 
     public void updateListTransit(String name) {
         transitList.clear();
-        if (name.equalsIgnoreCase("Mate")) { //ok
+        if (name.equalsIgnoreCase("Transition 2")) { //ok
             transitList.add(new GifTransition("none", "none", "Special", R.color.trans, true, null, Transition.NONE));
-            transitList.add(new GifTransition("RandomMate", "Random", "Special", R.drawable.ic_random, true, null, Transition.RANDOM_MATE));
-            transitList.add(new GifTransition("Column1", "Column1", "Special", R.drawable.ramdom, true, null, Transition.COLUMN1));
-            transitList.add(new GifTransition("Column2", "Column2", "Special", R.drawable.ramdom, true, null, Transition.COLUMN2));
-            transitList.add(new GifTransition("Triangle", "Triangle", "Special", R.drawable.ramdom, true, null, Transition.TRIANGLE));
-            transitList.add(new GifTransition("CIRCLE", "CIRCLE", "Special", R.drawable.ramdom, true, null, Transition.CIRCLE));
-            transitList.add(new GifTransition("BOARD", "BOARD", "Special", R.drawable.ramdom, true, null, Transition.BOARD));
-            transitList.add(new GifTransition("BLIND_H", "BLIND_H", "Special", R.drawable.ramdom, true, null, Transition.BLIND_H));
-            transitList.add(new GifTransition("BLIND_V", "BLIND_V", "Special", R.drawable.ramdom, true, null, Transition.BLIND_V));
-            transitList.add(new GifTransition("DISSOLVE", "DISSOLVE", "Special", R.drawable.ramdom, true, null, Transition.DISSOLVE));
-        } else if (name.equalsIgnoreCase("Brush")) {
+            transitList.add(new GifTransition("RandomMate", "1", "Special", R.drawable.ramdom, true, null, Transition.RANDOM_MATE));
+            transitList.add(new GifTransition("Column1", "2", "Special", R.drawable.ramdom, true, null, Transition.COLUMN1));
+            transitList.add(new GifTransition("Column2", "3", "Special", R.drawable.ramdom, true, null, Transition.COLUMN2));
+            transitList.add(new GifTransition("Triangle", "4", "Special", R.drawable.ramdom, true, null, Transition.TRIANGLE));
+            transitList.add(new GifTransition("CIRCLE", "5", "Special", R.drawable.ramdom, true, null, Transition.CIRCLE));
+            transitList.add(new GifTransition("BOARD", "6", "Special", R.drawable.ramdom, true, null, Transition.BOARD));
+            transitList.add(new GifTransition("BLIND_H", "7", "Special", R.drawable.ramdom, true, null, Transition.BLIND_H));
+            transitList.add(new GifTransition("BLIND_V", "8", "Special", R.drawable.ramdom, true, null, Transition.BLIND_V));
+            transitList.add(new GifTransition("DISSOLVE", "9", "Special", R.drawable.ramdom, true, null, Transition.DISSOLVE));
+        } else if (name.equalsIgnoreCase("Transition 5")) {
             transitList.add(new GifTransition("RANDOM Brush", "Random", "Special",
                     R.drawable.ramdom, true, null, Transition.RANDOM_DRAW));
-            transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
+            transitList.add(new GifTransition("BRUSH 1", "1", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 1"));
-            transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
+            transitList.add(new GifTransition("BRUSH 2", "2", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 2"));
-            transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
+            transitList.add(new GifTransition("BRUSH 3", "3", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 3"));
-            transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
+            transitList.add(new GifTransition("BRUSH 4", "4", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 4"));
-            transitList.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
+            transitList.add(new GifTransition("BRUSH 5", "5", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 5"));
-            transitList.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
+            transitList.add(new GifTransition("BRUSH 6", "6", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 6"));
-            transitList.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
+            transitList.add(new GifTransition("BRUSH 7", "7", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 7"));
-            transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
+            transitList.add(new GifTransition("BRUSH 8", "8", "Special",
                     R.drawable.ramdom, true, null, Transition.DRAW, AppConst.INSTANCE.getFOLDER_JSON() + "Brush 8"));
         } else if (name.equalsIgnoreCase("Json")) {
-            transitList.add(new GifTransition("BRUSH 1", "Brush 1", "Special",
+            transitList.add(new GifTransition("BRUSH 1", "1", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Happy Halloween/Video 6 P1.json"));
-            transitList.add(new GifTransition("BRUSH 2", "Brush 2", "Special",
+            transitList.add(new GifTransition("BRUSH 2", "2", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE() + "Scary night"));
-            transitList.add(new GifTransition("BRUSH 3", "Brush 3", "Special",
+            transitList.add(new GifTransition("BRUSH 3", "3", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
-            transitList.add(new GifTransition("BRUSH 4", "Brush 4", "Special",
+            transitList.add(new GifTransition("BRUSH 4", "4", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
-            transitList.add(new GifTransition("BRUSH 5", "Brush 5", "Special",
+            transitList.add(new GifTransition("BRUSH 5", "5", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
-            transitList.add(new GifTransition("BRUSH 6", "Brush 6", "Special",
+            transitList.add(new GifTransition("BRUSH 6", "6", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
-            transitList.add(new GifTransition("BRUSH 7", "Brush 7", "Special",
+            transitList.add(new GifTransition("BRUSH 7", "7", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
-            transitList.add(new GifTransition("BRUSH 8", "Brush 8", "Special",
+            transitList.add(new GifTransition("BRUSH 8", "8", "Special",
                     R.drawable.ramdom, true, null, Transition.IMAGE, AppConst.INSTANCE.getFOLDER_LOTTIE()));
         }
         rcvListTran.setAdapter(transitionAdapter);
@@ -372,29 +373,38 @@ public final class MyTranController {
 
     private List<GifTransition> initListTransit() {
         List<GifTransition> transitList = new ArrayList<>();
-        transitList.add(new GifTransition("none", "none", "classic", R.color.trans, true, null, Transition.NONE));
-        transitList.add(new GifTransition("RandomClassic", "Random", "classic", R.drawable.ic_random, true, (Boolean) null, Transition.RANDOM_CLASSIC));
-        transitList.add(new GifTransition("Clock", "Clock", "classic", R.drawable.clock, true, null, Transition.CLOCK));
-        transitList.add(new GifTransition("Slide L", "Slide L", "classic", R.drawable.slide_l, true, null, Transition.SLIDE_LEFT));
-        transitList.add(new GifTransition("Slide R", "Slide R", "classic", R.drawable.slide_r, true, null, Transition.SLIDE_RIGHT));
-        transitList.add(new GifTransition("Slide D", "Slide D", "classic", R.drawable.slide_d, true, null, Transition.SLIDE_DOWN));
-        transitList.add(new GifTransition("Slide U", "Slide U", "classic", R.drawable.slide_u, true, null, Transition.SLIDE_UP));
-        transitList.add(new GifTransition("Flash B", "Flash B", "classic", R.drawable.flash_b, true, null, Transition.FLASH_B));
-        transitList.add(new GifTransition("Flash W", "Flash W", "classic", R.drawable.flash_w, true, (Boolean) null, Transition.FLASH_W));
-        transitList.add(new GifTransition("Zoom", "Zoom", "classic", R.drawable.zoom, true, (Boolean) null, Transition.ZOOM));
-        transitList.add(new GifTransition("Fade", "Fade", "classic", R.drawable.fade, true, (Boolean) null, Transition.FADE));
+        transitList.add(new GifTransition("none", "none", "classic", R.drawable.ramdom, true, null, Transition.NONE));
+//        transitList.add(new GifTransition("RandomClassic", "Random", "classic", R.drawable.ramdom, true, (Boolean) null, Transition.RANDOM_CLASSIC));
+//        transitList.add(new GifTransition("Clock", "ko click", "classic", R.drawable.clock, true, null, Transition.CLOCK));
+        transitList.add(new GifTransition("Left", "1", "classic", R.drawable.ramdom, true, null, Transition.SLIDE_LEFT));
+        transitList.add(new GifTransition("Right", "2", "classic", R.drawable.ramdom, true, null, Transition.SLIDE_RIGHT));
+        transitList.add(new GifTransition("Down", "3", "classic", R.drawable.ramdom, true, null, Transition.SLIDE_DOWN));
+        transitList.add(new GifTransition("Up", "4", "classic", R.drawable.ramdom, true, null, Transition.SLIDE_UP));
+        transitList.add(new GifTransition("Flash Black", "5", "classic", R.drawable.ramdom, true, null, Transition.FLASH_B));
+        transitList.add(new GifTransition("Flash White", "6", "classic", R.drawable.ramdom, true, (Boolean) null, Transition.FLASH_W));
+        transitList.add(new GifTransition("Zoom", "7", "classic", R.drawable.ramdom, true, (Boolean) null, Transition.ZOOM));
+        transitList.add(new GifTransition("Fade", "8", "classic", R.drawable.ramdom, true, (Boolean) null, Transition.FADE));
+        transitList.add(new GifTransition("Random", "9", "Special", R.drawable.ramdom, true, null, Transition.RANDOM_MATE));
+        transitList.add(new GifTransition("Column1", "10", "Special", R.drawable.ramdom, true, null, Transition.COLUMN1));
+        transitList.add(new GifTransition("Column2", "11", "Special", R.drawable.ramdom, true, null, Transition.COLUMN2));
+        transitList.add(new GifTransition("Triangle", "12", "Special", R.drawable.ramdom, true, null, Transition.TRIANGLE));
+        transitList.add(new GifTransition("CIRCLE", "13", "Special", R.drawable.ramdom, true, null, Transition.CIRCLE));
+        transitList.add(new GifTransition("BOARD", "14", "Special", R.drawable.ramdom, true, null, Transition.BOARD));
+        transitList.add(new GifTransition("BLIND_H", "15", "Special", R.drawable.ramdom, true, null, Transition.BLIND_H));
+        transitList.add(new GifTransition("BLIND_V", "16", "Special", R.drawable.ramdom, true, null, Transition.BLIND_V));
+//        transitList.add(new GifTransition("DISSOLVE", "9", "Special", R.drawable.ramdom, true, null, Transition.DISSOLVE));
         return transitList;
     }
 
     private List<DataCategoryTrans> initListCategoryTran() {
         List<DataCategoryTrans> dataCategoryTransList = new ArrayList<>();
-        dataCategoryTransList.add(new DataCategoryTrans("Classic"));
-        dataCategoryTransList.add(new DataCategoryTrans("Mate"));
-        dataCategoryTransList.add(new DataCategoryTrans("Water"));
-        dataCategoryTransList.add(new DataCategoryTrans("Arrow"));
-        dataCategoryTransList.add(new DataCategoryTrans("Brush"));
-        dataCategoryTransList.add(new DataCategoryTrans("Valentine"));
-        dataCategoryTransList.add(new DataCategoryTrans("Json"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 1"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 2"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 3"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 4"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 5"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 5"));
+        dataCategoryTransList.add(new DataCategoryTrans("Transition 6"));
         return dataCategoryTransList;
     }
 
